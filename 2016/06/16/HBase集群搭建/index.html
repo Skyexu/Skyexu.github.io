@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="随笔," />
+  <meta name="keywords" content="HBase," />
 
 
 
@@ -96,16 +96,19 @@
 
 
 
-<meta name="description" content="#你好这是我的第一篇文章:)">
+<meta name="description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
+####3.1 修改hbase-env.sh    export JAVA_HOME=/usr/java/jdk1.7.0_55    //告诉hbase使用外部的zk    export">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello">
-<meta property="og:url" content="http://yoursite.com/2016/06/14/Hello/index.html">
+<meta property="og:title" content="HBase集群搭建">
+<meta property="og:url" content="http://yoursite.com/2016/06/16/HBase集群搭建/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="#你好这是我的第一篇文章:)">
-<meta property="og:updated_time" content="2016-06-14T08:36:53.275Z">
+<meta property="og:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
+####3.1 修改hbase-env.sh    export JAVA_HOME=/usr/java/jdk1.7.0_55    //告诉hbase使用外部的zk    export">
+<meta property="og:updated_time" content="2016-06-16T09:00:15.358Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello">
-<meta name="twitter:description" content="#你好这是我的第一篇文章:)">
+<meta name="twitter:title" content="HBase集群搭建">
+<meta name="twitter:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
+####3.1 修改hbase-env.sh    export JAVA_HOME=/usr/java/jdk1.7.0_55    //告诉hbase使用外部的zk    export">
 
 
 
@@ -126,9 +129,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/14/Hello/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/06/16/HBase集群搭建/"/>
 
-  <title> Hello | Skye's Blog </title>
+  <title> HBase集群搭建 | Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -258,7 +261,7 @@
             
             
               
-                Hello
+                HBase集群搭建
               
             
           </h1>
@@ -270,8 +273,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-14T16:31:32+08:00" content="2016-06-14">
-              2016-06-14
+            <time itemprop="dateCreated" datetime="2016-06-16T16:26:16+08:00" content="2016-06-16">
+              2016-06-16
             </time>
           </span>
 
@@ -284,8 +287,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -300,8 +303,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/14/Hello/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/14/Hello/" itemprop="commentsCount"></span>
+                <a href="/2016/06/16/HBase集群搭建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/16/HBase集群搭建/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -324,8 +327,20 @@
       
 
       
-        <p>#你好<br>这是我的第一篇文章:)</p>
-
+        <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
+<p>####3.1 修改hbase-env.sh<br>    export JAVA_HOME=/usr/java/jdk1.7.0_55<br>    //告诉hbase使用外部的zk<br>    export HBASE_MANAGES_ZK=false</p>
+<p>####vim hbase-site.xml<br>     <configuration><br>        <!-- 指定hbase在HDFS上存储的路径 --><br>        <property><br>                <name>hbase.rootdir</name><br>                <value>hdfs://ns1/hbase</value><br>        </property><br>        <!-- 指定hbase是分布式的 --><br>        <property><br>                <name>hbase.cluster.distributed</name><br>                <value>true</value><br>        </property><br>        <!-- 指定zk的地址，多个用“,”分割 --><br>        <property><br>                <name>hbase.zookeeper.quorum</name><br>                <value>itcast04:2181,itcast05:2181,itcast06:2181</value><br>        </property><br>    </configuration></p>
+<p>####vim regionservers<br>    itcast03<br>    itcast04<br>    itcast05<br>    itcast06</p>
+<p>####3.2拷贝hbase到其他节点<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/</p>
+<h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间。"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间。" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间。"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间。</h2><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
+    ./zkServer.sh start
+启动hbase集群
+    start-dfs.sh
+启动hbase，在主节点上运行：
+    start-hbase.sh
+</code></pre><h2 id="6-通过浏览器访问hbase管理页面"><a href="#6-通过浏览器访问hbase管理页面" class="headerlink" title="6.通过浏览器访问hbase管理页面"></a>6.通过浏览器访问hbase管理页面</h2><pre><code>192.168.1.201:60010
+</code></pre><h2 id="7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><a href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动" class="headerlink" title="7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动"></a>7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</h2><pre><code>hbase-daemon.sh start master
+</code></pre>
       
     </div>
 
@@ -346,7 +361,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag">#随笔</a>
+            <a href="/tags/HBase/" rel="tag">#HBase</a>
           
         </div>
       
@@ -355,13 +370,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/06/14/Hello/" rel="next" title="Hello">
+                <i class="fa fa-chevron-left"></i> Hello
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/06/16/HBase集群搭建/" rel="prev" title="HBase集群搭建">
-                HBase集群搭建 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -387,8 +402,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/14/Hello/"
-           data-title="Hello" data-url="http://yoursite.com/2016/06/14/Hello/">
+      <div class="ds-thread" data-thread-key="2016/06/16/HBase集群搭建/"
+           data-title="HBase集群搭建" data-url="http://yoursite.com/2016/06/16/HBase集群搭建/">
       </div>
     
   </div>
@@ -499,7 +514,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-上传hbase安装包"><span class="nav-number">1.</span> <span class="nav-text">1. 上传hbase安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-解压"><span class="nav-number">2.</span> <span class="nav-text">2. 解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><span class="nav-number">3.</span> <span class="nav-text">3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-将配置好的HBase拷贝到每一个节点并同步时间。"><span class="nav-number">4.</span> <span class="nav-text">4. 将配置好的HBase拷贝到每一个节点并同步时间。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-启动所有的hbase"><span class="nav-number">5.</span> <span class="nav-text">5. 启动所有的hbase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-通过浏览器访问hbase管理页面"><span class="nav-number">6.</span> <span class="nav-text">6.通过浏览器访问hbase管理页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><span class="nav-number">7.</span> <span class="nav-text">7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</span></a></li></ol></div>
             
           </div>
         </section>
