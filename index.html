@@ -331,11 +331,36 @@
         
           
             <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
-<p>####3.1 修改hbase-env.sh<br>    export JAVA_HOME=/usr/java/jdk1.7.0_55<br>    //告诉hbase使用外部的zk<br>    export HBASE_MANAGES_ZK=false</p>
-<p>####vim hbase-site.xml<br>     <configuration><br>        <!-- 指定hbase在HDFS上存储的路径 --><br>        <property><br>                <name>hbase.rootdir</name><br>                <value>hdfs://ns1/hbase</value><br>        </property><br>        <!-- 指定hbase是分布式的 --><br>        <property><br>                <name>hbase.cluster.distributed</name><br>                <value>true</value><br>        </property><br>        <!-- 指定zk的地址，多个用“,”分割 --><br>        <property><br>                <name>hbase.zookeeper.quorum</name><br>                <value>itcast04:2181,itcast05:2181,itcast06:2181</value><br>        </property><br>    </configuration></p>
-<p>####vim regionservers<br>    itcast03<br>    itcast04<br>    itcast05<br>    itcast06</p>
-<p>####3.2拷贝hbase到其他节点<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/<br>        scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/</p>
-<h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间。"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间。" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间。"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间。</h2><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
+<h4 id="3-1-修改hbase-env-sh"><a href="#3-1-修改hbase-env-sh" class="headerlink" title="3.1 修改hbase-env.sh"></a>3.1 修改hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
+//告诉hbase使用外部的zk 
+export HBASE_MANAGES_ZK=false
+</code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
+    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.rootdir&lt;/name&gt;
+            &lt;value&gt;hdfs://ns1/hbase&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;!-- 指定hbase是分布式的 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
+            &lt;value&gt;true&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+            &lt;value&gt;itcast04:2181,itcast05:2181,itcast06:2181&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h4 id="vim-regionservers"><a href="#vim-regionservers" class="headerlink" title="vim regionservers"></a>vim regionservers</h4><pre><code>itcast03
+itcast04
+itcast05
+itcast06
+</code></pre><h4 id="3-2拷贝hbase到其他节点"><a href="#3-2拷贝hbase到其他节点" class="headerlink" title="3.2拷贝hbase到其他节点"></a>3.2拷贝hbase到其他节点</h4><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
+</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间。"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间。" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间。"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间。</h2><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
     ./zkServer.sh start
 启动hbase集群
     start-dfs.sh
