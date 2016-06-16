@@ -97,24 +97,24 @@
 
 
 <meta name="description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-3.1 修改hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
+vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
 //告诉hbase使用外部的zk 
-export HBASE_MANAGE">
+export HBASE_MANAGES_">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HBase集群搭建">
 <meta property="og:url" content="http://yoursite.com/2016/06/16/HBase集群搭建/index.html">
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-3.1 修改hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
+vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
 //告诉hbase使用外部的zk 
-export HBASE_MANAGE">
-<meta property="og:updated_time" content="2016-06-16T09:04:15.509Z">
+export HBASE_MANAGES_">
+<meta property="og:updated_time" content="2016-06-16T09:15:50.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HBase集群搭建">
 <meta name="twitter:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-3.1 修改hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
+vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
 //告诉hbase使用外部的zk 
-export HBASE_MANAGE">
+export HBASE_MANAGES_">
 
 
 
@@ -334,7 +334,7 @@ export HBASE_MANAGE">
 
       
         <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
-<h4 id="3-1-修改hbase-env-sh"><a href="#3-1-修改hbase-env-sh" class="headerlink" title="3.1 修改hbase-env.sh"></a>3.1 修改hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
+<h4 id="vim-hbase-env-sh"><a href="#vim-hbase-env-sh" class="headerlink" title="vim hbase-env.sh"></a>vim hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
 //告诉hbase使用外部的zk 
 export HBASE_MANAGES_ZK=false
 </code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
@@ -358,12 +358,12 @@ export HBASE_MANAGES_ZK=false
 itcast04
 itcast05
 itcast06
-</code></pre><h4 id="3-2拷贝hbase到其他节点"><a href="#3-2拷贝hbase到其他节点" class="headerlink" title="3.2拷贝hbase到其他节点"></a>3.2拷贝hbase到其他节点</h4><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
+</code></pre><h4 id="4-将配置好的HBase拷贝到每一个节点并同步时间"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间</h4><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
 scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
 scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
 scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
 scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
-</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间。"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间。" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间。"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间。</h2><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
+</code></pre><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
     ./zkServer.sh start
 启动hbase集群
     start-dfs.sh
@@ -545,7 +545,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-上传hbase安装包"><span class="nav-number">1.</span> <span class="nav-text">1. 上传hbase安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-解压"><span class="nav-number">2.</span> <span class="nav-text">2. 解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><span class="nav-number">3.</span> <span class="nav-text">3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-修改hbase-env-sh"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 修改hbase-env.sh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-hbase-site-xml"><span class="nav-number">3.0.2.</span> <span class="nav-text">vim hbase-site.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-regionservers"><span class="nav-number">3.0.3.</span> <span class="nav-text">vim regionservers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2拷贝hbase到其他节点"><span class="nav-number">3.0.4.</span> <span class="nav-text">3.2拷贝hbase到其他节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-将配置好的HBase拷贝到每一个节点并同步时间。"><span class="nav-number">4.</span> <span class="nav-text">4. 将配置好的HBase拷贝到每一个节点并同步时间。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-启动所有的hbase"><span class="nav-number">5.</span> <span class="nav-text">5. 启动所有的hbase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-通过浏览器访问hbase管理页面"><span class="nav-number">6.</span> <span class="nav-text">6.通过浏览器访问hbase管理页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><span class="nav-number">7.</span> <span class="nav-text">7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-上传hbase安装包"><span class="nav-number">1.</span> <span class="nav-text">1. 上传hbase安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-解压"><span class="nav-number">2.</span> <span class="nav-text">2. 解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><span class="nav-number">3.</span> <span class="nav-text">3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-hbase-env-sh"><span class="nav-number">3.0.1.</span> <span class="nav-text">vim hbase-env.sh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-hbase-site-xml"><span class="nav-number">3.0.2.</span> <span class="nav-text">vim hbase-site.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-regionservers"><span class="nav-number">3.0.3.</span> <span class="nav-text">vim regionservers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-将配置好的HBase拷贝到每一个节点并同步时间"><span class="nav-number">3.0.4.</span> <span class="nav-text">4. 将配置好的HBase拷贝到每一个节点并同步时间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-启动所有的hbase"><span class="nav-number">4.</span> <span class="nav-text">5. 启动所有的hbase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-通过浏览器访问hbase管理页面"><span class="nav-number">5.</span> <span class="nav-text">6.通过浏览器访问hbase管理页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><span class="nav-number">6.</span> <span class="nav-text">7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</span></a></li></ol></div>
             
           </div>
         </section>
