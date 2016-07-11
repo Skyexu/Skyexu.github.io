@@ -97,24 +97,27 @@
 
 
 <meta name="description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径FileInputFormat.addInputPath(job, new Path(args[0]));
-FileInputFormat.addInputPath(job, new Path(args[1]));
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开">
+FileInputFormat.addInputPath 多次调用加载不同路径
+12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
+
+FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MapReduce 多文件输入">
 <meta property="og:url" content="http://yoursite.com/2016/06/16/MapReduce 多文件输入/index.html">
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径FileInputFormat.addInputPath(job, new Path(args[0]));
-FileInputFormat.addInputPath(job, new Path(args[1]));
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开">
-<meta property="og:updated_time" content="2016-07-11T04:29:38.776Z">
+FileInputFormat.addInputPath 多次调用加载不同路径
+12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
+
+FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
+<meta property="og:updated_time" content="2016-07-11T05:08:44.356Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MapReduce 多文件输入">
 <meta name="twitter:description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径FileInputFormat.addInputPath(job, new Path(args[0]));
-FileInputFormat.addInputPath(job, new Path(args[1]));
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开">
+FileInputFormat.addInputPath 多次调用加载不同路径
+12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
+
+FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
 
 
 
@@ -334,11 +337,15 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔�
 
       
         <h2 id="多路径输入"><a href="#多路径输入" class="headerlink" title="多路径输入"></a>多路径输入</h2><ol>
-<li>FileInputFormat.addInputPath 多次调用加载不同路径<br><code>FileInputFormat.addInputPath(job, new Path(args[0]));
-FileInputFormat.addInputPath(job, new Path(args[1]));</code></li>
-<li>FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开<br><code>FileInputFormat.addInputPaths(job, &quot;hdfs://master:9000/cs/path1,hdfs://RS5-112:9000/cs/path2&quot;);</code></li>
-<li>多种输入**MultipleInputs可以加载不同路径的输入文件，并且每个路径可用不同的<br><code>maperMultipleInputs.addInputPath(job, new Path(&quot;hdfs://RS5-112:9000/cs/path1&quot;), TextInputFormat.class,MultiTypeFileInput1Mapper.class);
-MultipleInputs.addInputPath(job, new Path(&quot;hdfs://RS5-112:9000/cs/path3&quot;), TextInputFormat.class,MultiTypeFileInput3Mapper.class);</code></li>
+<li><p>FileInputFormat.addInputPath 多次调用加载不同路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, new Path(args[0]));</span><br><span class="line">FileInputFormat.addInputPath(job, new Path(args[1]));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPaths(job, &quot;hdfs://master:9000/cs/path1,hdfs://RS5-112:9000/cs/path2&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多种输入**MultipleInputs可以加载不同路径的输入文件，并且每个路径可用不同的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maperMultipleInputs.addInputPath(job, new Path(&quot;hdfs://master:9000/cs/path1&quot;), TextInputFormat.class,MultiTypeFileInput1Mapper.class);</span><br><span class="line">MultipleInputs.addInputPath(job, new Path(&quot;hdfs://master:9000/cs/path3&quot;), TextInputFormat.class,MultiTypeFileInput3Mapper.class);</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="网上例子："><a href="#网上例子：" class="headerlink" title="网上例子："></a>网上例子：</h2><pre><code>package example;
 
@@ -454,12 +461,16 @@ System.exit(job.waitForCompletion(true)?0:1);
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/06/16/HBase集群搭建/" rel="next" title="HBase集群搭建">
+                <i class="fa fa-chevron-left"></i> HBase集群搭建
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/16/HBase集群搭建/" rel="prev" title="HBase集群搭建">
-                HBase集群搭建 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/11/mapreduce任务运行时shuffle Error/" rel="prev" title="mapreduce任务运行时shuffle Error">
+                mapreduce任务运行时shuffle Error <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
