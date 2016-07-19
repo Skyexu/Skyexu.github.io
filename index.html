@@ -260,6 +260,144 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="url">
+                  亚马逊EC2搭建Shadowsocks
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-19T11:26:26+08:00" content="2016-07-19">
+              2016-07-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机技巧</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/19/亚马逊EC2搭建Shadowsocks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在网上寻找优秀的科学上网方式中发现，自己搭建Shadowscoks是非常不错的方式，并且AWS有一年的免费使用期限，到期后再买别的VPS就行了。<br><a href="https://segmentfault.com/a/1190000003101075" target="_blank" rel="external">https://segmentfault.com/a/1190000003101075</a><br>上面连接的教程从注册申请AWS到搭建服务已经非常详细，自己再做一些补充。</p>
+<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><p>在EC2上创建好Linux服务器后（本人为Ubuntu）需要对其安装环境<br>参考官方文档<a href="http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/putty.html" target="_blank" rel="external">使用 PuTTY 从 Windows 连接到 Linux 实例</a>连接服务器</p>
+<h3 id="安装shadowsocks依赖"><a href="#安装shadowsocks依赖" class="headerlink" title="安装shadowsocks依赖"></a>安装shadowsocks依赖</h3><ol>
+<li><code>sudo -s // 获取超级管理员权限</code></li>
+<li><code>apt-get update // 更新apt-get</code></li>
+<li><code>apt-get install python-pip // 安装python包管理工具pip</code></li>
+<li><code>pip install shadowsocks // 安装shadowsocks</code></li>
+</ol>
+<h3 id="配置shadowsocks"><a href="#配置shadowsocks" class="headerlink" title="配置shadowsocks"></a>配置shadowsocks</h3><p><code>vim /etc/shadowsocks.json</code></p>
+<p>单一端口配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0  填0.0.0.0即可</span><br><span class="line">&quot;server_port&quot;:8388, #server端监听的端口，需要在EC2实例中开放此端口</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;password&quot;:&quot;password&quot;, #密码</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果想要把VPN分享给其它人而不泄露自己的密码，也可以在配置文件中设置多端口+多密码的模式，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;port_password&quot;:</span><br><span class="line">&#123;</span><br><span class="line">&quot;8088”: “password8088”,</span><br><span class="line">&quot;8089”: &quot;password8089”</span><br><span class="line">&#125;</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="配置完成后启动Shawdowsocks"><a href="#配置完成后启动Shawdowsocks" class="headerlink" title="配置完成后启动Shawdowsocks"></a>配置完成后启动Shawdowsocks</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动：ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line">停止：ssserver -c /etc/shadowsocks.json -d stop</span><br><span class="line">重启：ssserver -c /etc/shadowsocks.json -d restart</span><br><span class="line">查看状态：ssserver -c /etc/shadowsocks.json -d status</span><br></pre></td></tr></table></figure>
+<h3 id="关闭服务器防火墙"><a href="#关闭服务器防火墙" class="headerlink" title="关闭服务器防火墙"></a>关闭服务器防火墙</h3><p><code>sudo ufw disable</code></p>
+<h3 id="开启AWS入站端口"><a href="#开启AWS入站端口" class="headerlink" title="开启AWS入站端口"></a>开启AWS入站端口</h3><p>配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务。<br>在EC2网页中编辑入站规则将配置文件中的端口号（如8388）加入入站规则。<br>服务器端配置完毕。</p>
+<h2 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h2><p><a href="https://www.gaotizi.com/knowledgebase/2/shadowsocks.html" target="_blank" rel="external">shadowsocks下载地址1</a><br><a href="https://shadowsocks.com/client.html" target="_blank" rel="external">shadowsocks下载地址2</a><br>windows10尽量使用2.3版本，否则可能出现500或者502错误<br><a href="http://pan.baidu.com/s/1hqIk4mS" target="_blank" rel="external">http://pan.baidu.com/s/1hqIk4mS</a></p>
+<h3 id="500或者502错误"><a href="#500或者502错误" class="headerlink" title="500或者502错误"></a>500或者502错误</h3><ul>
+<li>使用2.3版本</li>
+<li>或者尝试以下命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4  reset</span><br><span class="line">netsh interface ipv6  reset</span><br><span class="line">netsh winsock reset</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/13/window下搭建eclipse运行MapReduce环境/" itemprop="url">
                   window下搭建eclipse运行MapReduce环境
                 </a>
@@ -922,7 +1060,7 @@ System.exit(job.waitForCompletion(true)?0:1);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -930,7 +1068,7 @@ System.exit(job.waitForCompletion(true)?0:1);
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -939,7 +1077,7 @@ System.exit(job.waitForCompletion(true)?0:1);
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
