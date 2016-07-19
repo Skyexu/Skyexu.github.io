@@ -260,6 +260,130 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/19/VMWare虚拟机：“锁定文件失败的解决方法/" itemprop="url">
+                  VMWare虚拟机：“锁定文件失败的解决方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-19T14:38:06+08:00" content="2016-07-19">
+              2016-07-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机技巧</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/19/VMWare虚拟机：“锁定文件失败的解决方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/19/VMWare虚拟机：“锁定文件失败的解决方法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>如果使用VMWare虚拟机的时候突然系统崩溃蓝屏或者强行关机，有一定几率会导致无法启动，会提示：锁定文件失败，打不开磁盘或快照所依赖的磁盘。</p>
+<blockquote>
+<p>虚拟磁盘(.vmdk)本身有一个磁盘保护机制，为了防止多台虚拟机同时访问同一个虚拟磁盘(.vmdk)带来的数据丢失和性能削减方面的隐患，每次启动虚拟机的时候虚拟机会使用扩展名为.lck（磁盘锁）文件对虚拟磁盘(.vmdk)进行锁定保护。当虚拟机关闭时.lck（磁盘锁）文件自动删除。但是可能由于您非正常关闭虚拟机，这时虚拟机还没来得及删除您系统上的.lck（磁盘锁）文件，所以当下次您启动虚拟机的时候出现了上述错误。</p>
+</blockquote>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>打开你存放虚拟机系统文件的文件夹，注意，是系统文件，不是虚拟机的安装目录。搜索关键字<code>*.lck</code>，删除搜索到的文件即可。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="url">
                   亚马逊EC2搭建Shadowsocks
                 </a>
@@ -1060,7 +1184,7 @@ System.exit(job.waitForCompletion(true)?0:1);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1077,7 +1201,7 @@ System.exit(job.waitForCompletion(true)?0:1);
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
