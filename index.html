@@ -260,6 +260,147 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/26/JVM内存配置/" itemprop="url">
+                  JVM内存配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
+              2016-07-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
+<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
+<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
+<p>非堆内存分配</p>
+<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
+<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
+<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
+<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
+<ul>
+<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
+<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
+<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
+<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
+<li>年轻带堆内存    对象刚创建出来时放在这里</li>
+<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
+<li>持久带堆内存    class文件，元数据等放在这里</li>
+<li>-XX:PermSize=128m    持久带堆的初始大小</li>
+<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
+</ul>
+<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
+<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
+<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/25/Mahout Item-based推荐分布式实现/" itemprop="url">
                   Mahout Item-based推荐的分布式实现
                 </a>
@@ -1029,6 +1170,163 @@
             
               
                 
+                <a class="post-title-link" href="/2016/06/16/HBase集群搭建/" itemprop="url">
+                  HBase集群搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-16T16:26:16+08:00" content="2016-06-16">
+              2016-06-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/16/HBase集群搭建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/16/HBase集群搭建/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
+<h4 id="vim-hbase-env-sh"><a href="#vim-hbase-env-sh" class="headerlink" title="vim hbase-env.sh"></a>vim hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
+//告诉hbase使用外部的zk 
+export HBASE_MANAGES_ZK=false
+</code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
+    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.rootdir&lt;/name&gt;
+            &lt;value&gt;hdfs://ns1/hbase&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;!-- 指定hbase是分布式的 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
+            &lt;value&gt;true&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
+    &lt;property&gt;
+            &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+            &lt;value&gt;itcast04:2181,itcast05:2181,itcast06:2181&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h4 id="vim-regionservers"><a href="#vim-regionservers" class="headerlink" title="vim regionservers"></a>vim regionservers</h4><pre><code>itcast03
+itcast04
+itcast05
+itcast06
+</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间</h2><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
+scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
+</code></pre><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
+    ./zkServer.sh start
+启动hbase集群
+    start-dfs.sh
+启动hbase，在主节点上运行：
+    start-hbase.sh
+</code></pre><h2 id="6-通过浏览器访问hbase管理页面"><a href="#6-通过浏览器访问hbase管理页面" class="headerlink" title="6.通过浏览器访问hbase管理页面"></a>6.通过浏览器访问hbase管理页面</h2><pre><code>192.168.1.201:60010
+</code></pre><h2 id="7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><a href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动" class="headerlink" title="7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动"></a>7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</h2><pre><code>hbase-daemon.sh start master
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/06/16/MapReduce 多文件输入/" itemprop="url">
                   MapReduce 多文件输入
                 </a>
@@ -1222,163 +1520,6 @@ System.exit(job.waitForCompletion(true)?0:1);
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/16/HBase集群搭建/" itemprop="url">
-                  HBase集群搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-16T16:26:16+08:00" content="2016-06-16">
-              2016-06-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/16/HBase集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/16/HBase集群搭建/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
-<h4 id="vim-hbase-env-sh"><a href="#vim-hbase-env-sh" class="headerlink" title="vim hbase-env.sh"></a>vim hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_ZK=false
-</code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
-    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.rootdir&lt;/name&gt;
-            &lt;value&gt;hdfs://ns1/hbase&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定hbase是分布式的 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
-            &lt;value&gt;true&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
-            &lt;value&gt;itcast04:2181,itcast05:2181,itcast06:2181&lt;/value&gt;
-    &lt;/property&gt;
-&lt;/configuration&gt;
-</code></pre><h4 id="vim-regionservers"><a href="#vim-regionservers" class="headerlink" title="vim regionservers"></a>vim regionservers</h4><pre><code>itcast03
-itcast04
-itcast05
-itcast06
-</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间</h2><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
-</code></pre><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
-    ./zkServer.sh start
-启动hbase集群
-    start-dfs.sh
-启动hbase，在主节点上运行：
-    start-hbase.sh
-</code></pre><h2 id="6-通过浏览器访问hbase管理页面"><a href="#6-通过浏览器访问hbase管理页面" class="headerlink" title="6.通过浏览器访问hbase管理页面"></a>6.通过浏览器访问hbase管理页面</h2><pre><code>192.168.1.201:60010
-</code></pre><h2 id="7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><a href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动" class="headerlink" title="7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动"></a>7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</h2><pre><code>hbase-daemon.sh start master
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1420,7 +1561,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1428,7 +1569,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1437,7 +1578,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
