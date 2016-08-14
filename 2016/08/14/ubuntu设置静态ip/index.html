@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="linux网络," />
 
 
 
@@ -96,16 +96,19 @@
 
 
 
-<meta name="description" content="学习总结 思想感悟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="��ǩ">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="找到文件并作如下修改sudo vim /etc/network/interfaces
+12345678910# The primary network interfaceauto eno1iface eno1 inet static        address 192.168.1.111        netmask 255.255.255.0        network 192.168.1.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu设置静态ip">
+<meta property="og:url" content="http://yoursite.com/2016/08/14/ubuntu设置静态ip/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="学习总结 思想感悟">
-<meta property="og:updated_time" content="2016-06-14T08:07:30.841Z">
+<meta property="og:description" content="找到文件并作如下修改sudo vim /etc/network/interfaces
+12345678910# The primary network interfaceauto eno1iface eno1 inet static        address 192.168.1.111        netmask 255.255.255.0        network 192.168.1.">
+<meta property="og:updated_time" content="2016-08-14T16:50:42.332Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="��ǩ">
-<meta name="twitter:description" content="学习总结 思想感悟">
+<meta name="twitter:title" content="ubuntu设置静态ip">
+<meta name="twitter:description" content="找到文件并作如下修改sudo vim /etc/network/interfaces
+12345678910# The primary network interfaceauto eno1iface eno1 inet static        address 192.168.1.111        netmask 255.255.255.0        network 192.168.1.">
 
 
 
@@ -126,15 +129,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/14/ubuntu设置静态ip/"/>
 
-  <title>
-  
-
-  
-    标签 | Skye's Blog
-  
-</title>
+  <title> ubuntu设置静态ip | Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -155,7 +152,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -245,16 +242,157 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <div class="tag-cloud">
-        <div class="tag-cloud-title">
-            目前共计 10 个标签
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ubuntu设置静态ip
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-14T23:58:26+08:00" content="2016-08-14">
+              2016-08-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/14/ubuntu设置静态ip/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/14/ubuntu设置静态ip/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
         </div>
-        <div class="tag-cloud-tags">
-          <a href="/tags/HBase/" style="font-size: 12px; color: #ccc">HBase</a> <a href="/tags/JVM/" style="font-size: 12px; color: #ccc">JVM</a> <a href="/tags/Mahout/" style="font-size: 12px; color: #ccc">Mahout</a> <a href="/tags/MapReduce/" style="font-size: 30px; color: #111">MapReduce</a> <a href="/tags/VMWare/" style="font-size: 12px; color: #ccc">VMWare</a> <a href="/tags/eclipse/" style="font-size: 12px; color: #ccc">eclipse</a> <a href="/tags/linux技巧/" style="font-size: 12px; color: #ccc">linux技巧</a> <a href="/tags/linux网络/" style="font-size: 12px; color: #ccc">linux网络</a> <a href="/tags/推荐系统/" style="font-size: 12px; color: #ccc">推荐系统</a> <a href="/tags/科学上网/" style="font-size: 12px; color: #ccc">科学上网</a>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="找到文件并作如下修改"><a href="#找到文件并作如下修改" class="headerlink" title="找到文件并作如下修改"></a>找到文件并作如下修改</h3><p><code>sudo vim /etc/network/interfaces</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># The primary network interface</span><br><span class="line">auto eno1</span><br><span class="line">iface eno1 inet static</span><br><span class="line">        address 192.168.1.111</span><br><span class="line">        netmask 255.255.255.0</span><br><span class="line">        network 192.168.1.0</span><br><span class="line">        broadcast 192.168.1.255</span><br><span class="line">        gateway 192.168.1.1</span><br><span class="line">        # dns-* options are implemented by the resolvconf package, if installed</span><br><span class="line">        dns-nameservers 202.101.172.35 202.101.172.46</span><br></pre></td></tr></table></figure>
+<h3 id="修改dns解析"><a href="#修改dns解析" class="headerlink" title="修改dns解析"></a>修改dns解析</h3><p>因为以前是dhcp解析，所以会自动分配dns服务器地址</p>
+<p>而一旦设置为静态ip后就没有自动获取到的dns服务器了</p>
+<p>要自己设置一个</p>
+<p><code>sudo vim /etc/resolv.conf</code></p>
+<p>写上一个公网的DNS,以下为浙江杭州电信DNS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)</span><br><span class="line">#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN</span><br><span class="line">nameserver 202.101.172.35</span><br><span class="line">nameserver 202.101.172.46</span><br></pre></td></tr></table></figure>
+<p>（注意：8.8.8.8是谷歌的DNS服务器，但是解析速度慢，还是找到一个国内的dns来用）</p>
+<h3 id="重启网卡"><a href="#重启网卡" class="headerlink" title="重启网卡"></a>重启网卡</h3><p><code>sudo /etc/init.d/networking restart</code></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux网络/" rel="tag">#linux网络</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/26/JVM内存配置/" rel="next" title="JVM内存配置">
+                <i class="fa fa-chevron-left"></i> JVM内存配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/15/ubuntu相关设置/" rel="prev" title="ubuntu相关设置">
+                ubuntu相关设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -265,8 +403,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="tags/index.html"
-           data-title="��ǩ" data-url="http://yoursite.com/tags/index.html">
+      <div class="ds-thread" data-thread-key="2016/08/14/ubuntu设置静态ip/"
+           data-title="ubuntu设置静态ip" data-url="http://yoursite.com/2016/08/14/ubuntu设置静态ip/">
       </div>
     
   </div>
@@ -290,8 +428,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -361,6 +508,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#找到文件并作如下修改"><span class="nav-number">1.</span> <span class="nav-text">找到文件并作如下修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改dns解析"><span class="nav-number">2.</span> <span class="nav-text">修改dns解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启网卡"><span class="nav-number">3.</span> <span class="nav-text">重启网卡</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -464,6 +622,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
