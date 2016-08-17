@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JVM,eclipse," />
+  <meta name="keywords" content="推荐系统," />
 
 
 
@@ -96,21 +96,26 @@
 
 
 
-<meta name="description" content="参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。
-堆(Heap)和非堆(Non-heap)内存按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。">
+<meta name="description" content="下面简单列举几种常用的推荐系统评测指标：
+准确率与召回率（Precision &amp;amp; Recall）准确率和召回率是广泛用于信息检索和统计学分类领域的两个度量值，用来评价结果的质量。其中精度是检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率；召回率是指检索出的相关文档数和文档库中所有的相关文档数的比率，衡量的是检索系统的查全率。
+一般来说，Precision就是检索出来的条目">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM内存配置">
-<meta property="og:url" content="http://yoursite.com/2016/07/26/JVM内存配置/index.html">
+<meta property="og:title" content="推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)">
+<meta property="og:url" content="http://yoursite.com/2016/08/17/推荐系统评测指标/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。
-堆(Heap)和非堆(Non-heap)内存按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。">
-<meta property="og:image" content="http://i.imgur.com/O2JUIKO.png">
-<meta property="og:updated_time" content="2016-07-26T08:03:38.128Z">
+<meta property="og:description" content="下面简单列举几种常用的推荐系统评测指标：
+准确率与召回率（Precision &amp;amp; Recall）准确率和召回率是广泛用于信息检索和统计学分类领域的两个度量值，用来评价结果的质量。其中精度是检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率；召回率是指检索出的相关文档数和文档库中所有的相关文档数的比率，衡量的是检索系统的查全率。
+一般来说，Precision就是检索出来的条目">
+<meta property="og:image" content="http://img.blog.csdn.net/20130808110619562">
+<meta property="og:image" content="http://img.blog.csdn.net/20130808110942546">
+<meta property="og:image" content="http://img.blog.csdn.net/20131207154559265">
+<meta property="og:updated_time" content="2016-08-17T08:27:38.551Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM内存配置">
-<meta name="twitter:description" content="参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。
-堆(Heap)和非堆(Non-heap)内存按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。">
-<meta name="twitter:image" content="http://i.imgur.com/O2JUIKO.png">
+<meta name="twitter:title" content="推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)">
+<meta name="twitter:description" content="下面简单列举几种常用的推荐系统评测指标：
+准确率与召回率（Precision &amp;amp; Recall）准确率和召回率是广泛用于信息检索和统计学分类领域的两个度量值，用来评价结果的质量。其中精度是检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率；召回率是指检索出的相关文档数和文档库中所有的相关文档数的比率，衡量的是检索系统的查全率。
+一般来说，Precision就是检索出来的条目">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20130808110619562">
 
 
 
@@ -131,9 +136,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/07/26/JVM内存配置/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/17/推荐系统评测指标/"/>
 
-  <title> JVM内存配置 | Skye's Blog </title>
+  <title> 推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure) | Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -263,7 +268,7 @@
             
             
               
-                JVM内存配置
+                推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)
               
             
           </h1>
@@ -275,8 +280,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
-              2016-07-26
+            <time itemprop="dateCreated" datetime="2016-08-17T16:26:00+08:00" content="2016-08-17">
+              2016-08-17
             </time>
           </span>
 
@@ -289,8 +294,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
                   </a>
                 </span>
 
@@ -305,8 +310,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
+                <a href="/2016/08/17/推荐系统评测指标/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/推荐系统评测指标/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -329,28 +334,44 @@
       
 
       
-        <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
-<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
-<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
-<p>非堆内存分配</p>
-<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
-<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
-<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
-<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
-<ul>
-<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
-<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
-<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
-<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
-<li>年轻带堆内存    对象刚创建出来时放在这里</li>
-<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
-<li>持久带堆内存    class文件，元数据等放在这里</li>
-<li>-XX:PermSize=128m    持久带堆的初始大小</li>
-<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
-</ul>
-<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
-<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
-<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
+        <p>下面简单列举几种常用的推荐系统评测指标：</p>
+<h3 id="准确率与召回率（Precision-amp-Recall）"><a href="#准确率与召回率（Precision-amp-Recall）" class="headerlink" title="准确率与召回率（Precision &amp; Recall）"></a>准确率与召回率（Precision &amp; Recall）</h3><p><strong>准确率</strong>和<strong>召回率</strong>是广泛用于信息检索和统计学分类领域的两个度量值，用来评价结果的质量。其中精度是检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率；召回率是指检索出的相关文档数和文档库中所有的相关文档数的比率，衡量的是检索系统的查全率。</p>
+<p>一般来说，Precision就是检索出来的条目（比如：文档、网页等）有多少是准确的，Recall就是所有准确的条目有多少被检索出来了。</p>
+<p>正确率、召回率和 F 值是在鱼龙混杂的环境中，选出目标的重要评价指标。不妨看看这些指标的定义先：</p>
+<ol>
+<li><p>正确率 = 提取出的正确信息条数 /  提取出的信息条数     </p>
+</li>
+<li><p>召回率 = 提取出的正确信息条数 /  样本中的信息条数    </p>
+<p>两者取值在0和1之间，数值越接近1，查准率或查全率就越高。   </p>
+</li>
+<li><p>F值  = 正确率 <em> 召回率 </em> 2 / (正确率 + 召回率) （F 值即为正确率和召回率的调和平均值）</p>
+</li>
+</ol>
+<hr>
+<p>不妨举这样一个例子：某池塘有1400条鲤鱼，300只虾，300只鳖。现在以捕鲤鱼为目的。撒一大网，逮着了700条鲤鱼，200只虾，100只鳖。那么，这些指标分别如下：</p>
+<p>正确率 = 700 / (700 + 200 + 100) = 70%</p>
+<p>召回率 = 700 / 1400 = 50%</p>
+<p>F值 = 70% <em> 50% </em> 2 / (70% + 50%) = 58.3%</p>
+<p>不妨看看如果把池子里的所有的鲤鱼、虾和鳖都一网打尽，这些指标又有何变化：</p>
+<p>正确率 = 1400 / (1400 + 300 + 300) = 70%</p>
+<p>召回率 = 1400 / 1400 = 100%</p>
+<p>F值 = 70% <em> 100% </em> 2 / (70% + 100%) = 82.35%        </p>
+<p>由此可见，正确率是评估捕获的成果中目标成果所占得比例；召回率，顾名思义，就是从关注领域中，召回目标类别的比例；而F值，则是综合这二者指标的评估指标，用于综合反映整体的指标。</p>
+<p>当然希望检索结果Precision越高越好，同时Recall也越高越好，但事实上这两者在某些情况下有矛盾的。比如极端情况下，我们只搜索出了一个结果，且是准确的，那么Precision就是100%，但是Recall就很低；而如果我们把所有结果都返回，那么比如Recall是100%，但是Precision就会很低。因此在不同的场合中需要自己判断希望Precision比较高或是Recall比较高。如果是做实验研究，可以绘制Precision-Recall曲线来帮助分析。</p>
+<h3 id="综合评价指标（F-Measure）"><a href="#综合评价指标（F-Measure）" class="headerlink" title="综合评价指标（F-Measure）"></a>综合评价指标（F-Measure）</h3><p>P和R指标有时候会出现的矛盾的情况，这样就需要综合考虑他们，最常见的方法就是F-Measure（又称为F-Score）。</p>
+<p>F-Measure是Precision和Recall加权调和平均：</p>
+<p><img src="http://img.blog.csdn.net/20130808110619562" alt=""></p>
+<p>当参数α=1时，就是最常见的F1，也即</p>
+<p><img src="http://img.blog.csdn.net/20130808110942546" alt=""></p>
+<p>可知F1综合了P和R的结果，当F1较高时则能说明试验方法比较有效。</p>
+<h3 id="E值"><a href="#E值" class="headerlink" title="E值"></a>E值</h3><p>E值表示查准率P和查全率R的加权平均值，当其中一个为0时，E值为1，其计算公式：</p>
+<p><img src="http://img.blog.csdn.net/20131207154559265" alt=""></p>
+<p>b越大，表示查准率的权重越大。</p>
+<h3 id="平均正确率（Average-Precision-AP）"><a href="#平均正确率（Average-Precision-AP）" class="headerlink" title="平均正确率（Average Precision, AP）"></a>平均正确率（Average Precision, AP）</h3><p>平均正确率表示不同查全率的点上的正确率的平均。</p>
+<p>转载自：</p>
+<blockquote>
+<p><a href="http://bookshadow.com/weblog/2014/06/10/precision-recall-f-measure/" target="_blank" rel="external">http://bookshadow.com/weblog/2014/06/10/precision-recall-f-measure/</a></p>
+</blockquote>
 
       
     </div>
@@ -372,9 +393,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JVM/" rel="tag">#JVM</a>
-          
-            <a href="/tags/eclipse/" rel="tag">#eclipse</a>
+            <a href="/tags/推荐系统/" rel="tag">#推荐系统</a>
           
         </div>
       
@@ -383,16 +402,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/25/Mahout Item-based推荐分布式实现/" rel="next" title="Mahout Item-based推荐的分布式实现">
-                <i class="fa fa-chevron-left"></i> Mahout Item-based推荐的分布式实现
+              <a href="/2016/08/16/Ubuntu 16.04 mysql安装配置/" rel="next" title="Ubuntu 16.04 mysql安装配置">
+                <i class="fa fa-chevron-left"></i> Ubuntu 16.04 mysql安装配置
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/14/ubuntu设置静态ip/" rel="prev" title="ubuntu设置静态ip">
-                ubuntu设置静态ip <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/17/Ubuntu16.04安装Oracle11g/" rel="prev" title="Ubuntu16.04安装Oracle11g">
+                Ubuntu16.04安装Oracle11g <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -419,8 +438,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/26/JVM内存配置/"
-           data-title="JVM内存配置" data-url="http://yoursite.com/2016/07/26/JVM内存配置/">
+      <div class="ds-thread" data-thread-key="2016/08/17/推荐系统评测指标/"
+           data-title="推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)" data-url="http://yoursite.com/2016/08/17/推荐系统评测指标/">
       </div>
     
   </div>
@@ -531,7 +550,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆-Heap-和非堆-Non-heap-内存"><span class="nav-number">1.</span> <span class="nav-text">堆(Heap)和非堆(Non-heap)内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆内存分配"><span class="nav-number">2.</span> <span class="nav-text">堆内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM内存限制-最大值"><span class="nav-number">3.</span> <span class="nav-text">JVM内存限制(最大值)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少jvm内存回收引起的eclipse卡的问题"><span class="nav-number">4.</span> <span class="nav-text">减少jvm内存回收引起的eclipse卡的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eclipse运行配置"><span class="nav-number">5.</span> <span class="nav-text">eclipse运行配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准确率与召回率（Precision-amp-Recall）"><span class="nav-number">1.</span> <span class="nav-text">准确率与召回率（Precision & Recall）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综合评价指标（F-Measure）"><span class="nav-number">2.</span> <span class="nav-text">综合评价指标（F-Measure）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E值"><span class="nav-number">3.</span> <span class="nav-text">E值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均正确率（Average-Precision-AP）"><span class="nav-number">4.</span> <span class="nav-text">平均正确率（Average Precision, AP）</span></a></li></ol></div>
             
           </div>
         </section>

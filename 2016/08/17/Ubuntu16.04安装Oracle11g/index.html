@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="oracle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Oracle用户创建1234sudo groupadd oinstallsudo groupadd dbasudo adduser -g oinstall -G dba -s  oraclesudo passwd oracle
+修改/etc/sysctl.conf增加以下内容123456789101112kernel.sem = 250 32000 100 128kernel.shmall = 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu16.04安装Oracle11g">
+<meta property="og:url" content="http://yoursite.com/2016/08/17/Ubuntu16.04安装Oracle11g/index.html">
+<meta property="og:site_name" content="Skye's Blog">
+<meta property="og:description" content="Oracle用户创建1234sudo groupadd oinstallsudo groupadd dbasudo adduser -g oinstall -G dba -s  oraclesudo passwd oracle
+修改/etc/sysctl.conf增加以下内容123456789101112kernel.sem = 250 32000 100 128kernel.shmall = 2">
+<meta property="og:updated_time" content="2016-08-17T15:38:28.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu16.04安装Oracle11g">
+<meta name="twitter:description" content="Oracle用户创建1234sudo groupadd oinstallsudo groupadd dbasudo adduser -g oinstall -G dba -s  oraclesudo passwd oracle
+修改/etc/sysctl.conf增加以下内容123456789101112kernel.sem = 250 32000 100 128kernel.shmall = 2">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/17/Ubuntu16.04安装Oracle11g/"/>
+
+  <title> Ubuntu16.04安装Oracle11g | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ubuntu16.04安装Oracle11g
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T23:36:50+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/17/Ubuntu16.04安装Oracle11g/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/Ubuntu16.04安装Oracle11g/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Oracle用户创建"><a href="#Oracle用户创建" class="headerlink" title="Oracle用户创建"></a>Oracle用户创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd oinstall</span><br><span class="line">sudo groupadd dba</span><br><span class="line">sudo adduser -g oinstall -G dba -s  oracle</span><br><span class="line">sudo passwd oracle</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-sysctl-conf增加以下内容"><a href="#修改-etc-sysctl-conf增加以下内容" class="headerlink" title="修改/etc/sysctl.conf增加以下内容"></a>修改/etc/sysctl.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kernel.sem = 250 32000 100 128</span><br><span class="line">kernel.shmall = 2097152</span><br><span class="line">kernel.shmmni = 4096</span><br><span class="line">kernel.shmmax=1073741824</span><br><span class="line">net.ipv4.ip_local_port_range = 9000  65500</span><br><span class="line">net.core.rmem_default = 262144</span><br><span class="line">net.core.rmem_max = 4194304</span><br><span class="line">net.core.wmem_default = 262144</span><br><span class="line">net.core.wmem_max = 1048576</span><br><span class="line">fs.aio-max-nr = 1048576</span><br><span class="line">fs.file-max = 6815744</span><br><span class="line">vm.hugetlb_shm_group = 1002</span><br></pre></td></tr></table></figure>
+<h3 id="运行一下命令更新内核参数"><a href="#运行一下命令更新内核参数" class="headerlink" title="运行一下命令更新内核参数"></a>运行一下命令更新内核参数</h3><p><code>sudo sysctl -p</code></p>
+<h3 id="修改-etc-security-limits-conf增加以下内容"><a href="#修改-etc-security-limits-conf增加以下内容" class="headerlink" title="修改/etc/security/limits.conf增加以下内容"></a>修改/etc/security/limits.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">oracle soft nproc  2047</span><br><span class="line">oracle hard nproc  16384</span><br><span class="line">oracle soft nofile 1024</span><br><span class="line">oracle hard nofile 65536</span><br><span class="line">oracle soft stack  10240</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-pam-d-login增加以下内容"><a href="#修改-etc-pam-d-login增加以下内容" class="headerlink" title="修改/etc/pam.d/login增加以下内容"></a>修改/etc/pam.d/login增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session required /lib/security/pam_limits.so</span><br><span class="line">session required pam_limits.so</span><br></pre></td></tr></table></figure>
+<h3 id="欺骗oracle的安装程序"><a href="#欺骗oracle的安装程序" class="headerlink" title="欺骗oracle的安装程序"></a>欺骗oracle的安装程序</h3><p>oracle本身并不支持ubuntu来安装，所以要进行欺骗oracle的安装程序（sudo执行）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/lib64</span><br><span class="line">ln -s /etc /etc/rc.d</span><br><span class="line">ln -s /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib64/</span><br><span class="line">ln -s /usr/bin/awk /bin/awk</span><br><span class="line">ln -s /usr/bin/basename /bin/basename</span><br><span class="line">ln -s /usr/bin/rpm /bin/rpm</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libc_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib64/</span><br><span class="line">vim /etc/redhat-release</span><br><span class="line">echo &apos;Red Hat Linux release 5&apos; &gt; /etc/redhat-release</span><br></pre></td></tr></table></figure></p>
+<h3 id="为Oracle配置环境变量"><a href="#为Oracle配置环境变量" class="headerlink" title="为Oracle配置环境变量"></a>为Oracle配置环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#oracle安装目录，第6步创建的文件夹</span><br><span class="line">export ORACLE_BASE=/home/oracle/oracle11g</span><br><span class="line">#网上说可以随便写</span><br><span class="line">export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1</span><br><span class="line">#数据库的sid</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export ORACLE_UNQNAME=orcl</span><br><span class="line">#默认字符集</span><br><span class="line">export NLS_LANG=.AL32UTF8</span><br><span class="line">#环境变量</span><br><span class="line">export PATH=$&#123;PATH&#125;:$&#123;ORACLE_HOME&#125;/bin/:$ORACLE_HOME/lib64;</span><br></pre></td></tr></table></figure>
+<h3 id="安装oracle"><a href="#安装oracle" class="headerlink" title="安装oracle"></a>安装oracle</h3><p>上面的系统配置完成之后，最好重启一下服务器，<strong>使用oracle用户登陆系统</strong>。</p>
+<ol>
+<li>上传下载好的oracle压缩文件到/home/oracle目录下。</li>
+<li>进入/home/oracle目录，执行# unzip linux.x64_11gR2_database_1of2.zip和# unzip linux.x64_11gR2_database_2of2.zip，解压的文件在/home/oracle/database目录中。</li>
+<li><p>设置/home/oracle/database目录的权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chown oracle:oinstall /home/oracle/database -R</span><br><span class="line"># chmod 775 /home/oracle/database -R</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入/home/oracle/database目录，执行$ ./runInstaller，当检查均通过，会出现oracle安装界面,一路next，有一步可以选择字符，选utf8</p>
+</li>
+</ol>
+<h3 id="安装过程可能遇到的问题"><a href="#安装过程可能遇到的问题" class="headerlink" title="安装过程可能遇到的问题"></a>安装过程可能遇到的问题</h3><ul>
+<li><p>Oracle安装界面乱码解决方法<br>执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exportNLS_LANG=AMERICAN_AMERICA.UTF8</span><br><span class="line">export LC_ALL=C</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Error in invoking target ‘install’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/ctx/lib/ins_ctx.mk’. See ‘/home/dong/tools/oraInventory/logs/installActions2015-01-22_09-39-03AM.log’ for details.</p>
+<p>解决方法：</p>
+<p>从<a href="http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，" target="_blank" rel="external">http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，</a> 然后点击retry ，接着往下执行<br>注:这是网上提供的解决方案，我的系统安装失败，我直接跳过了 </p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘agent nmhs’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk’</p>
+<p>解决方法：</p>
+<p>打开新的终端窗口<br>使用vi命令，打开<code>/home/oracle/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk</code>文件，将$(MK_EMAGENT_NMECTL)修改成$(MK_EMAGENT_NMECTL)-lnnz11 即可，然后点击retry ，接着往下执行</p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘all_no_orcl’ of makefile ‘/home/oracle/oracle11g/product/11.2.0/dbhome_1/rdbms/lib/ins_rdbms.mk’. See ‘/home/dong/tools/Inventory/logs/installActions2016-03-19_02-37-44PM.log’ for details.</p>
+<p>解决办法：</p>
+<p>打开一个新的终端，输入如下四个命令：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/^\(TNSLSNR_LINKLINE.*\$(TNSLSNR_OFILES)\) \(\$(LINKTTLIBS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/network/lib/env_network.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(ORACLE_LINKLINE.*\$(ORACLE_LINKER)\) \(\$(PL_FLAGS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/rdbms/lib/env_rdbms.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\$LD \$LD_RUNTIME\) \(\$LD_OPT\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/bin/genorasdksh</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\s*\)\(\$(OCRLIBS_DEFAULT)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/srvm/lib/ins_srvm.mk</span><br></pre></td></tr></table></figure>
+<p>然后在图形界面点击‘Retry’就能继续安装了。</p>
+<h3 id="然后按照安装程序提示最后执行两个脚本"><a href="#然后按照安装程序提示最后执行两个脚本" class="headerlink" title="然后按照安装程序提示最后执行两个脚本"></a>然后按照安装程序提示最后执行两个脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo  /home/oracle/Inventory/orainstRoot.sh </span><br><span class="line">sudo /home/oracle/oracle11g/product/11.2.0/dbhome_1/root.sh</span><br></pre></td></tr></table></figure>
+<h3 id="创建监听，执行-netca启动配置界面"><a href="#创建监听，执行-netca启动配置界面" class="headerlink" title="创建监听，执行$ netca启动配置界面"></a>创建监听，执行<code>$ netca</code>启动配置界面</h3><p>参考</p>
+<blockquote>
+<p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">http://www.jianshu.com/p/9b2f601c275d</a></p>
+</blockquote>
+<p>完成之后，执行命令$ lsnrctl start启动监听服务。</p>
+<h3 id="创建数据库实例，执行-dbca启动配置界面"><a href="#创建数据库实例，执行-dbca启动配置界面" class="headerlink" title="创建数据库实例，执行$ dbca启动配置界面"></a>创建数据库实例，执行$ dbca启动配置界面</h3><h3 id="最后验证是否安装成功，浏览器访问"><a href="#最后验证是否安装成功，浏览器访问" class="headerlink" title="最后验证是否安装成功，浏览器访问"></a>最后验证是否安装成功，浏览器访问</h3><p><a href="https://192.168.1.114:1158/em" target="_blank" rel="external">https://192.168.1.114:1158/em</a></p>
+<p>参考文章</p>
+<blockquote>
+<p><a href="CentOS6.7安装Oracle 11g2R傻瓜图文教程">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/oracle/" rel="tag">#oracle</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/17/推荐系统评测指标/" rel="next" title="推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)">
+                <i class="fa fa-chevron-left"></i> 推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/17/Ubuntu16.04安装Oracle11g/"
+           data-title="Ubuntu16.04安装Oracle11g" data-url="http://yoursite.com/2016/08/17/Ubuntu16.04安装Oracle11g/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle用户创建"><span class="nav-number">1.</span> <span class="nav-text">Oracle用户创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-etc-sysctl-conf增加以下内容"><span class="nav-number">2.</span> <span class="nav-text">修改/etc/sysctl.conf增加以下内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行一下命令更新内核参数"><span class="nav-number">3.</span> <span class="nav-text">运行一下命令更新内核参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-etc-security-limits-conf增加以下内容"><span class="nav-number">4.</span> <span class="nav-text">修改/etc/security/limits.conf增加以下内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-etc-pam-d-login增加以下内容"><span class="nav-number">5.</span> <span class="nav-text">修改/etc/pam.d/login增加以下内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#欺骗oracle的安装程序"><span class="nav-number">6.</span> <span class="nav-text">欺骗oracle的安装程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为Oracle配置环境变量"><span class="nav-number">7.</span> <span class="nav-text">为Oracle配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装oracle"><span class="nav-number">8.</span> <span class="nav-text">安装oracle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装过程可能遇到的问题"><span class="nav-number">9.</span> <span class="nav-text">安装过程可能遇到的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#然后按照安装程序提示最后执行两个脚本"><span class="nav-number">10.</span> <span class="nav-text">然后按照安装程序提示最后执行两个脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建监听，执行-netca启动配置界面"><span class="nav-number">11.</span> <span class="nav-text">创建监听，执行$ netca启动配置界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据库实例，执行-dbca启动配置界面"><span class="nav-number">12.</span> <span class="nav-text">创建数据库实例，执行$ dbca启动配置界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后验证是否安装成功，浏览器访问"><span class="nav-number">13.</span> <span class="nav-text">最后验证是否安装成功，浏览器访问</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

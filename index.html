@@ -260,6 +260,333 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/17/Ubuntu16.04安装Oracle11g/" itemprop="url">
+                  Ubuntu16.04安装Oracle11g
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T23:36:50+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/17/Ubuntu16.04安装Oracle11g/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/Ubuntu16.04安装Oracle11g/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Oracle用户创建"><a href="#Oracle用户创建" class="headerlink" title="Oracle用户创建"></a>Oracle用户创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd oinstall</span><br><span class="line">sudo groupadd dba</span><br><span class="line">sudo adduser -g oinstall -G dba -s  oracle</span><br><span class="line">sudo passwd oracle</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-sysctl-conf增加以下内容"><a href="#修改-etc-sysctl-conf增加以下内容" class="headerlink" title="修改/etc/sysctl.conf增加以下内容"></a>修改/etc/sysctl.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kernel.sem = 250 32000 100 128</span><br><span class="line">kernel.shmall = 2097152</span><br><span class="line">kernel.shmmni = 4096</span><br><span class="line">kernel.shmmax=1073741824</span><br><span class="line">net.ipv4.ip_local_port_range = 9000  65500</span><br><span class="line">net.core.rmem_default = 262144</span><br><span class="line">net.core.rmem_max = 4194304</span><br><span class="line">net.core.wmem_default = 262144</span><br><span class="line">net.core.wmem_max = 1048576</span><br><span class="line">fs.aio-max-nr = 1048576</span><br><span class="line">fs.file-max = 6815744</span><br><span class="line">vm.hugetlb_shm_group = 1002</span><br></pre></td></tr></table></figure>
+<h3 id="运行一下命令更新内核参数"><a href="#运行一下命令更新内核参数" class="headerlink" title="运行一下命令更新内核参数"></a>运行一下命令更新内核参数</h3><p><code>sudo sysctl -p</code></p>
+<h3 id="修改-etc-security-limits-conf增加以下内容"><a href="#修改-etc-security-limits-conf增加以下内容" class="headerlink" title="修改/etc/security/limits.conf增加以下内容"></a>修改/etc/security/limits.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">oracle soft nproc  2047</span><br><span class="line">oracle hard nproc  16384</span><br><span class="line">oracle soft nofile 1024</span><br><span class="line">oracle hard nofile 65536</span><br><span class="line">oracle soft stack  10240</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-pam-d-login增加以下内容"><a href="#修改-etc-pam-d-login增加以下内容" class="headerlink" title="修改/etc/pam.d/login增加以下内容"></a>修改/etc/pam.d/login增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session required /lib/security/pam_limits.so</span><br><span class="line">session required pam_limits.so</span><br></pre></td></tr></table></figure>
+<h3 id="欺骗oracle的安装程序"><a href="#欺骗oracle的安装程序" class="headerlink" title="欺骗oracle的安装程序"></a>欺骗oracle的安装程序</h3><p>oracle本身并不支持ubuntu来安装，所以要进行欺骗oracle的安装程序（sudo执行）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/lib64</span><br><span class="line">ln -s /etc /etc/rc.d</span><br><span class="line">ln -s /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib64/</span><br><span class="line">ln -s /usr/bin/awk /bin/awk</span><br><span class="line">ln -s /usr/bin/basename /bin/basename</span><br><span class="line">ln -s /usr/bin/rpm /bin/rpm</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libc_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib64/</span><br><span class="line">vim /etc/redhat-release</span><br><span class="line">echo &apos;Red Hat Linux release 5&apos; &gt; /etc/redhat-release</span><br></pre></td></tr></table></figure></p>
+<h3 id="为Oracle配置环境变量"><a href="#为Oracle配置环境变量" class="headerlink" title="为Oracle配置环境变量"></a>为Oracle配置环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#oracle安装目录，第6步创建的文件夹</span><br><span class="line">export ORACLE_BASE=/home/oracle/oracle11g</span><br><span class="line">#网上说可以随便写</span><br><span class="line">export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1</span><br><span class="line">#数据库的sid</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export ORACLE_UNQNAME=orcl</span><br><span class="line">#默认字符集</span><br><span class="line">export NLS_LANG=.AL32UTF8</span><br><span class="line">#环境变量</span><br><span class="line">export PATH=$&#123;PATH&#125;:$&#123;ORACLE_HOME&#125;/bin/:$ORACLE_HOME/lib64;</span><br></pre></td></tr></table></figure>
+<h3 id="安装oracle"><a href="#安装oracle" class="headerlink" title="安装oracle"></a>安装oracle</h3><p>上面的系统配置完成之后，最好重启一下服务器，<strong>使用oracle用户登陆系统</strong>。</p>
+<ol>
+<li>上传下载好的oracle压缩文件到/home/oracle目录下。</li>
+<li>进入/home/oracle目录，执行# unzip linux.x64_11gR2_database_1of2.zip和# unzip linux.x64_11gR2_database_2of2.zip，解压的文件在/home/oracle/database目录中。</li>
+<li><p>设置/home/oracle/database目录的权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chown oracle:oinstall /home/oracle/database -R</span><br><span class="line"># chmod 775 /home/oracle/database -R</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入/home/oracle/database目录，执行$ ./runInstaller，当检查均通过，会出现oracle安装界面,一路next，有一步可以选择字符，选utf8</p>
+</li>
+</ol>
+<h3 id="安装过程可能遇到的问题"><a href="#安装过程可能遇到的问题" class="headerlink" title="安装过程可能遇到的问题"></a>安装过程可能遇到的问题</h3><ul>
+<li><p>Oracle安装界面乱码解决方法<br>执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exportNLS_LANG=AMERICAN_AMERICA.UTF8</span><br><span class="line">export LC_ALL=C</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Error in invoking target ‘install’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/ctx/lib/ins_ctx.mk’. See ‘/home/dong/tools/oraInventory/logs/installActions2015-01-22_09-39-03AM.log’ for details.</p>
+<p>解决方法：</p>
+<p>从<a href="http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，" target="_blank" rel="external">http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，</a> 然后点击retry ，接着往下执行<br>注:这是网上提供的解决方案，我的系统安装失败，我直接跳过了 </p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘agent nmhs’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk’</p>
+<p>解决方法：</p>
+<p>打开新的终端窗口<br>使用vi命令，打开<code>/home/oracle/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk</code>文件，将$(MK_EMAGENT_NMECTL)修改成$(MK_EMAGENT_NMECTL)-lnnz11 即可，然后点击retry ，接着往下执行</p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘all_no_orcl’ of makefile ‘/home/oracle/oracle11g/product/11.2.0/dbhome_1/rdbms/lib/ins_rdbms.mk’. See ‘/home/dong/tools/Inventory/logs/installActions2016-03-19_02-37-44PM.log’ for details.</p>
+<p>解决办法：</p>
+<p>打开一个新的终端，输入如下四个命令：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/^\(TNSLSNR_LINKLINE.*\$(TNSLSNR_OFILES)\) \(\$(LINKTTLIBS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/network/lib/env_network.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(ORACLE_LINKLINE.*\$(ORACLE_LINKER)\) \(\$(PL_FLAGS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/rdbms/lib/env_rdbms.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\$LD \$LD_RUNTIME\) \(\$LD_OPT\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/bin/genorasdksh</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\s*\)\(\$(OCRLIBS_DEFAULT)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/srvm/lib/ins_srvm.mk</span><br></pre></td></tr></table></figure>
+<p>然后在图形界面点击‘Retry’就能继续安装了。</p>
+<h3 id="然后按照安装程序提示最后执行两个脚本"><a href="#然后按照安装程序提示最后执行两个脚本" class="headerlink" title="然后按照安装程序提示最后执行两个脚本"></a>然后按照安装程序提示最后执行两个脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo  /home/oracle/Inventory/orainstRoot.sh </span><br><span class="line">sudo /home/oracle/oracle11g/product/11.2.0/dbhome_1/root.sh</span><br></pre></td></tr></table></figure>
+<h3 id="创建监听，执行-netca启动配置界面"><a href="#创建监听，执行-netca启动配置界面" class="headerlink" title="创建监听，执行$ netca启动配置界面"></a>创建监听，执行<code>$ netca</code>启动配置界面</h3><p>参考</p>
+<blockquote>
+<p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">http://www.jianshu.com/p/9b2f601c275d</a></p>
+</blockquote>
+<p>完成之后，执行命令$ lsnrctl start启动监听服务。</p>
+<h3 id="创建数据库实例，执行-dbca启动配置界面"><a href="#创建数据库实例，执行-dbca启动配置界面" class="headerlink" title="创建数据库实例，执行$ dbca启动配置界面"></a>创建数据库实例，执行$ dbca启动配置界面</h3><h3 id="最后验证是否安装成功，浏览器访问"><a href="#最后验证是否安装成功，浏览器访问" class="headerlink" title="最后验证是否安装成功，浏览器访问"></a>最后验证是否安装成功，浏览器访问</h3><p><a href="https://192.168.1.114:1158/em" target="_blank" rel="external">https://192.168.1.114:1158/em</a></p>
+<p>参考文章</p>
+<blockquote>
+<p><a href="CentOS6.7安装Oracle 11g2R傻瓜图文教程">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/17/推荐系统评测指标/" itemprop="url">
+                  推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T16:26:00+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/17/推荐系统评测指标/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/推荐系统评测指标/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>下面简单列举几种常用的推荐系统评测指标：</p>
+<h3 id="准确率与召回率（Precision-amp-Recall）"><a href="#准确率与召回率（Precision-amp-Recall）" class="headerlink" title="准确率与召回率（Precision &amp; Recall）"></a>准确率与召回率（Precision &amp; Recall）</h3><p><strong>准确率</strong>和<strong>召回率</strong>是广泛用于信息检索和统计学分类领域的两个度量值，用来评价结果的质量。其中精度是检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率；召回率是指检索出的相关文档数和文档库中所有的相关文档数的比率，衡量的是检索系统的查全率。</p>
+<p>一般来说，Precision就是检索出来的条目（比如：文档、网页等）有多少是准确的，Recall就是所有准确的条目有多少被检索出来了。</p>
+<p>正确率、召回率和 F 值是在鱼龙混杂的环境中，选出目标的重要评价指标。不妨看看这些指标的定义先：</p>
+<ol>
+<li><p>正确率 = 提取出的正确信息条数 /  提取出的信息条数     </p>
+</li>
+<li><p>召回率 = 提取出的正确信息条数 /  样本中的信息条数    </p>
+<p>两者取值在0和1之间，数值越接近1，查准率或查全率就越高。   </p>
+</li>
+<li><p>F值  = 正确率 <em> 召回率 </em> 2 / (正确率 + 召回率) （F 值即为正确率和召回率的调和平均值）</p>
+</li>
+</ol>
+<hr>
+<p>不妨举这样一个例子：某池塘有1400条鲤鱼，300只虾，300只鳖。现在以捕鲤鱼为目的。撒一大网，逮着了700条鲤鱼，200只虾，100只鳖。那么，这些指标分别如下：</p>
+<p>正确率 = 700 / (700 + 200 + 100) = 70%</p>
+<p>召回率 = 700 / 1400 = 50%</p>
+<p>F值 = 70% <em> 50% </em> 2 / (70% + 50%) = 58.3%</p>
+<p>不妨看看如果把池子里的所有的鲤鱼、虾和鳖都一网打尽，这些指标又有何变化：</p>
+<p>正确率 = 1400 / (1400 + 300 + 300) = 70%</p>
+<p>召回率 = 1400 / 1400 = 100%</p>
+<p>F值 = 70% <em> 100% </em> 2 / (70% + 100%) = 82.35%        </p>
+<p>由此可见，正确率是评估捕获的成果中目标成果所占得比例；召回率，顾名思义，就是从关注领域中，召回目标类别的比例；而F值，则是综合这二者指标的评估指标，用于综合反映整体的指标。</p>
+<p>当然希望检索结果Precision越高越好，同时Recall也越高越好，但事实上这两者在某些情况下有矛盾的。比如极端情况下，我们只搜索出了一个结果，且是准确的，那么Precision就是100%，但是Recall就很低；而如果我们把所有结果都返回，那么比如Recall是100%，但是Precision就会很低。因此在不同的场合中需要自己判断希望Precision比较高或是Recall比较高。如果是做实验研究，可以绘制Precision-Recall曲线来帮助分析。</p>
+<h3 id="综合评价指标（F-Measure）"><a href="#综合评价指标（F-Measure）" class="headerlink" title="综合评价指标（F-Measure）"></a>综合评价指标（F-Measure）</h3><p>P和R指标有时候会出现的矛盾的情况，这样就需要综合考虑他们，最常见的方法就是F-Measure（又称为F-Score）。</p>
+<p>F-Measure是Precision和Recall加权调和平均：</p>
+<p><img src="http://img.blog.csdn.net/20130808110619562" alt=""></p>
+<p>当参数α=1时，就是最常见的F1，也即</p>
+<p><img src="http://img.blog.csdn.net/20130808110942546" alt=""></p>
+<p>可知F1综合了P和R的结果，当F1较高时则能说明试验方法比较有效。</p>
+<h3 id="E值"><a href="#E值" class="headerlink" title="E值"></a>E值</h3><p>E值表示查准率P和查全率R的加权平均值，当其中一个为0时，E值为1，其计算公式：</p>
+<p><img src="http://img.blog.csdn.net/20131207154559265" alt=""></p>
+<p>b越大，表示查准率的权重越大。</p>
+<h3 id="平均正确率（Average-Precision-AP）"><a href="#平均正确率（Average-Precision-AP）" class="headerlink" title="平均正确率（Average Precision, AP）"></a>平均正确率（Average Precision, AP）</h3><p>平均正确率表示不同查全率的点上的正确率的平均。</p>
+<p>转载自：</p>
+<blockquote>
+<p><a href="http://bookshadow.com/weblog/2014/06/10/precision-recall-f-measure/" target="_blank" rel="external">http://bookshadow.com/weblog/2014/06/10/precision-recall-f-measure/</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/16/Ubuntu 16.04 mysql安装配置/" itemprop="url">
                   Ubuntu 16.04 mysql安装配置
                 </a>
@@ -1422,290 +1749,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="url">
-                  亚马逊EC2搭建Shadowsocks
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-19T11:26:26+08:00" content="2016-07-19">
-              2016-07-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机技巧</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/19/亚马逊EC2搭建Shadowsocks/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在网上寻找优秀的科学上网方式中发现，自己搭建Shadowscoks是非常不错的方式，并且AWS有一年的免费使用期限，到期后再买别的VPS就行了。<br><a href="https://segmentfault.com/a/1190000003101075" target="_blank" rel="external">https://segmentfault.com/a/1190000003101075</a><br>上面连接的教程从注册申请AWS到搭建服务已经非常详细，自己再做一些补充。</p>
-<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><p>在EC2上创建好Linux服务器后（本人为Ubuntu）需要对其安装环境<br>参考官方文档<a href="http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/putty.html" target="_blank" rel="external">使用 PuTTY 从 Windows 连接到 Linux 实例</a>连接服务器</p>
-<h3 id="安装shadowsocks依赖"><a href="#安装shadowsocks依赖" class="headerlink" title="安装shadowsocks依赖"></a>安装shadowsocks依赖</h3><ol>
-<li><code>sudo -s // 获取超级管理员权限</code></li>
-<li><code>apt-get update // 更新apt-get</code></li>
-<li><code>apt-get install python-pip // 安装python包管理工具pip</code></li>
-<li><code>pip install shadowsocks // 安装shadowsocks</code></li>
-</ol>
-<h3 id="配置shadowsocks"><a href="#配置shadowsocks" class="headerlink" title="配置shadowsocks"></a>配置shadowsocks</h3><p><code>vim /etc/shadowsocks.json</code></p>
-<p>单一端口配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0  填0.0.0.0即可</span><br><span class="line">&quot;server_port&quot;:8388, #server端监听的端口，需要在EC2实例中开放此端口</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;password&quot;:&quot;password&quot;, #密码</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果想要把VPN分享给其它人而不泄露自己的密码，也可以在配置文件中设置多端口+多密码的模式，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;port_password&quot;:</span><br><span class="line">&#123;</span><br><span class="line">&quot;8088”: “password8088”,</span><br><span class="line">&quot;8089”: &quot;password8089”</span><br><span class="line">&#125;</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="配置完成后启动Shawdowsocks"><a href="#配置完成后启动Shawdowsocks" class="headerlink" title="配置完成后启动Shawdowsocks"></a>配置完成后启动Shawdowsocks</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动：ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line">停止：ssserver -c /etc/shadowsocks.json -d stop</span><br><span class="line">重启：ssserver -c /etc/shadowsocks.json -d restart</span><br><span class="line">查看状态：ssserver -c /etc/shadowsocks.json -d status</span><br></pre></td></tr></table></figure>
-<h3 id="关闭服务器防火墙"><a href="#关闭服务器防火墙" class="headerlink" title="关闭服务器防火墙"></a>关闭服务器防火墙</h3><p><code>sudo ufw disable</code></p>
-<h3 id="开启AWS入站端口"><a href="#开启AWS入站端口" class="headerlink" title="开启AWS入站端口"></a>开启AWS入站端口</h3><p>配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务。<br>在EC2网页中编辑入站规则将配置文件中的端口号（如8388）加入入站规则。<br>服务器端配置完毕。</p>
-<h2 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h2><p><a href="https://www.gaotizi.com/knowledgebase/2/shadowsocks.html" target="_blank" rel="external">shadowsocks下载地址1</a><br><a href="https://shadowsocks.com/client.html" target="_blank" rel="external">shadowsocks下载地址2</a><br>windows10尽量使用2.3版本，否则可能出现500或者502错误<br><a href="http://pan.baidu.com/s/1hqIk4mS" target="_blank" rel="external">http://pan.baidu.com/s/1hqIk4mS</a></p>
-<h3 id="500或者502错误"><a href="#500或者502错误" class="headerlink" title="500或者502错误"></a>500或者502错误</h3><ul>
-<li>使用2.3版本</li>
-<li>或者尝试以下命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4  reset</span><br><span class="line">netsh interface ipv6  reset</span><br><span class="line">netsh winsock reset</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/13/window下搭建eclipse运行MapReduce环境/" itemprop="url">
-                  window下搭建eclipse运行MapReduce环境
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-13T09:47:21+08:00" content="2016-07-13">
-              2016-07-13
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/13/window下搭建eclipse运行MapReduce环境/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/13/window下搭建eclipse运行MapReduce环境/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="系统环境及所需文件"><a href="#系统环境及所需文件" class="headerlink" title="系统环境及所需文件"></a>系统环境及所需文件</h2><ul>
-<li>eclipse-jee-mars-2</li>
-<li>hadoop2.7.2</li>
-<li><a href="https://github.com/winghc/hadoop2x-eclipse-plugin" target="_blank" rel="external">hadoop-eclipse-plugin</a></li>
-<li><a href="http://download.csdn.net/download/chenxf10/9564165" target="_blank" rel="external">hadoop.dll &amp; winutils.exe</a></li>
-</ul>
-<h2 id="修改Master节点的hdfs-site-xml"><a href="#修改Master节点的hdfs-site-xml" class="headerlink" title="修改Master节点的hdfs-site.xml"></a>修改Master节点的hdfs-site.xml</h2><pre><code>&lt;property&gt;      
-    &lt;name&gt;dfs.permissions&lt;/name&gt;      
-    &lt;value&gt;false&lt;/value&gt;  
-&lt;/property&gt; 
-</code></pre><p>旨在取消权限检查</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt; </span><br><span class="line">	&lt;name&gt;dfs.web.ugi&lt;/name&gt; </span><br><span class="line">	&lt;value&gt;Skye,supergroup&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="配置Hadoop插件"><a href="#配置Hadoop插件" class="headerlink" title="配置Hadoop插件"></a>配置Hadoop插件</h2><ol>
-<li>windows下载hadoop-2.7.2解压到某目录下，如：E:\hadoop\hadoop-2.7.2</li>
-<li>下载hadoop-eclipse-plugin插件hadoop-eclipse-plugin，将release目录下的hadoop-eclipse-plugin-2.6.0.jar拷贝到eclipse/plugins，重启eclipse。</li>
-<li>插件配置windows-&gt;show view-&gt;other 显示mapreduce视图</li>
-<li>window-&gt;preferences-&gt;hadoop map/reduce 指定windows上的hadoop根目录（即：E:\hadoop\hadoop-2.7.2）</li>
-<li>在Map/Reduce Locations 面板中，点击小象图标定义hadoop<br><img src="http://i.imgur.com/61yzGm9.png" alt=""><br>解释：<br>MapReduce Master<br>Host：虚拟机hadoop master对应ip<br>Port：hdfs-site.xml中dfs.datanode.ipc.address指定的的端口号。此处填9001<br>DFS Master中Port：core-site.xml中fs.defaultFS指定的端口。应填9000<br>User name：linux中运行hadoop的用户。 </li>
-</ol>
-<h2 id="配置完毕查看结果"><a href="#配置完毕查看结果" class="headerlink" title="配置完毕查看结果"></a>配置完毕查看结果</h2><p><img src="http://i.imgur.com/zVOXsbw.png" alt=""></p>
-<h2 id="windows下运行环境配置"><a href="#windows下运行环境配置" class="headerlink" title="windows下运行环境配置"></a>windows下运行环境配置</h2><ol>
-<li>在系统环境变量中增加HADOOP_HOME，并在Path中加入%HADOOP_HOME%\bin</li>
-<li>将下载下来的hadoop.dll,winutils.exe拷贝到HADOOP_HOME/bin目录下</li>
-</ol>
-<h2 id="创建-MapReduce工程并运行"><a href="#创建-MapReduce工程并运行" class="headerlink" title="创建 MapReduce工程并运行"></a>创建 MapReduce工程并运行</h2><p>需要拷贝 服务器hadoop中的log4j.properties文件到工程的src目录</p>
-<p><code>run on hadoop</code></p>
-<p>运行时报如下错误，弄了好长一段时间，发现原因是服务器通过内网ip访问，外网无法解析。用虚拟机连接成功.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">16/07/13 10:42:38 INFO util.ProcfsBasedProcessTree: ProcfsBasedProcessTree currently is supported only on Linux.</span><br><span class="line">16/07/13 10:42:39 INFO mapreduce.Job: Job job_local510776960_0001 running in uber mode : false</span><br><span class="line">16/07/13 10:42:39 INFO mapreduce.Job:  map 0% reduce 0%</span><br><span class="line">16/07/13 10:42:39 INFO mapred.Task:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@3bfe5dd7</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: Processing split: hdfs://Master:9000/test/test3.txt:0+259</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: soft limit at 83886080</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: kvstart = 26214396; length = 6553600</span><br><span class="line">16/07/13 10:42:39 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer</span><br><span class="line">16/07/13 10:43:00 WARN hdfs.BlockReaderFactory: I/O error constructing remote block reader.</span><br><span class="line">java.net.ConnectException: Connection timed out: no further information</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.finishConnect(Unknown Source)</span><br><span class="line">	at org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:206)</span><br><span class="line">	at org.apache.hadoop.net.NetUtils.connect(NetUtils.java:531)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSClient.newConnectedPeer(DFSClient.java:3436)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.nextTcpPeer(BlockReaderFactory.java:777)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.getRemoteBlockReaderFromTcp(BlockReaderFactory.java:694)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.build(BlockReaderFactory.java:355)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:656)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:882)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:934)</span><br><span class="line">	at java.io.DataInputStream.read(Unknown Source)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.fillBuffer(UncompressedSplitLineReader.java:59)</span><br><span class="line">	at org.apache.hadoop.util.LineReader.readDefaultLine(LineReader.java:216)</span><br><span class="line">	at org.apache.hadoop.util.LineReader.readLine(LineReader.java:174)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.readLine(UncompressedSplitLineReader.java:91)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.LineRecordReader.skipUtfByteOrderMark(LineRecordReader.java:144)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.LineRecordReader.nextKeyValue(LineRecordReader.java:184)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask$NewTrackingRecordReader.nextKeyValue(MapTask.java:556)</span><br><span class="line">	at org.apache.hadoop.mapreduce.task.MapContextImpl.nextKeyValue(MapContextImpl.java:80)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.nextKeyValue(WrappedMapper.java:91)</span><br><span class="line">	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:145)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:787)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</span><br><span class="line">	at org.apache.hadoop.mapred.LocalJobRunner$Job$MapTaskRunnable.run(LocalJobRunner.java:243)</span><br><span class="line">	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)</span><br><span class="line">	at java.util.concurrent.FutureTask.run(Unknown Source)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</span><br><span class="line">	at java.lang.Thread.run(Unknown Source)</span><br><span class="line">16/07/13 10:43:00 WARN hdfs.DFSClient: Failed to connect to /10.0.0.14:50010 for block, add to deadNodes and continue. java.net.ConnectException: Connection timed out: no further information</span><br><span class="line">java.net.ConnectException: Connection timed out: no further information</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.finishConnect(Unknown Source)</span><br><span class="line">	at org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:206)</span><br><span class="line">	at org.apache.hadoop.net.NetUtils.connect(NetUtils.java:531)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSClient.newConnectedPeer(DFSClient.java:3436)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.nextTcpPeer(BlockReaderFactory.java:777)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.getRemoteBlockReaderFromTcp(BlockReaderFactory.java:694)</span><br><span class="line">	at org.apache.hadoop.hdfs.BlockReaderFactory.build(BlockReaderFactory.java:355)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:656)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:882)</span><br><span class="line">	at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:934)</span><br><span class="line">	at java.io.DataInputStream.read(Unknown Source)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.fillBuffer(UncompressedSplitLineReader.java:59)</span><br><span class="line">	at org.apache.hadoop.util.LineReader.readDefaultLine(LineReader.java:216)</span><br><span class="line">	at org.apache.hadoop.util.LineReader.readLine(LineReader.java:174)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.readLine(UncompressedSplitLineReader.java:91)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.LineRecordReader.skipUtfByteOrderMark(LineRecordReader.java:144)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.input.LineRecordReader.nextKeyValue(LineRecordReader.java:184)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask$NewTrackingRecordReader.nextKeyValue(MapTask.java:556)</span><br><span class="line">	at org.apache.hadoop.mapreduce.task.MapContextImpl.nextKeyValue(MapContextImpl.java:80)</span><br><span class="line">	at org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.nextKeyValue(WrappedMapper.java:91)</span><br><span class="line">	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:145)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:787)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</span><br><span class="line">	at org.apache.hadoop.mapred.LocalJobRunner$Job$MapTaskRunnable.run(LocalJobRunner.java:243)</span><br><span class="line">	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)</span><br><span class="line">	at java.util.concurrent.FutureTask.run(Unknown Source)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</span><br><span class="line">	at java.lang.Thread.run(Unknown Source)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1751,7 +1794,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1759,7 +1802,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1768,7 +1811,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
