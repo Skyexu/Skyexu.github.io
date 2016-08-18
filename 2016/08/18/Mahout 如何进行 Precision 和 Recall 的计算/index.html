@@ -96,16 +96,16 @@
 
 
 
-<meta name="description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标 最大击中集，然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训 练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。 如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Prec">
+<meta name="description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mahout 如何进行 Precision 和 Recall 的计算">
 <meta property="og:url" content="http://yoursite.com/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标 最大击中集，然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训 练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。 如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Prec">
-<meta property="og:updated_time" content="2016-08-18T09:34:47.962Z">
+<meta property="og:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
+<meta property="og:updated_time" content="2016-08-18T09:39:36.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mahout 如何进行 Precision 和 Recall 的计算">
-<meta name="twitter:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标 最大击中集，然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训 练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。 如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Prec">
+<meta name="twitter:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
 
 
 
@@ -325,7 +325,7 @@
 
       
         <blockquote>
-<p>当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标 最大击中集，然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训 练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。 如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Precision 和 Recall 值。然后，Precision 和 Recall 的平均值作为模型的 Precision 和 Recall 值。</p>
+<p>当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Precision 和 Recall 值。然后，Precision 和 Recall 的平均值作为模型的 Precision 和 Recall 值。</p>
 </blockquote>
 <p>RecommenderIRStatsEvaluator是一个接口，用于得到推荐系统的准确率，召回率等统计指标。<br>它定义的函数如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public IRStatistics evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, IDRescorer rescorer, int at, double relevanceThreshold, doubleevaluationPercentage) </span><br><span class="line">/**</span><br><span class="line">   * @param recommenderBuilder</span><br><span class="line">   * 它通过public Recommender buildRecommender(DataModel model)定义推荐系统创建的方式；       </span><br><span class="line"></span><br><span class="line">   * @param dataModelBuilder</span><br><span class="line">   * 数据模型创建的方式，如果已经创建好了数据模型，一般这个参数可以为null</span><br><span class="line"></span><br><span class="line">   * @param dataModel</span><br><span class="line">   * 推荐系统使用的数据模型</span><br><span class="line">   * </span><br><span class="line">   * @param rescorer</span><br><span class="line">   * 推荐排序的方式，一般情况下可以为null</span><br><span class="line">   * </span><br><span class="line">   * @param at</span><br><span class="line">   * 推荐几个物品（TOPN),，它用来定义计算准确率的时候，一个user可以拥有的相关项items的最大个数，相关项item定义为user对这个item的评价超过了relevanceThreshold的项</span><br><span class="line"></span><br><span class="line">   * @param relevanceThreshold</span><br><span class="line">   * 相关临界值 ,和at一起使用定义一个user的相关项</span><br></pre></td></tr></table></figure></p>
 <h3 id="getRelevantItemsIDs"><a href="#getRelevantItemsIDs" class="headerlink" title="getRelevantItemsIDs"></a>getRelevantItemsIDs</h3><p>按照用户对物品的打分从大到小排序，将大于设定的的relevanceTheshold的值存入relevantItemIDs中，relevantItemIDs最大值为at<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * getRelevantItemsIDs的实现，</span><br><span class="line"> *1.首先得到userID的Preferences </span><br><span class="line"> *2.创建一个FastIDSet用来保存相关项的id，大小为at </span><br><span class="line"> *3.prefs根据值大小排序 </span><br><span class="line"> *4.遍历pref，如果user对这个item的评价prefs.getValue(i)不小于相关阈值，则将这个item的加入相关项，最多取at个满足条件的item</span><br><span class="line"> */</span><br><span class="line">FastIDSet relevantItemIDs = dataSplitter.getRelevantItemsIDs(userID, at, theRelevanceThreshold, dataModel);</span><br></pre></td></tr></table></figure></p>
