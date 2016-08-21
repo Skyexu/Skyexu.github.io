@@ -260,6 +260,447 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/22/Hive安装笔记/" itemprop="url">
+                  Hive1.2.1安装笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T00:47:36+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/22/Hive安装笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/Hive安装笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ubuntu 16.04</span><br><span class="line">4台机器的Hadoop2.7.2集群</span><br><span class="line">Mysql安装在slave2中</span><br><span class="line">hive安装在master上</span><br></pre></td></tr></table></figure>
+<h3 id="下载Hive"><a href="#下载Hive" class="headerlink" title="下载Hive"></a>下载Hive</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://mirrors.cnnic.cn/apache/hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz</span><br><span class="line"># 解压</span><br><span class="line">$ tar -zxvf apache-hive-1.2.1-bin.tar.gz /home/ubuntu/cloud</span><br></pre></td></tr></table></figure>
+<h3 id="配置Hive环境变量"><a href="#配置Hive环境变量" class="headerlink" title="配置Hive环境变量"></a>配置Hive环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /etc/profile</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">export HIVE_HOME=/home/ubuntu/cloud/apache-hive-1.2.1-bin</span><br><span class="line">export PATH=$PATH:$HIVE_HOME/bin</span><br><span class="line"></span><br><span class="line">$source /etc/profile</span><br></pre></td></tr></table></figure>
+<h3 id="在Mysql中创建Hive用户"><a href="#在Mysql中创建Hive用户" class="headerlink" title="在Mysql中创建Hive用户"></a>在Mysql中创建Hive用户</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;CREATE USER &apos;hive&apos; IDENTIFIED BY &apos;hive&apos;;</span><br><span class="line">mysql&gt;GRANT ALL PRIVILEGES ON *.* TO &apos;hive&apos;@&apos;%&apos; IDENTIFIED BY &apos;123&apos; WITH GRANT OPTION;</span><br><span class="line">mysql&gt;flush privileges;</span><br></pre></td></tr></table></figure>
+<h3 id="创建Hive数据库"><a href="#创建Hive数据库" class="headerlink" title="创建Hive数据库"></a>创建Hive数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -uhive -phive</span><br><span class="line">mysql&gt;create database hive;</span><br></pre></td></tr></table></figure>
+<h3 id="配置Hive"><a href="#配置Hive" class="headerlink" title="配置Hive"></a>配置Hive</h3><p>进入Hive的cong目录,找到<code>hive-default.xml.template</code>，cp份为<code>hive-default.xml</code>,另创建<code>hive-site.xml</code>并添加参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ vim hive-site.xml</span><br><span class="line"># 删除configuration标签里的所有内容 添加如下内容</span><br><span class="line"></span><br><span class="line">	&lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;jdbc:mysql://slave2:3306/hive?createDatabaseIfNotExist=true&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;JDBC connect string for a JDBC metastore&lt;/description&gt;    </span><br><span class="line">	&lt;/property&gt;   </span><br><span class="line">	&lt;property&gt; </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt; </span><br><span class="line">        &lt;description&gt;Driver class name for a JDBC metastore&lt;/description&gt;     </span><br><span class="line">	&lt;/property&gt;               </span><br><span class="line"> </span><br><span class="line">	&lt;property&gt; </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hive&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;username to use against metastore database&lt;/description&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;  </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hive&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;password to use against metastore database&lt;/description&gt;  </span><br><span class="line">	&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="下载mysql-connector-java-5-1-32-bin-jar"><a href="#下载mysql-connector-java-5-1-32-bin-jar" class="headerlink" title="下载mysql-connector-java-5.1.32-bin.jar"></a>下载mysql-connector-java-5.1.32-bin.jar</h3><p>这里用5.1.32版本测试不报错，5.1.38会报warn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#将连接jar包拷贝到Hive的lib目录</span><br><span class="line">$ cp mysql-connector-java-5.1.32-bin.jar /home/ubuntu/cloud/apache-hive-1.2.1-bin/lib/</span><br></pre></td></tr></table></figure>
+<h3 id="Hive启动"><a href="#Hive启动" class="headerlink" title="Hive启动"></a>Hive启动</h3><p>要启动metastore服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ hive --service metastore &amp;</span><br><span class="line">$ jps</span><br><span class="line">10288 RunJar  #多了一个进程</span><br><span class="line">9365 NameNode</span><br><span class="line">9670 SecondaryNameNode</span><br><span class="line">11096 Jps</span><br><span class="line">9944 NodeManager</span><br><span class="line">9838 ResourceManager</span><br><span class="line">9471 DataNode</span><br></pre></td></tr></table></figure></p>
+<p>启动hive命令行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@master:~$ hive</span><br><span class="line"></span><br><span class="line">Logging initialized using configuration in jar:file:/home/ubuntu/cloud/apache-hive-1.2.1-bin/lib/hive-common-1.2.1.jar!/hive-log4j.properties</span><br><span class="line">hive&gt; show tables;</span><br><span class="line">OK</span><br><span class="line">Time taken: 0.705 seconds</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="url">
+                  oracle启动dbstart出错或无反应的解决办法及自启动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-20T09:51:07+08:00" content="2016-08-20">
+              2016-08-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p>启动dbstart 报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME</span><br></pre></td></tr></table></figure></p>
+<p>linux成功安装Oracle后切换到Oracle用户后，直接使用<code>dbstart</code>($ORACLE_HOME/bin中)启动oracle数据库报错如上。原因是dbstart调用的tnslsnr脚本位置有错。解决办法：<br>打开该脚本：<code>vim $ORACLE_HOME/bin/dbstart</code><br>查找“ORACLE_HOME_LISTENER”变量的定义处，<br>修改<br><code>ORACLE_HOME_LISTENER＝$1</code><br>为<code>ORACLE_HOME_LISTENER＝$ORACLE_HOME</code></p>
+<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><p>启动<code>dbstart</code>没有反应，即不报错也不显示启动信息<br>原因是oracle的配置需要修改才能使用dbstart启动对应的数据实例。<br>解决办法：</p>
+<p><code>sudo vim /etc/oratab</code><br>将<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:N</code>改为<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:Y</code></p>
+<h3 id="问题三"><a href="#问题三" class="headerlink" title="问题三"></a>问题三</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;dbstart</span><br><span class="line">Can&apos;t find init file for Database &quot;orcl&quot;.</span><br><span class="line"></span><br><span class="line">Database &quot;orcl&quot; NOT started.</span><br></pre></td></tr></table></figure>
+<p>原因就是没有找到init文件 我的数据库实例是orcl<br>这个文件<code>在$ORACLE_HOME/dbs/</code>目录下<br><code>cd $ORACLE_HOME/dbs</code><br>解决办法就是建立一个initorcl.ora的软连接就可以了<br><code>ln -s spfileego.ora initorcl.ora</code></p>
+<h3 id="Oracle自启动"><a href="#Oracle自启动" class="headerlink" title="Oracle自启动"></a>Oracle自启动</h3><p>创建开机自动启动数据库的脚本<br>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># vi /etc/init.d/Oracledb</span><br><span class="line">文件内容如下：</span><br><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># /etc/init.d/oracledb</span><br><span class="line">#</span><br><span class="line"># Run-level Startup script for the Oracle Instance, Listener, and</span><br><span class="line"># Web Interface</span><br><span class="line"></span><br><span class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">ORA_OWNR=&quot;oracle&quot;</span><br><span class="line"># if the executables do not exist -- display error</span><br><span class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</span><br><span class="line">then</span><br><span class="line">echo &quot;Oracle startup: cannot start&quot;</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line"># depending on parameter -- startup, shutdown, restart</span><br><span class="line"># of the instance and listener or usage display</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">start)</span><br><span class="line"># Oracle listener and instance startup</span><br><span class="line">echo -n &quot;Starting Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</span><br><span class="line">touch /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line"># Oracle listener and instance shutdown</span><br><span class="line">echo -n &quot;Shutdown Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</span><br><span class="line">rm -f /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">reload|restart)</span><br><span class="line">$0 stop</span><br><span class="line">$0 start</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</span><br><span class="line">exit 1</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 /etc/init.d/Oracledb</span><br><span class="line"># update-rc.d Oracledb defaults 99</span><br></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/19/Linux日常操作笔记/" itemprop="url">
+                  Linux日常操作笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-19T09:30:00+08:00" content="2016-08-19">
+              2016-08-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/19/Linux日常操作笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/19/Linux日常操作笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="查看当前所在的工作目录的全路径-pwd"><a href="#查看当前所在的工作目录的全路径-pwd" class="headerlink" title="查看当前所在的工作目录的全路径 pwd"></a>查看当前所在的工作目录的全路径 pwd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# pwd</span><br><span class="line">/root</span><br></pre></td></tr></table></figure>
+<h3 id="查看当前系统的时间-date"><a href="#查看当前系统的时间-date" class="headerlink" title="查看当前系统的时间 date"></a>查看当前系统的时间 date</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# date +%Y-%m-%d</span><br><span class="line">2016-07-26</span><br><span class="line"></span><br><span class="line">date +%Y-%m-%d  --date=&quot;-1 day&quot; #加减也可以 month | year</span><br><span class="line">2016-07-25</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# date -s &quot;2016-07-28 16:12:00&quot; ## 修改时间</span><br><span class="line">Thu Jul 28 16:12:00 PDT 2016</span><br></pre></td></tr></table></figure>
+<h3 id="查看有谁在线（哪些人登陆到了服务器）"><a href="#查看有谁在线（哪些人登陆到了服务器）" class="headerlink" title="查看有谁在线（哪些人登陆到了服务器）"></a>查看有谁在线（哪些人登陆到了服务器）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">who  查看当前在线</span><br><span class="line">[root@localhost ~]# who</span><br><span class="line">hadoop   tty1         2016-07-26 00:01 (:0)</span><br><span class="line">hadoop   pts/0        2016-07-26 00:49 (:0.0)</span><br><span class="line">root     pts/1        2016-07-26 00:50 (192.168.233.1)</span><br></pre></td></tr></table></figure>
+<p>###last 查看最近的登陆历史记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# last</span><br><span class="line">root     pts/1        192.168.233.1    Tue Jul 26 00:50   still logged in   </span><br><span class="line">hadoop   pts/0        :0.0             Tue Jul 26 00:49   still logged in   </span><br><span class="line">hadoop   tty1         :0               Tue Jul 26 00:01   still logged in   </span><br><span class="line">reboot   system boot  2.6.32-573.el6.x Tue Jul 26 07:58 - 16:23 (2+08:24)</span><br></pre></td></tr></table></figure>
+<h3 id="关机-重启"><a href="#关机-重启" class="headerlink" title="关机/重启"></a>关机/重启</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">关机（必须用root用户）</span><br><span class="line">shutdown -h now  ## 立刻关机</span><br><span class="line">shutdown -h +10  ##  10分钟以后关机</span><br><span class="line">shutdown -h 12:00:00  ##12点整的时候关机</span><br><span class="line">halt   #  等于立刻关机</span><br><span class="line"></span><br><span class="line">重启</span><br><span class="line">shutdown -r now</span><br><span class="line">reboot   # 等于立刻重启</span><br></pre></td></tr></table></figure>
+<h3 id="清屏"><a href="#清屏" class="headerlink" title="清屏"></a>清屏</h3><p><code>clear    ## 或者用快捷键  ctrl + l</code></p>
+<h3 id="退出当前进程"><a href="#退出当前进程" class="headerlink" title="退出当前进程"></a>退出当前进程</h3><p><code>ctrl+c   ##有些程序也可以用q键退出</code></p>
+<h3 id="挂起当前进程"><a href="#挂起当前进程" class="headerlink" title="挂起当前进程"></a>挂起当前进程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ctrl+z   ## 进程会挂起到后台</span><br><span class="line">bg jobid  ## 让进程在后台继续执行</span><br><span class="line">fg jobid   ## 让进程回到前台</span><br></pre></td></tr></table></figure>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p>相当于java中System.out.println(userName)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# a=&quot;hi boy&quot;</span><br><span class="line">[root@localhost ~]# echo a</span><br><span class="line">a</span><br><span class="line">[root@localhost ~]# echo $a</span><br><span class="line">hi boy</span><br></pre></td></tr></table></figure></p>
+<h3 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h3><p>查看目录信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls /   ## 查看根目录下的子节点（文件夹和文件）信息</span><br><span class="line">ls -al ##  -a是显示隐藏文件   -l是以更详细的列表形式显示</span><br><span class="line">ls -l  ##有一个别名： ll    可以直接使用ll  &lt;是两个L&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="切换工作目录"><a href="#切换工作目录" class="headerlink" title="切换工作目录"></a>切换工作目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd  /home/hadoop    ## 切换到用户主目录</span><br><span class="line">cd ~     ## 切换到用户主目录</span><br><span class="line">cd -     ##  回退到上次所在的目录</span><br><span class="line">cd  什么路径都不带，则回到用户的主目录</span><br></pre></td></tr></table></figure>
+<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir aaa     ## 这是相对路径的写法 </span><br><span class="line">mkdir  /data    ## 这是绝对路径的写法 </span><br><span class="line">mkdir -p  aaa/bbb/ccc   ## 级联创建目录</span><br></pre></td></tr></table></figure>
+<h3 id="删除文件夹"><a href="#删除文件夹" class="headerlink" title="删除文件夹"></a>删除文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rmdir  aaa   ## 可以删除空目录</span><br><span class="line">rm  -r  aaa   ## 可以把aaa整个文件夹及其中的所有子节点全部删除</span><br><span class="line">rm  -rf  aaa   ## 强制删除aaa</span><br></pre></td></tr></table></figure>
+<h3 id="修改文件夹名称"><a href="#修改文件夹名称" class="headerlink" title="修改文件夹名称"></a>修改文件夹名称</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv  aaa  boy</span><br><span class="line">mv本质上是移动</span><br><span class="line">mv  install.log  aaa/  将当前目录下的install.log 移动到aaa文件夹中去</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">rename 可以用来批量更改文件名</span><br><span class="line">[root@localhost aaa]# ll</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 1.txt</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 2.txt</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 3.txt</span><br><span class="line">[root@localhost aaa]# rename .txt .txt.bak *</span><br><span class="line">[root@localhost aaa]# ll</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 1.txt.bak</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 2.txt.bak</span><br><span class="line">-rw-r--r--. 1 root root 0 Jul 28 17:33 3.txt.bak</span><br></pre></td></tr></table></figure>
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><p>创建文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">touch  somefile.1       </span><br><span class="line">## 创建一个空文件</span><br><span class="line"></span><br><span class="line">echo &quot;hi,boy&quot; &gt; somefile.2     </span><br><span class="line">## 利用重定向“&gt;”的功能，将一条指令的输出结果写入到一个文件中，会覆盖原文件内容，如果指定的文件不存在，则会创建出来</span><br><span class="line"></span><br><span class="line">echo &quot;hi baby&quot; &gt;&gt; somefile.2    </span><br><span class="line">## 将一条指令的输出结果追加到一个文件中，不会覆盖原文件内容</span><br></pre></td></tr></table></figure></p>
+<h3 id="vi文本编辑器"><a href="#vi文本编辑器" class="headerlink" title="vi文本编辑器"></a>vi文本编辑器</h3><p>最基本用法<br>vi  somefile.4<br>1 首先会进入“一般模式”，此模式只接受各种快捷键，不能编辑文件内容<br>2 按i键，就会从一般模式进入编辑模式，此模式下，敲入的都是文件内容<br>3 编辑完成之后，按Esc键退出编辑模式，回到一般模式；<br>4 再按：，进入“底行命令模式”，输入wq命令，回车即可</p>
+<p>常用快捷键<br>一些有用的快捷键（在一般模式下使用）：<br>a   在光标后一位开始插入<br>A   在该行的最后插入<br>I   在该行的最前面插入<br>gg   直接跳到文件的首行<br>G    直接跳到文件的末行<br>dd    删除一行<br>3dd   删除3行<br>yy    复制一行<br>3yy   复制3行<br>p     粘贴<br>u     undo<br>v        进入字符选择模式，选择完成后，按y复制，按p粘贴<br>ctrl+v   进入块选择模式，选择完成后，按y复制，按p粘贴<br>shift+v  进入行选择模式，选择完成后，按y复制，按p粘贴</p>
+<p>查找并替换<br>1 显示行号<br>:set nu<br>2 隐藏行号<br>:set nonu<br>3 查找关键字<br>:/you       ## 效果：查找文件中出现的you，并定位到第一个找到的地方，按n可以定位到下一个匹配位置（按N定位到上一个）<br>4 替换操作<br>:s/sad/bbb    查找光标所在行的第一个sad，替换为bbb<br>:%s/sad/bbb      查找文件中所有sad，替换为bbb</p>
+<h3 id="拷贝-删除-移动"><a href="#拷贝-删除-移动" class="headerlink" title="拷贝/删除/移动"></a>拷贝/删除/移动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp  somefile.1   /home/hadoop/</span><br><span class="line">rm /home/hadoop/somefile.1</span><br><span class="line">rm -f /home/hadoop/somefile.1</span><br><span class="line">mv /home/hadoop/somefile.1 ../</span><br></pre></td></tr></table></figure>
+<h3 id="查看文件内容"><a href="#查看文件内容" class="headerlink" title="查看文件内容"></a>查看文件内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cat    somefile      一次性将文件内容全部输出（控制台）</span><br><span class="line">more   somefile      可以翻页查看, 下翻一页(空格)    上翻一页（b）   退出（q）</span><br><span class="line">less   somefile      可以翻页查看,下翻一页(空格)    上翻一页（b），上翻一行(↑)  下翻一行（↓）  可以搜索关键字（/keyword）</span><br><span class="line">跳到文件末尾： G</span><br><span class="line">跳到文件首行： gg</span><br><span class="line">退出less ：  q</span><br><span class="line"></span><br><span class="line">tail -10  install.log  查看文件尾部的10行</span><br><span class="line">tail +10  install.log  查看文件 10--&gt;末行</span><br><span class="line">tail -f install.log    小f跟踪文件的唯一inode号，就算文件改名后，还是跟踪原来这个inode表示的文件</span><br><span class="line">tail -F install.log    大F按照文件名来跟踪</span><br><span class="line"></span><br><span class="line">head -10  install.log   查看文件头部的10行</span><br></pre></td></tr></table></figure>
+<h3 id="打包压缩"><a href="#打包压缩" class="headerlink" title="打包压缩"></a>打包压缩</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">1、gzip压缩</span><br><span class="line">gzip a.txt</span><br><span class="line"></span><br><span class="line">2、解压</span><br><span class="line">gunzip a.txt.gz</span><br><span class="line">gzip -d a.txt.gz</span><br><span class="line"></span><br><span class="line">3、bzip2压缩</span><br><span class="line">bzip2 a</span><br><span class="line"></span><br><span class="line">4、解压</span><br><span class="line">bunzip2 a.bz2</span><br><span class="line">bzip2 -d a.bz2</span><br><span class="line"></span><br><span class="line">5、打包：将指定文件或文件夹</span><br><span class="line">tar -cvf bak.tar  ./aaa</span><br><span class="line">将/etc/password追加文件到bak.tar中(r)</span><br><span class="line">tar -rvf bak.tar /etc/password</span><br><span class="line"></span><br><span class="line">6、解压</span><br><span class="line">tar -xvf bak.tar</span><br><span class="line"></span><br><span class="line">7、打包并压缩</span><br><span class="line">tar -zcvf a.tar.gz  aaa/</span><br><span class="line"></span><br><span class="line">8、解包并解压缩(重要的事情说三遍!!!)</span><br><span class="line">tar  -zxvf  a.tar.gz</span><br><span class="line">解压到/usr/下</span><br><span class="line">tar  -zxvf  a.tar.gz  -C  /usr</span><br><span class="line"></span><br><span class="line">9、查看压缩包内容</span><br><span class="line">tar -ztvf a.tar.gz</span><br><span class="line">zip/unzip</span><br><span class="line"></span><br><span class="line">10、打包并压缩成bz2</span><br><span class="line">tar -jcvf a.tar.bz2</span><br><span class="line"></span><br><span class="line">11、解压bz2</span><br><span class="line">tar -jxvf a.tar.bz2</span><br></pre></td></tr></table></figure>
+<h3 id="查找命令"><a href="#查找命令" class="headerlink" title="查找命令"></a>查找命令</h3><p>常用查找命令的使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1、查找可执行的命令所在的路径：</span><br><span class="line">which ls</span><br><span class="line"></span><br><span class="line">2、查找可执行的命令和帮助的位置：</span><br><span class="line">whereis ls</span><br><span class="line"></span><br><span class="line">3、从某个文件夹开始查找文件</span><br><span class="line">find / -name &quot;hadooop*&quot;</span><br><span class="line">find / -name &quot;hadooop*&quot; -ls</span><br><span class="line"></span><br><span class="line">4、查找并删除</span><br><span class="line">find / -name &quot;hadooop*&quot; -ok rm &#123;&#125; \;</span><br><span class="line">find / -name &quot;hadooop*&quot; -exec rm &#123;&#125; \;</span><br><span class="line"></span><br><span class="line">5、查找用户为hadoop的文件</span><br><span class="line">find  /usr  -user  hadoop  -ls</span><br><span class="line"></span><br><span class="line">6、查找用户为hadoop的文件夹</span><br><span class="line">find /home -user hadoop -type d -ls</span><br><span class="line"></span><br><span class="line">7、查找权限为777的文件</span><br><span class="line">find / -perm -777 -type d -ls</span><br><span class="line"></span><br><span class="line">8、显示命令历史</span><br><span class="line">history</span><br></pre></td></tr></table></figure>
+<h3 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1 基本使用</span><br><span class="line">查询包含hadoop的行</span><br><span class="line">grep hadoop /etc/password</span><br><span class="line">grep aaa  ./*.txt </span><br><span class="line"></span><br><span class="line">2 cut截取以:分割保留第七段</span><br><span class="line">grep hadoop /etc/passwd | cut -d: -f7</span><br><span class="line"></span><br><span class="line">3 查询不包含hadoop的行</span><br><span class="line">grep -v hadoop /etc/passwd</span><br><span class="line"></span><br><span class="line">4 正则表达包含hadoop</span><br><span class="line">grep &apos;hadoop&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">5 正则表达(点代表任意一个字符)</span><br><span class="line">grep &apos;h.*p&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">6 正则表达以hadoop开头</span><br><span class="line">grep &apos;^hadoop&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">7 正则表达以hadoop结尾</span><br><span class="line">grep &apos;hadoop$&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">规则：</span><br><span class="line">.  : 任意一个字符</span><br><span class="line">a* : 任意多个a(零个或多个a)</span><br><span class="line">a? : 零个或一个a</span><br><span class="line">a+ : 一个或多个a</span><br><span class="line">.* : 任意多个任意字符</span><br><span class="line">\. : 转义.</span><br><span class="line">o\&#123;2\&#125; : o重复两次</span><br><span class="line"></span><br><span class="line">查找不是以#开头的行</span><br><span class="line">grep -v &apos;^#&apos; a.txt | grep -v &apos;^$&apos; </span><br><span class="line"></span><br><span class="line">以h或r开头的</span><br><span class="line">grep &apos;^[hr]&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">不是以h和r开头的</span><br><span class="line">grep &apos;^[^hr]&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">不是以h到r开头的</span><br><span class="line">grep &apos;^[^h-r]&apos; /etc/passwd</span><br></pre></td></tr></table></figure>
+<h3 id="文件权限的操作"><a href="#文件权限的操作" class="headerlink" title="文件权限的操作"></a>文件权限的操作</h3><p>linux文件权限的描述格式解读</p>
+<p>drwxr-xr-x      （也可以用二进制表示  111 101 101  –&gt;  755）</p>
+<p>d：标识节点类型（d：文件夹   -：文件  l:链接）<br>r：可读   w：可写    x：可执行<br>第一组rwx：  ## 表示这个文件的拥有者对它的权限：可读可写可执行<br>第二组r-x：  ## 表示这个文件的所属组用户对它的权限：可读，不可写，可执行<br>第三组r-x：  ## 表示这个文件的其他用户（相对于上面两类用户）对它的权限：可读，不可写，可执行</p>
+<h4 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">chmod g-rw haha.dat		 ## 表示将haha.dat对所属组的rw权限取消</span><br><span class="line">chmod o-rw haha.dat		 ## 表示将haha.dat对其他人的rw权限取消</span><br><span class="line">chmod u+x haha.dat		 ## 表示将haha.dat对所属用户的权限增加x</span><br><span class="line">chmod a-x haha.dat               ## 表示将haha.dat对所用户取消x权限</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">也可以用数字的方式来修改权限</span><br><span class="line">chmod 664 haha.dat   </span><br><span class="line">就会修改成   rw-rw-r--</span><br><span class="line">如果要将一个文件夹的所有内容权限统一修改，则可以-R参数</span><br><span class="line">chmod -R 770 aaa/</span><br></pre></td></tr></table></figure>
+<h4 id="修改文件所有权"><a href="#修改文件所有权" class="headerlink" title="修改文件所有权"></a>修改文件所有权</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;只有root权限能执行&gt;</span><br><span class="line">chown angela  aaa		## 改变所属用户</span><br><span class="line">chown :angela  aaa		## 改变所属组</span><br><span class="line">chown angela:angela aaa/	## 同时修改所属用户和所属组</span><br></pre></td></tr></table></figure>
+<h3 id="基本的用户管理"><a href="#基本的用户管理" class="headerlink" title="基本的用户管理"></a>基本的用户管理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">添加一个用户：</span><br><span class="line">useradd spark</span><br><span class="line">passwd  spark     根据提示设置密码即可</span><br><span class="line"></span><br><span class="line">删除一个用户：</span><br><span class="line">userdel -r spark     加一个-r就表示把用户及用户的主目录都删除</span><br></pre></td></tr></table></figure>
+<h4 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">添加一个tom用户，设置它属于users组，并添加注释信息</span><br><span class="line">分步完成：useradd tom</span><br><span class="line">          usermod -g users tom</span><br><span class="line">	  usermod -c &quot;hr tom&quot; tom</span><br><span class="line">一步完成：useradd -g users -c &quot;hr tom&quot; tom</span><br><span class="line"></span><br><span class="line">设置tom用户的密码</span><br><span class="line">passwd tom</span><br></pre></td></tr></table></figure>
+<h4 id="修改用户"><a href="#修改用户" class="headerlink" title="修改用户"></a>修改用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">修改tom用户的登陆名为tomcat</span><br><span class="line">usermod -l tomcat tom</span><br><span class="line"></span><br><span class="line">将tomcat添加到sys和root组中</span><br><span class="line">usermod -G sys,root tomcat</span><br><span class="line"></span><br><span class="line">查看tomcat的组信息</span><br><span class="line">groups tomcat</span><br></pre></td></tr></table></figure>
+<h4 id="用户组操作"><a href="#用户组操作" class="headerlink" title="用户组操作"></a>用户组操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">添加一个叫america的组</span><br><span class="line">groupadd america</span><br><span class="line"></span><br><span class="line">将jerry添加到america组中</span><br><span class="line">usermod -g america jerry</span><br><span class="line"></span><br><span class="line">将tomcat用户从root组和sys组删除</span><br><span class="line">gpasswd -d tomcat root</span><br><span class="line">gpasswd -d tomcat sys</span><br><span class="line"></span><br><span class="line">将america组名修改为am</span><br><span class="line">groupmod -n am america</span><br></pre></td></tr></table></figure>
+<h4 id="为用户配置sudo权限"><a href="#为用户配置sudo权限" class="headerlink" title="为用户配置sudo权限"></a>为用户配置sudo权限</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用root编辑 vi /etc/sudoers</span><br><span class="line">在文件的如下位置，为hadoop添加一行即可</span><br><span class="line">root    ALL=(ALL)       ALL     </span><br><span class="line">hadoop  ALL=(ALL)       ALL</span><br><span class="line"></span><br><span class="line">然后，hadoop用户就可以用sudo来执行系统级别的指令</span><br><span class="line">[root@localhost ~]$ sudo useradd xiaoming</span><br></pre></td></tr></table></figure>
+<h3 id="系统管理操作"><a href="#系统管理操作" class="headerlink" title="系统管理操作"></a>系统管理操作</h3><h4 id="挂载外部存储设备"><a href="#挂载外部存储设备" class="headerlink" title="挂载外部存储设备"></a>挂载外部存储设备</h4><p>可以挂载光盘、硬盘、磁带、光盘镜像文件等</p>
+<ul>
+<li>挂载光驱</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir   /mnt/cdrom      创建一个目录，用来挂载</span><br><span class="line">mount -t iso9660 -o ro /dev/cdrom /mnt/cdrom/     将设备/dev/cdrom挂载到 挂载点 ：  /mnt/cdrom中</span><br></pre></td></tr></table></figure>
+<ul>
+<li>挂载光盘镜像文件（.iso文件）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mount -t iso9660 -o loop  /home/hadoop/Centos-6.7.DVD.iso /mnt/centos</span><br><span class="line">注：挂载的资源在重启后即失效，需要重新挂载。要想自动挂载，可以将挂载信息设置到/etc/fstab配置文件中，如下：</span><br><span class="line">/dev/cdrom              /mnt/cdrom              iso9660 defaults        0 0</span><br></pre></td></tr></table></figure>
+<h4 id="卸载-umount"><a href="#卸载-umount" class="headerlink" title="卸载 umount"></a>卸载 umount</h4><p><code>umount /mnt/cdrom</code></p>
+<h4 id="存储空间查看"><a href="#存储空间查看" class="headerlink" title="存储空间查看"></a>存储空间查看</h4><p><code>df -h</code></p>
+<h4 id="统计文件或文件夹的大小"><a href="#统计文件或文件夹的大小" class="headerlink" title="统计文件或文件夹的大小"></a>统计文件或文件夹的大小</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -sh  /mnt/cdrom/packages</span><br><span class="line">df -h    查看磁盘的空间</span><br></pre></td></tr></table></figure>
+<h4 id="系统服务管理"><a href="#系统服务管理" class="headerlink" title="系统服务管理"></a>系统服务管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service sshd status</span><br><span class="line">service sshd stop </span><br><span class="line">service sshd start</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<h4 id="系统启动级别管理"><a href="#系统启动级别管理" class="headerlink" title="系统启动级别管理"></a>系统启动级别管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vi  /etc/inittab</span><br><span class="line"></span><br><span class="line">       # Default runlevel. The runlevels used are:</span><br><span class="line">       #   0 - halt (Do NOT set initdefault to this)</span><br><span class="line">       #   1 - Single user mode</span><br><span class="line">       #   2 - Multiuser, without NFS (The same as 3, if you do not have networking)</span><br><span class="line">       #   3 - Full multiuser mode</span><br><span class="line">       #   4 - unused</span><br><span class="line">       #   5 - X11</span><br><span class="line">       #   6 - reboot (Do NOT set initdefault to this)</span><br><span class="line">       #</span><br><span class="line">       id:3:initdefault:</span><br><span class="line">       ## 通常将默认启动级别设置为：3</span><br></pre></td></tr></table></figure>
+<h4 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line">free</span><br><span class="line">ps -ef | grep ssh</span><br><span class="line">kill -9</span><br></pre></td></tr></table></figure>
+<h3 id="SSH免密登陆配置"><a href="#SSH免密登陆配置" class="headerlink" title="SSH免密登陆配置"></a>SSH免密登陆配置</h3><h4 id="SSH工作机制"><a href="#SSH工作机制" class="headerlink" title="SSH工作机制"></a>SSH工作机制</h4><p>1、相关概念<br>SSH 为 Secure Shell（安全外壳协议） 的缩写。<br>很多ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，别有用心的人非常容易就可以截获这些口令和数据。<br>而SSH就是专为远程登录会话和其他网络服务提供安全性的协议。</p>
+<p>SSH是由客户端和服务端的软件组成的<br>服务端是一个守护进程(sshd)，他在后台运行并响应来自客户端的连接请求。<br>客户端包含ssh程序以及像scp（远程拷贝）、slogin（远程登陆）、sftp（安全文件传输）等其他的应用程序。</p>
+<p>2、认证机制<br>从客户端来看，SSH提供两种级别的安全验证。</p>
+<p>第一种级别（基于口令的安全验证）<br>只要你知道自己帐号和口令，就可以登录到远程主机。</p>
+<p>第二种级别（基于密钥的安全验证）<br>需要依靠密匙，也就是你必须为自己创建一对密匙，并把公用密匙放在需要访问的服务器上。如果你要连接到SSH服务器上，<br>客户端软件就会向服务器发出请求，请求用你的密匙进行安全验证。服务器收到请求之后，先在该服务器上你的主目录下寻找你的公用密匙，<br>然后把它和你发送过来的公用密匙进行比较。如果两个密匙一致，服务器就用公用密匙加密“质询”（challenge）并把它发送给客户端软件。<br>客户端软件收到“质询”之后就可以用你的私人密匙解密再把它发送给服务器。</p>
+<h4 id="密钥登陆方式配置"><a href="#密钥登陆方式配置" class="headerlink" title="密钥登陆方式配置"></a>密钥登陆方式配置</h4><p>假如 A  要登陆  B<br>在A上操作：<br>1/ 首先生成密钥对<br><code>ssh-keygen</code>   (提示时，直接回车即可)<br>2/ 再将A自己的公钥拷贝并追加到B的授权列表文件<code>authorized_keys</code>中<br><code>ssh-copy-id   B</code></p>
+<h3 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h3><h4 id="主机名配置"><a href="#主机名配置" class="headerlink" title="主机名配置"></a>主机名配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1/ 查看主机名</span><br><span class="line">hostname</span><br><span class="line"></span><br><span class="line">2/ 修改主机名(重启后无效)</span><br><span class="line">hostname hadoop</span><br><span class="line"></span><br><span class="line">3/ 修改主机名(重启后永久生效) </span><br><span class="line">vi /ect/sysconfig/network</span><br></pre></td></tr></table></figure>
+<h4 id="IP地址配置"><a href="#IP地址配置" class="headerlink" title="IP地址配置"></a>IP地址配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">修改IP地址</span><br><span class="line">1/ 方式一：setup</span><br><span class="line">用root输入setup命令，进入交互式修改界面</span><br><span class="line"></span><br><span class="line">2/ 方式二：修改配置文件 一般使用这种方法</span><br><span class="line">(重启后永久生效)</span><br><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line"></span><br><span class="line">3/ 方式三：ifconfig命令</span><br><span class="line">(重启后无效)</span><br><span class="line">ifconfig eth0 192.168.12.22</span><br></pre></td></tr></table></figure>
+<h3 id="网络服务管理"><a href="#网络服务管理" class="headerlink" title="网络服务管理"></a>网络服务管理</h3><p>1 后台服务管理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">service network status    查看指定服务的状态</span><br><span class="line">service network stop     停止指定服务</span><br><span class="line">service network start     启动指定服务</span><br><span class="line">service network restart   重启指定服务</span><br><span class="line">service --status-all       查看系统中所有的后台服务</span><br></pre></td></tr></table></figure></p>
+<p>2 设置后台服务的自启配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chkconfig   查看所有服务器自启配置</span><br><span class="line">chkconfig iptables off   关掉指定服务的自动启动</span><br><span class="line">chkconfig iptables on   开启指定服务的自动启动</span><br></pre></td></tr></table></figure></p>
+<p>转载自：</p>
+<blockquote>
+<p><a href="http://www.kuqin.com/shuoit/20160805/352716.html" target="_blank" rel="external">http://www.kuqin.com/shuoit/20160805/352716.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/" itemprop="url">
                   Mahout 如何进行 Precision 和 Recall 的计算
                 </a>
@@ -334,6 +775,7 @@
 <p>当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Precision 和 Recall 值。然后，Precision 和 Recall 的平均值作为模型的 Precision 和 Recall 值。</p>
 </blockquote>
 <p>RecommenderIRStatsEvaluator是一个接口，用于得到推荐系统的准确率，召回率等统计指标。<br>它定义的函数如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public IRStatistics evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, IDRescorer rescorer, int at, double relevanceThreshold, doubleevaluationPercentage) </span><br><span class="line">/**</span><br><span class="line">   * @param recommenderBuilder</span><br><span class="line">   * 它通过public Recommender buildRecommender(DataModel model)定义推荐系统创建的方式；       </span><br><span class="line"></span><br><span class="line">   * @param dataModelBuilder</span><br><span class="line">   * 数据模型创建的方式，如果已经创建好了数据模型，一般这个参数可以为null</span><br><span class="line"></span><br><span class="line">   * @param dataModel</span><br><span class="line">   * 推荐系统使用的数据模型</span><br><span class="line">   * </span><br><span class="line">   * @param rescorer</span><br><span class="line">   * 推荐排序的方式，一般情况下可以为null</span><br><span class="line">   * </span><br><span class="line">   * @param at</span><br><span class="line">   * 推荐几个物品（TOPN),，它用来定义计算准确率的时候，一个user可以拥有的相关项items的最大个数，相关项item定义为user对这个item的评价超过了relevanceThreshold的项</span><br><span class="line"></span><br><span class="line">   * @param relevanceThreshold</span><br><span class="line">   * 相关临界值 ,和at一起使用定义一个user的相关项</span><br></pre></td></tr></table></figure></p>
+<h3 id="计算临界值"><a href="#计算临界值" class="headerlink" title="计算临界值"></a>计算临界值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//computeThreshold(prefs)这个方法主要是计算得到当前用户对物品 打分的平均值加上标准差的值</span><br><span class="line">double theRelevanceThreshold = Double.isNaN(relevanceThreshold) ? computeThreshold(prefs)</span><br><span class="line">					: relevanceThreshold;</span><br></pre></td></tr></table></figure>
 <h3 id="getRelevantItemsIDs"><a href="#getRelevantItemsIDs" class="headerlink" title="getRelevantItemsIDs"></a>getRelevantItemsIDs</h3><p>按照用户对物品的打分从大到小排序，将大于设定的的relevanceTheshold的值存入relevantItemIDs中，relevantItemIDs最大值为at<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * getRelevantItemsIDs的实现，</span><br><span class="line"> *1.首先得到userID的Preferences </span><br><span class="line"> *2.创建一个FastIDSet用来保存相关项的id，大小为at </span><br><span class="line"> *3.prefs根据值大小排序 </span><br><span class="line"> *4.遍历pref，如果user对这个item的评价prefs.getValue(i)不小于相关阈值，则将这个item的加入相关项，最多取at个满足条件的item</span><br><span class="line"> */</span><br><span class="line">FastIDSet relevantItemIDs = dataSplitter.getRelevantItemsIDs(userID, at, theRelevanceThreshold, dataModel);</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public FastIDSet getRelevantItemsIDs(long userID,</span><br><span class="line">                                       int at,</span><br><span class="line">                                       double relevanceThreshold,</span><br><span class="line">                                       DataModel dataModel) throws TasteException &#123;</span><br><span class="line">    PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);</span><br><span class="line">	//定义最大理论击中物品集合 </span><br><span class="line">    FastIDSet relevantItemIDs = new FastIDSet(at);</span><br><span class="line">	//将用户的打分排序 </span><br><span class="line">    prefs.sortByValueReversed();</span><br><span class="line">    for (int i = 0; i &lt; prefs.length() &amp;&amp; relevantItemIDs.size() &lt; at; i++) &#123;</span><br><span class="line">      if (prefs.getValue(i) &gt;= relevanceThreshold) &#123;</span><br><span class="line">        relevantItemIDs.add(prefs.getItemID(i));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return relevantItemIDs;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="获取训练集"><a href="#获取训练集" class="headerlink" title="获取训练集"></a>获取训练集</h3><p>这个训练集的构造规则是： </p>
@@ -516,6 +958,10 @@
 </blockquote>
 <p>完成之后，执行命令$ lsnrctl start启动监听服务。</p>
 <h3 id="创建数据库实例，执行-dbca启动配置界面"><a href="#创建数据库实例，执行-dbca启动配置界面" class="headerlink" title="创建数据库实例，执行$ dbca启动配置界面"></a>创建数据库实例，执行$ dbca启动配置界面</h3><h3 id="最后验证是否安装成功，浏览器访问"><a href="#最后验证是否安装成功，浏览器访问" class="headerlink" title="最后验证是否安装成功，浏览器访问"></a>最后验证是否安装成功，浏览器访问</h3><p><a href="https://192.168.1.114:1158/em" target="_blank" rel="external">https://192.168.1.114:1158/em</a></p>
+<h3 id="创建开机自动启动数据库的脚本"><a href="#创建开机自动启动数据库的脚本" class="headerlink" title="创建开机自动启动数据库的脚本"></a>创建开机自动启动数据库的脚本</h3><p>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># vi /etc/init.d/Oracledb</span><br><span class="line">文件内容如下：</span><br><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># /etc/init.d/oracledb</span><br><span class="line">#</span><br><span class="line"># Run-level Startup script for the Oracle Instance, Listener, and</span><br><span class="line"># Web Interface</span><br><span class="line"></span><br><span class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">ORA_OWNR=&quot;oracle&quot;</span><br><span class="line"># if the executables do not exist -- display error</span><br><span class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</span><br><span class="line">then</span><br><span class="line">echo &quot;Oracle startup: cannot start&quot;</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line"># depending on parameter -- startup, shutdown, restart</span><br><span class="line"># of the instance and listener or usage display</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">start)</span><br><span class="line"># Oracle listener and instance startup</span><br><span class="line">echo -n &quot;Starting Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</span><br><span class="line">touch /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line"># Oracle listener and instance shutdown</span><br><span class="line">echo -n &quot;Shutdown Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</span><br><span class="line">rm -f /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">reload|restart)</span><br><span class="line">$0 stop</span><br><span class="line">$0 start</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</span><br><span class="line">exit 1</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 /etc/init.d/oracledb</span><br><span class="line"># update-rc.d oracledb defaults 99</span><br></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ps -ef|grep ora_|grep -v grep  --&gt;查看oracle进程</span><br><span class="line">$ ps -ef|grep tnslsnr|grep -v grep  --&gt;查看oracle的监听进程</span><br><span class="line">$ lsnrctl start --&gt;启动监听</span><br><span class="line">$ dbstart --&gt;启动数据库</span><br><span class="line">$ dbstop --&gt;停止数据库</span><br><span class="line">$ emctl start dbconsole --&gt;启动em控制台</span><br><span class="line">$ isqlplusctl start --&gt;启动pl/sql</span><br><span class="line">$ sqlplus &apos;/as sysdba&apos; --&gt;登录sqlplus</span><br><span class="line"></span><br><span class="line">$ env  --&gt;输出当前用户的环境变量</span><br><span class="line"></span><br><span class="line">$ netca --&gt;启用监听配置程序</span><br></pre></td></tr></table></figure>
 <p>参考文章</p>
 <blockquote>
 <p><a href="CentOS6.7安装Oracle 11g2R傻瓜图文教程">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
@@ -1184,8 +1630,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -1229,517 +1675,6 @@
             <h3 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h3><p><code>sudo dpkg-reconfigure tzdata</code></p>
 <p>出现时区列表，按照提示选择“Asia/Shanghai”</p>
 <p>结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Package configuration</span><br><span class="line"></span><br><span class="line">     ┌───────────────────────┤ Configuring tzdata ├───────────────────────┐</span><br><span class="line">     │ Please select the city or region corresponding to your time zone.  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │ Time zone:                                                         │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                          Qyzylorda        ↑                        │</span><br><span class="line">     │                          Rangoon          ▒                        │</span><br><span class="line">     │                          Riyadh           ▒                        │</span><br><span class="line">     │                          Sakhalin         ▒                        │</span><br><span class="line">     │                          Samarkand        ▒                        │</span><br><span class="line">     │                          Seoul            ▒                        │</span><br><span class="line">     │                          Shanghai         ▮                        │</span><br><span class="line">     │                          Singapore        ▒                        │</span><br><span class="line">     │                          Srednekolymsk    ▒                        │</span><br><span class="line">     │                          Taipei           ↓                        │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                 &lt;Ok&gt;                     &lt;Cancel&gt;                  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     └────────────────────────────────────────────────────────────────────┘</span><br><span class="line"></span><br><span class="line">                                                                               </span><br><span class="line">Current default time zone: &apos;Asia/Shanghai&apos;</span><br><span class="line">Local time is now:      Mon Aug 15 00:11:59 CST 2016.</span><br><span class="line">Universal Time is now:  Sun Aug 14 16:11:59 UTC 2016.</span><br><span class="line"></span><br><span class="line">ubuntu@master:~$ date</span><br><span class="line">Mon Aug 15 00:12:13 CST 2016</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/14/ubuntu设置静态ip/" itemprop="url">
-                  ubuntu设置静态ip
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-14T23:58:26+08:00" content="2016-08-14">
-              2016-08-14
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/14/ubuntu设置静态ip/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/14/ubuntu设置静态ip/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="找到文件并作如下修改"><a href="#找到文件并作如下修改" class="headerlink" title="找到文件并作如下修改"></a>找到文件并作如下修改</h3><p><code>sudo vim /etc/network/interfaces</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># The primary network interface</span><br><span class="line">auto eno1</span><br><span class="line">iface eno1 inet static</span><br><span class="line">        address 192.168.1.111</span><br><span class="line">        netmask 255.255.255.0</span><br><span class="line">        network 192.168.1.0</span><br><span class="line">        broadcast 192.168.1.255</span><br><span class="line">        gateway 192.168.1.1</span><br><span class="line">        # dns-* options are implemented by the resolvconf package, if installed</span><br><span class="line">        dns-nameservers 202.101.172.35 202.101.172.46</span><br></pre></td></tr></table></figure>
-<h3 id="修改dns解析"><a href="#修改dns解析" class="headerlink" title="修改dns解析"></a>修改dns解析</h3><p>因为以前是dhcp解析，所以会自动分配dns服务器地址</p>
-<p>而一旦设置为静态ip后就没有自动获取到的dns服务器了</p>
-<p>要自己设置一个</p>
-<p><code>sudo vim /etc/resolv.conf</code></p>
-<p>写上一个公网的DNS,以下为浙江杭州电信DNS</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)</span><br><span class="line">#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN</span><br><span class="line">nameserver 202.101.172.35</span><br><span class="line">nameserver 202.101.172.46</span><br></pre></td></tr></table></figure>
-<p>（注意：8.8.8.8是谷歌的DNS服务器，但是解析速度慢，还是找到一个国内的dns来用）</p>
-<h3 id="重启网卡"><a href="#重启网卡" class="headerlink" title="重启网卡"></a>重启网卡</h3><p><code>sudo /etc/init.d/networking restart</code></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/26/JVM内存配置/" itemprop="url">
-                  JVM内存配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
-              2016-07-26
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
-<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
-<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
-<p>非堆内存分配</p>
-<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
-<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
-<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
-<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
-<ul>
-<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
-<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
-<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
-<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
-<li>年轻带堆内存    对象刚创建出来时放在这里</li>
-<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
-<li>持久带堆内存    class文件，元数据等放在这里</li>
-<li>-XX:PermSize=128m    持久带堆的初始大小</li>
-<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
-</ul>
-<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
-<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
-<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/25/Mahout Item-based推荐分布式实现/" itemprop="url">
-                  Mahout Item-based推荐的分布式实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-25T16:02:36+08:00" content="2016-07-25">
-              2016-07-25
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/25/Mahout Item-based推荐分布式实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/25/Mahout Item-based推荐分布式实现/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Mahout API地址：<a href="http://apache.github.io/mahout/0.10.1/docs/mahout-mr/overview-summary.html" target="_blank" rel="external">http://apache.github.io/mahout/0.10.1/docs/mahout-mr/overview-summary.html</a></p>
-<blockquote>
-<p><a href="http://blog.fens.me/mahout-recommendation-api/" target="_blank" rel="external">Mahout推荐算法API详解</a></p>
-</blockquote>
-<h2 id="Mahout算法框架自带的推荐器有下面这些："><a href="#Mahout算法框架自带的推荐器有下面这些：" class="headerlink" title="Mahout算法框架自带的推荐器有下面这些："></a>Mahout算法框架自带的推荐器有下面这些：</h2><ul>
-<li>GenericUserBasedRecommender：基于用户的推荐器，用户数量少时速度快；</li>
-<li>GenericItemBasedRecommender：基于商品推荐器，商品数量少时速度快，尤其当外部提供了商品相似度数据后效率更好；</li>
-<li>SlopeOneRecommender：基于slope-one算法的推荐器，在线推荐或更新较快，需要事先大量预处理运算，物品数量少时较好；</li>
-<li>SVDRecommender：奇异值分解，推荐效果较好，但之前需要大量预处理运算；</li>
-<li>KnnRecommender：基于k近邻算法(KNN)，适合于物品数量较小时；</li>
-<li>TreeClusteringRecommender：基于聚类的推荐器，在线推荐较快，之前需要大量预处理运算，用户数量较少时效果好；</li>
-<li>Mahout最常用的三个推荐器是上述的前三个，本文主要讨论前两种的使用。</li>
-</ul>
-<h2 id="接口相关介绍"><a href="#接口相关介绍" class="headerlink" title="接口相关介绍"></a>接口相关介绍</h2><p>基于用户或物品的推荐器主要包括以下几个接口：</p>
-<p><code>DataModel</code> 是用户喜好信息的抽象接口，它的具体实现支持从任意类型的数据源抽取用户喜好信息。Taste 默认提供 JDBCDataModel 和 FileDataModel，分别支持从数据库和文件中读取用户的喜好信息。<br><code>UserSimilarity</code> 和 <code>ItemSimilarity</code>。UserSimilarity 用于定义两个用户间的相似度，它是基于协同过滤的推荐引擎的核心部分，可以用来计算用户的“邻居”，这里我们将与当前用户口味相似的用户称为他的邻居。ItemSimilarity 类似的，计算内容之间的相似度。<br><code>UserNeighborhood</code> 用于基于用户相似度的推荐方法中，推荐的内容是基于找到与当前用户喜好相似的邻居用户的方式产生的。UserNeighborhood 定义了确定邻居用户的方法，具体实现一般是基于 UserSimilarity 计算得到的。<br><code>Recommender</code> 是推荐引擎的抽象接口，Taste 中的核心组件。程序中，为它提供一个 DataModel，它可以计算出对不同用户的推荐内容。实际应用中，主要使用它的实现类 <code>GenericUserBasedRecommender</code> 或者 <code>GenericItemBasedRecommender</code>，分别实现基于用户相似度的推荐引擎或者基于内容的推荐引擎。<br><code>RecommenderEvaluator</code>：评分器。<br><code>RecommenderIRStatsEvaluator</code>：搜集推荐性能相关的指标，包括准确率、召回率等等。<br>目前，Mahout为DataModel提供了以下几种实现：</p>
-<ul>
-<li>org.apache.mahout.cf.taste.impl.model.GenericDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.GenericBooleanPrefDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.PlusAnonymousUserDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.file.FileDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.hbase.HBaseDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.cassandra.CassandraDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.mongodb.MongoDBDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.SQL92JDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.MySQLJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.GenericJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.SQL92BooleanPrefJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.MySQLBooleanPrefJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.PostgreBooleanPrefSQLJDBCDataModel</li>
-<li>org.apache.mahout.cf.taste.impl.model.jdbc.ReloadFromJDBCDataModel<br>从类名上就可以大概猜出来每个DataModel的用途，奇怪的是竟然没有HDFS的DataModel，有人实现了一个，请参考<a href="https://issues.apache.org/jira/browse/MAHOUT-1579" target="_blank" rel="external">MAHOUT-1579</a>。</li>
-</ul>
-<p><code>UserSimilarity</code> 和 <code>ItemSimilarity</code> 相似度实现有以下几种：</p>
-<ul>
-<li><code>CityBlockSimilarity</code>：基于Manhattan距离相似度</li>
-<li><code>EuclideanDistanceSimilarity</code>：基于欧几里德距离计算相似度</li>
-<li><code>LogLikelihoodSimilarity</code>：基于对数似然比的相似度</li>
-<li><code>PearsonCorrelationSimilarity</code>：基于皮尔逊相关系数计算相似度</li>
-<li><code>SpearmanCorrelationSimilarity</code>：基于皮尔斯曼相关系数相似度</li>
-<li><code>TanimotoCoefficientSimilarity</code>：基于谷本系数计算相似度</li>
-<li><code>UncenteredCosineSimilarity</code>：计算 Cosine 相似度<br>以上相似度的说明，请参考Mahout推荐引擎介绍。</li>
-</ul>
-<p>UserNeighborhood 主要实现有两种：</p>
-<ul>
-<li>NearestNUserNeighborhood：对每个用户取固定数量N个最近邻居</li>
-<li>ThresholdUserNeighborhood：对每个用户基于一定的限制，取落在相似度限制以内的所有用户为邻居</li>
-</ul>
-<p>Recommender分为以下几种实现：</p>
-<ul>
-<li>GenericUserBasedRecommender：基于用户的推荐引擎</li>
-<li>GenericBooleanPrefUserBasedRecommender：基于用户的无偏好值推荐引擎</li>
-<li>GenericItemBasedRecommender：基于物品的推荐引擎</li>
-<li>GenericBooleanPrefItemBasedRecommender：基于物品的无偏好值推荐引擎</li>
-</ul>
-<p>RecommenderEvaluator有以下几种实现：</p>
-<ul>
-<li>AverageAbsoluteDifferenceRecommenderEvaluator：计算平均差值</li>
-<li>RMSRecommenderEvaluator：计算均方根差</li>
-<li>RecommenderIRStatsEvaluator的实现类是GenericRecommenderIRStatsEvaluator。</li>
-</ul>
-<h2 id="单机运行"><a href="#单机运行" class="headerlink" title="单机运行"></a>单机运行</h2><p>首先，需要在maven中加入对mahout的依赖：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.mahout&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mahout-core&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.mahout&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mahout-integration&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.mahout&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mahout-math&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.mahout&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mahout-examples&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
-<p>基于用户的推荐，以FileDataModel为例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">File modelFile modelFile = new File(&quot;intro.csv&quot;);</span><br><span class="line"></span><br><span class="line">DataModel model = new FileDataModel(modelFile);</span><br><span class="line"></span><br><span class="line">//用户相似度，使用基于皮尔逊相关系数计算相似度</span><br><span class="line">UserSimilarity similarity = new PearsonCorrelationSimilarity(model);</span><br><span class="line"></span><br><span class="line">//选择邻居用户，使用NearestNUserNeighborhood实现UserNeighborhood接口，选择邻近的4个用户</span><br><span class="line">UserNeighborhood neighborhood = new NearestNUserNeighborhood(4, similarity, model);</span><br><span class="line"></span><br><span class="line">Recommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);</span><br><span class="line"></span><br><span class="line">//给用户1推荐4个物品</span><br><span class="line">List&lt;RecommendedItem&gt; recommendations = recommender.recommend(1, 4);</span><br><span class="line"></span><br><span class="line">for (RecommendedItem recommendation : recommendations) &#123;</span><br><span class="line">    System.out.println(recommendation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意： FileDataModel要求输入文件中的字段分隔符为逗号或者制表符，如果你想使用其他分隔符，你可以扩展一个FileDataModel的实现，例如，mahout中已经提供了一个解析MoiveLens的数据集（分隔符为::）的实现GroupLensDataModel。</p>
-</blockquote>
-<p><code>GenericUserBasedRecommender</code>是基于用户的简单推荐器实现类，推荐主要参照传入的DataModel和UserNeighborhood，总体是三个步骤：</p>
-<ol>
-<li>从UserNeighborhood获取当前用户Ui最相似的K个用户集合{U1, U2, …Uk}；</li>
-<li>从这K个用户集合排除Ui的偏好商品，剩下的Item集合为{Item0, Item1, …Itemm}；</li>
-<li>对Item集合里每个Itemj计算Ui可能偏好程度值pref(Ui, Itemj)，并把Item按此数值从高到低排序，前N个item推荐给用户Ui。</li>
-<li>对相同用户重复获得推荐结果，我们可以改用CachingRecommender来包装GenericUserBasedRecommender对象，将推荐结果缓存起来：</li>
-</ol>
-<p><code>Recommender cachingRecommender = new CachingRecommender(recommender);</code></p>
-<p>上面代码可以在main方法中直接运行，然后，我们可以获取推荐模型的评分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//使用平均绝对差值获得评分</span><br><span class="line">RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();</span><br><span class="line">// 用RecommenderBuilder构建推荐引擎</span><br><span class="line">RecommenderBuilder recommenderBuilder = new RecommenderBuilder() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public Recommender buildRecommender(DataModel model) throws TasteException &#123;</span><br><span class="line">        UserSimilarity similarity = new PearsonCorrelationSimilarity(model);</span><br><span class="line">        UserNeighborhood neighborhood = new NearestNUserNeighborhood(4, similarity, model);</span><br><span class="line">        return new GenericUserBasedRecommender(model, neighborhood, similarity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// Use 70% of the data to train; test using the other 30%.</span><br><span class="line">double score = evaluator.evaluate(recommenderBuilder, null, model, 0.7, 1.0);</span><br><span class="line">System.out.println(score);</span><br></pre></td></tr></table></figure></p>
-<p>接下来，可以获取推荐结果的查准率和召回率：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();</span><br><span class="line">// Build the same recommender for testing that we did last time:</span><br><span class="line">RecommenderBuilder recommenderBuilder = new RecommenderBuilder() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public Recommender buildRecommender(DataModel model) throws TasteException &#123;</span><br><span class="line">        UserSimilarity similarity = new PearsonCorrelationSimilarity(model);</span><br><span class="line">        UserNeighborhood neighborhood = new NearestNUserNeighborhood(4, similarity, model);</span><br><span class="line">        return new GenericUserBasedRecommender(model, neighborhood, similarity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// 计算推荐4个结果时的查准率和召回率</span><br><span class="line">IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder,null, model, null, 4,</span><br><span class="line">        GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD,1.0);</span><br><span class="line">System.out.println(stats.getPrecision());</span><br><span class="line">System.out.println(stats.getRecall());</span><br></pre></td></tr></table></figure></p>
-<p>如果是基于物品的推荐，代码大体相似，只是没有了UserNeighborhood，然后将上面代码中的User换成Item即可，完整代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">File modelFile modelFile = new File(&quot;intro.csv&quot;);</span><br><span class="line"></span><br><span class="line">DataModel model = new FileDataModel(new File(file));</span><br><span class="line"></span><br><span class="line">// Build the same recommender for testing that we did last time:</span><br><span class="line">RecommenderBuilder recommenderBuilder = new RecommenderBuilder() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public Recommender buildRecommender(DataModel model) throws TasteException &#123;</span><br><span class="line">        ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);</span><br><span class="line">        return new GenericItemBasedRecommender(model, similarity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//获取推荐结果</span><br><span class="line">List&lt;RecommendedItem&gt; recommendations = recommenderBuilder.buildRecommender(model).recommend(1, 4);</span><br><span class="line"></span><br><span class="line">for (RecommendedItem recommendation : recommendations) &#123;</span><br><span class="line">    System.out.println(recommendation);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//计算评分</span><br><span class="line">RecommenderEvaluator evaluator =</span><br><span class="line">        new AverageAbsoluteDifferenceRecommenderEvaluator();</span><br><span class="line">// Use 70% of the data to train; test using the other 30%.</span><br><span class="line">double score = evaluator.evaluate(recommenderBuilder, null, model, 0.7, 1.0);</span><br><span class="line">System.out.println(score);</span><br><span class="line"></span><br><span class="line">//计算查全率和查准率</span><br><span class="line">RecommenderIRStatsEvaluator statsEvaluator = new GenericRecommenderIRStatsEvaluator();</span><br><span class="line"></span><br><span class="line">// Evaluate precision and recall &quot;at 2&quot;:</span><br><span class="line">IRStatistics stats = statsEvaluator.evaluate(recommenderBuilder,</span><br><span class="line">        null, model, null, 4,</span><br><span class="line">        GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD,</span><br><span class="line">        1.0);</span><br><span class="line">System.out.println(stats.getPrecision());</span><br><span class="line">System.out.println(stats.getRecall());</span><br></pre></td></tr></table></figure></p>
-<h2 id="在Spark中运行"><a href="#在Spark中运行" class="headerlink" title="在Spark中运行"></a>在Spark中运行</h2><p>在Spark中运行，需要将Mahout相关的jar添加到Spark的classpath中，修改/etc/spark/conf/spark-env.sh，添加下面两行代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SPARK_DIST_CLASSPATH=&quot;$SPARK_DIST_CLASSPATH:/usr/lib/mahout/lib/*&quot;</span><br><span class="line">SPARK_DIST_CLASSPATH=&quot;$SPARK_DIST_CLASSPATH:/usr/lib/mahout/*&quot;</span><br></pre></td></tr></table></figure>
-<p>然后，以本地模式在spark-shell中运行下面代码交互测试：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//注意：这里是本地目录</span><br><span class="line">val model = new FileDataModel(new File(&quot;intro.csv&quot;))</span><br><span class="line"></span><br><span class="line">val evaluator = new RMSRecommenderEvaluator()</span><br><span class="line">val recommenderBuilder = new RecommenderBuilder &#123;</span><br><span class="line">  override def buildRecommender(dataModel: DataModel): Recommender = &#123;</span><br><span class="line">    val similarity = new LogLikelihoodSimilarity(dataModel)</span><br><span class="line">    new GenericItemBasedRecommender(dataModel, similarity)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val score = evaluator.evaluate(recommenderBuilder, null, model, 0.95, 0.05)</span><br><span class="line">println(s&quot;Score=$score&quot;)</span><br><span class="line"></span><br><span class="line">val recommender=recommenderBuilder.buildRecommender(model)</span><br><span class="line">val users=trainingRatings.map(_.user).distinct().take(20)</span><br><span class="line"></span><br><span class="line">import scala.collection.JavaConversions._</span><br><span class="line"></span><br><span class="line">val result=users.par.map&#123;user=&gt;</span><br><span class="line">  user+&quot;,&quot;+recommender.recommend(user,40).map(_.getItemID).mkString(&quot;,&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/sujitpal/mia-scala-examples上面有一个评估基于物品或是用户的各种相似度下的评分的类，叫做" target="_blank" rel="external">https://github.com/sujitpal/mia-scala-examples上面有一个评估基于物品或是用户的各种相似度下的评分的类，叫做</a> RecommenderEvaluator，供大家学习参考。</p>
-<h2 id="分布式运行"><a href="#分布式运行" class="headerlink" title="分布式运行"></a>分布式运行</h2><p>Mahout提供了<code>org.apache.mahout.cf.taste.hadoop.item.RecommenderJob</code>类以MapReduce的方式来实现基于物品的协同过滤，查看该类的使用说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@Master:~/data$ mahout org.apache.mahout.cf.taste.hadoop.item.RecommenderJob</span><br><span class="line">MAHOUT_LOCAL is not set; adding HADOOP_CONF_DIR to classpath.</span><br><span class="line">Running on hadoop, using /home/ubuntu/hadoop/bin/hadoop and HADOOP_CONF_DIR=/home/ubuntu/hadoop/etc/hadoop</span><br><span class="line">MAHOUT-JOB: /home/ubuntu/apache-mahout-distribution-0.10.1/mahout-examples-0.10.1-job.jar</span><br><span class="line">16/07/25 07:41:32 WARN driver.MahoutDriver: No org.apache.mahout.cf.taste.hadoop.item.RecommenderJob.props found on classpath, will use command-line arguments only</span><br><span class="line">16/07/25 07:41:33 ERROR common.AbstractJob: Missing required option --similarityClassname</span><br><span class="line">Missing required option --similarityClassname                                   </span><br><span class="line">Usage:                                                                          </span><br><span class="line"> [--input &lt;input&gt; --output &lt;output&gt; --numRecommendations &lt;numRecommendations&gt;   </span><br><span class="line">--usersFile &lt;usersFile&gt; --itemsFile &lt;itemsFile&gt; --filterFile &lt;filterFile&gt;       </span><br><span class="line">--userItemFile &lt;userItemFile&gt; --booleanData &lt;booleanData&gt; --maxPrefsPerUser     </span><br><span class="line">&lt;maxPrefsPerUser&gt; --minPrefsPerUser &lt;minPrefsPerUser&gt; --maxSimilaritiesPerItem  </span><br><span class="line">&lt;maxSimilaritiesPerItem&gt; --maxPrefsInItemSimilarity &lt;maxPrefsInItemSimilarity&gt;  </span><br><span class="line">--similarityClassname &lt;similarityClassname&gt; --threshold &lt;threshold&gt;             </span><br><span class="line">--outputPathForSimilarityMatrix &lt;outputPathForSimilarityMatrix&gt; --randomSeed    </span><br><span class="line">&lt;randomSeed&gt; --sequencefileOutput --help --tempDir &lt;tempDir&gt; --startPhase       </span><br><span class="line">&lt;startPhase&gt; --endPhase &lt;endPhase&gt;]                                             </span><br><span class="line">--similarityClassname (-s) similarityClassname    Name of distributed           </span><br><span class="line">                                                  similarity measures class to  </span><br><span class="line">                                                  instantiate, alternatively    </span><br><span class="line">                                                  use one of the predefined     </span><br><span class="line">                                                  similarities                  </span><br><span class="line">                                                  ([SIMILARITY_COOCCURRENCE,    </span><br><span class="line">                                                  SIMILARITY_LOGLIKELIHOOD,     </span><br><span class="line">                                                  SIMILARITY_TANIMOTO_COEFFICIEN</span><br><span class="line">                                                  T, SIMILARITY_CITY_BLOCK,     </span><br><span class="line">                                                  SIMILARITY_COSINE,            </span><br><span class="line">                                                  SIMILARITY_PEARSON_CORRELATION</span><br><span class="line">                                                  ,                             </span><br><span class="line">                                                  SIMILARITY_EUCLIDEAN_DISTANCE]</span><br><span class="line">                                                  )</span><br></pre></td></tr></table></figure>
-<p>也可输入<code>mahout org.apache.mahout.cf.taste.hadoop.item.RecommenderJob  --help</code>查看详细说明</p>
-<p>可见，该类可以接收的命令行参数如下：</p>
-<p><code>--input(path)(-i)</code>: 存储用户偏好数据的目录，该目录下可以包含一个或多个存储用户偏好数据的文本文件；<br><code>--output(path)(-o)</code>: 结算结果的输出目录<br><code>--numRecommendations (integer)</code>: 为每个用户推荐的item数量，默认为10<br><code>--usersFile (path)</code>: 指定一个包含了一个或多个存储userID的文件路径，仅为该路径下所有文件包含的userID做推荐计算 (该选项可选)<br><code>--itemsFile (path)</code>: 指定一个包含了一个或多个存储itemID的文件路径，仅为该路径下所有文件包含的itemID做推荐计算 (该选项可选)<br><code>--filterFile (path)</code>: 指定一个路径，该路径下的文件包含了[userID,itemID]值对，userID和itemID用逗号分隔。计算结果将不会为user推荐[userID,itemID]值对中包含的item (该选项可选)<br><code>--booleanData (boolean)</code>: 如果输入数据不包含偏好数值，则将该参数设置为true，默认为false<br><code>--maxPrefsPerUser (integer)</code>: 在最后计算推荐结果的阶段，针对每一个user使用的偏好数据的最大数量，默认为10<br><code>--minPrefsPerUser (integer)</code>: 在相似度计算中，忽略所有偏好数据量少于该值的用户，默认为1<br><code>--maxSimilaritiesPerItem (integer)</code>: 针对每个item的相似度最大值，默认为100<br><code>--maxPrefsPerUserInItemSimilarity (integer)</code>: 在item相似度计算阶段，针对每个用户考虑的偏好数据最大数量，默认为1000<br><code>--similarityClassname (classname)</code>: 向量相似度计算类<br><code>outputPathForSimilarityMatrix</code>：SimilarityMatrix输出目录<br><code>--randomSeed</code>：随机种子 –sequencefileOutput：序列文件输出路径<br><code>--tempDir (path)</code>: 存储临时文件的目录，默认为当前用户的home目录下的temp目录<br><code>--startPhase</code><br><code>--endPhase</code><br><code>--threshold (double)</code>: 忽略相似度低于该阀值的item对</p>
-<p>一个例子如下，使用<code>SIMILARITY_LOGLIKELIHOOD</code>相似度推荐物品：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop jar /usr/lib/mahout/mahout-examples-0.9-cdh5.4.0-job.jar org.apache.mahout.cf.taste.hadoop.item.RecommenderJob --input /tmp/mahout/part-00000 --output /tmp/mahout-out  -s SIMILARITY_LOGLIKELIHOOD</span><br></pre></td></tr></table></figure></p>
-<p>自己运行的例子如下：</p>
-<p>部分实验数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">1	25	0.0136316222</span><br><span class="line">1	116	0.0090877481</span><br><span class="line">1	5	0.0045438741</span><br><span class="line">1	23	0.1862988368</span><br><span class="line">1	17	0.0272632444</span><br><span class="line">1	3	1.4122360602</span><br><span class="line">1	11	0.0363509925</span><br><span class="line">1	12	0.4543874068</span><br><span class="line">1	120	0.0027263244</span><br><span class="line">1	93	0.0136316222</span><br><span class="line">1	21	0.0036350993</span><br><span class="line">1	6	0.7688234922</span><br><span class="line">1	47	0.0018175496</span><br><span class="line">1	66	0.0454387407</span><br><span class="line">1	27	0.0254456948</span><br><span class="line">1	44	0.0245369200</span><br><span class="line">1	315	0.0045438741</span><br><span class="line">1	28	0.0545264888</span><br><span class="line">1	138	0.0636142369</span><br><span class="line">1	108	0.0045438741</span><br><span class="line">1	1	7.2695320732</span><br><span class="line">1	85	12.5188577359</span><br><span class="line">1	168	0.0545264888</span><br><span class="line">10	4	0.6772009029</span><br><span class="line">10	6	0.6772009029</span><br><span class="line">10	217	0.0112866817</span><br><span class="line">10	2	1.7607223476</span><br><span class="line">10	1	1.8735891648</span><br><span class="line">100	25	0.4788867023</span><br><span class="line">100	5	0.0047793084</span><br><span class="line">100	17	0.2915378128</span><br><span class="line">100	26	0.0047793084</span><br><span class="line">100	3	0.1194827101</span><br><span class="line">100	11	0.6987348890</span><br><span class="line">100	4	0.6652797301</span><br><span class="line">100	12	0.0047793084</span><br><span class="line">100	30	0.0736013495</span><br><span class="line">100	32	0.5257239247</span><br><span class="line">100	31	0.0076468934</span><br><span class="line">100	37	0.0430137757</span><br><span class="line">100	29	0.0592634242</span><br><span class="line">100	44	0.0009558617</span><br><span class="line">100	13	4.4313747540</span><br><span class="line">100	1	9.5461906101</span><br><span class="line">100	10	0.0439696373</span><br><span class="line">1000	8	0.2902055623</span><br><span class="line">1000	14	0.0483675937</span><br><span class="line">1000	5	0.0725513906</span><br><span class="line">1000	9	0.0725513906</span><br><span class="line">1000	26	0.3869407497</span><br><span class="line">1000	3	0.1451027811</span><br><span class="line">1000	436	0.0120918984</span><br><span class="line">1000	2	3.9177750907</span><br><span class="line">1000	15	2.4304715840</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@Master:~/data$ mahout org.apache.mahout.cf.taste.hadoop.item.RecommenderJob -i /test/item/ckm_pre_result1000000.txt -o /test/item/outputPersonCorr --similarityClassname org.apache.mahout.math.hadoop.similarity.cooccurrence.measures.PearsonCorrelationSimilarity</span><br></pre></td></tr></table></figure>
-<p>部分结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1	[196:10.482155,14:9.271373,145:8.875873,177:7.779633,360:7.537198,114:7.1917353,635:7.085346,75:6.8879533,235:6.796164,210:6.586777]</span><br><span class="line">2	[386:4.339762,631:4.2806735,194:4.274664,153:4.1018524,362:3.7975848,934:3.422003,195:3.0110214,188:2.7676048,30:2.6990044,746:2.693153]</span><br><span class="line">3	[45:4.2422075,212:4.1731844,270:3.9618893,309:3.960001,204:3.933118,275:3.6498196,321:3.6286862,179:3.487534,240:3.3450491,170:3.28568]</span><br><span class="line">4	[293:4.3900704,746:3.9469879,51:3.3795352,52:3.3444872,312:2.818981,24:2.719058,649:2.2690945,28:2.1947412,196:2.170363,145:2.008545]</span><br><span class="line">5	[590:1.1531421,332:1.1508745,336:1.134177,852:1.1335075,561:1.121143,36:1.1099223,535:1.0878772,129:1.0850264,236:1.0413511,83:1.0349866]</span><br></pre></td></tr></table></figure></p>
-<p>默认情况下，mahout使用的reduce数目为1，这样造成大数据处理时效率较低，可以通过参数mahout执行脚本中的<code>MAHOUT_OPTS</code>中的<code>-Dmapred.reduce.tasks</code>参数指定reduce数目。</p>
-<p>上面命令运行完成之后，会在当前用户的hdfs主目录生成temp目录，该目录可由–tempDir (path)参数设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop fs -ls temp</span><br><span class="line">Found 10 items</span><br><span class="line">-rw-r--r--   3 root hadoop          7 2015-06-10 14:42 temp/maxValues.bin</span><br><span class="line">-rw-r--r--   3 root hadoop    5522717 2015-06-10 14:42 temp/norms.bin</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:41 temp/notUsed</span><br><span class="line">-rw-r--r--   3 root hadoop          7 2015-06-10 14:42 temp/numNonZeroEntries.bin</span><br><span class="line">-rw-r--r--   3 root hadoop    3452222 2015-06-10 14:41 temp/observationsPerColumn.bin</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:47 temp/pairwiseSimilarity</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:52 temp/partialMultiply</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:39 temp/preparePreferenceMatrix</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:50 temp/similarityMatrix</span><br><span class="line">drwxr-xr-x   - root hadoop          0 2015-06-10 14:42 temp/weights</span><br></pre></td></tr></table></figure>
-<p>观察yarn的管理界面，该命令会生成9个任务，任务名称依次是：</p>
-<ul>
-<li>PreparePreferenceMatrixJob-ItemIDIndexMapper-Reducer</li>
-<li>PreparePreferenceMatrixJob-ToItemPrefsMapper-Reducer</li>
-<li>PreparePreferenceMatrixJob-ToItemVectorsMapper-Reducer</li>
-<li>RowSimilarityJob-CountObservationsMapper-Reducer</li>
-<li>RowSimilarityJob-VectorNormMapper-Reducer</li>
-<li>RowSimilarityJob-CooccurrencesMapper-Reducer</li>
-<li>RowSimilarityJob-UnsymmetrifyMapper-Reducer</li>
-<li>partialMultiply</li>
-<li>RecommenderJob-PartialMultiplyMapper-Reducer</li>
-</ul>
-<p>从任务名称，大概可以知道每个任务在做什么，如果你的输入参数不一样，生成的任务数可能不一样，这个需要测试一下才能确认。</p>
-<p>在hdfs上查看输出的结果，用户和推荐结果用\t分隔，推荐结果中物品之间用逗号分隔，物品后面通过冒号连接评分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">843 [10709679:4.8334665,8389878:4.833426,9133835:4.7503786,10366169:4.7503185,9007487:4.750272,8149253:4.7501993,10366165:4.750115,9780049:4.750108,8581254:4.750071,10456307:4.7500467]</span><br><span class="line">6253    [10117445:3.0375953,10340299:3.0340924,8321090:3.0340924,10086615:3.032164,10436801:3.0187714,9668385:3.0141575,8502110:3.013954,10476325:3.0074399,10318667:3.0004222,8320987:3.0003839]</span><br></pre></td></tr></table></figure></p>
-<p>使用Java API方式执行，请参考<a href="http://blog.fens.me/hadoop-mahout-mapreduce-itemcf/" target="_blank" rel="external">Mahout分步式程序开发 基于物品的协同过滤ItemCF</a>。</p>
-<p>在Scala或者Spark中，可以以Java API或者命令方式运行，最后还可以通过Spark来处理推荐的结果，例如：过滤、去重、补足数据，这部分内容不做介绍。</p>
-<p>本文基本转载自：转载自<a href="http://blog.javachen.com/" target="_blank" rel="external">JavaChen Blog</a>，作者：JavaChen，文章地址<a href="http://blog.javachen.com/2015/06/10/collaborative-filtering-using-mahout.html" target="_blank" rel="external">http://blog.javachen.com/2015/06/10/collaborative-filtering-using-mahout.html</a></p>
-<p>其他参考资料:</p>
-<ul>
-<li><a href="http://blog.fens.me/hadoop-mapreduce-recommend/" target="_blank" rel="external">用Hadoop构建电影推荐系统(自己实现分布式)</a></li>
-<li><a href="http://blog.fens.me/hadoop-mahout-recommend-job/" target="_blank" rel="external">用Mahout构建职位推荐引擎(单机)</a></li>
-<li><a href="http://blog.fens.me/hadoop-mahout-recommend-book/" target="_blank" rel="external">Mahout构建图书推荐系统(单机)</a></li>
-<li><a href="http://blog.fens.me/hadoop-mahout-mapreduce-itemcf/" target="_blank" rel="external">Mahout分步式程序开发 基于物品的协同过滤ItemCF（调用接口）</a></li>
-<li><a href="http://www.chinahadoop.cn/group/5/thread/499" target="_blank" rel="external">mahout分布式：Item-based推荐</a></li>
-<li><a href="https://mahout.apache.org/users/recommender/intro-itembased-hadoop.html" target="_blank" rel="external">Introduction to Item-Based Recommendations with Hadoop</a></li>
-<li><a href="http://my.oschina.net/Cfreedom/blog/201828" target="_blank" rel="external">使用Mahout搭建推荐系统之入门篇4-Mahout实战</a></li>
-<li><a href="http://zengzhaozheng.blog.51cto.com/8219051/1557054" target="_blank" rel="external">基于MapReduce的ItemBase推荐算法的共现矩阵实现</a></li>
-</ul>
 
           
         
@@ -1813,7 +1748,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1830,7 +1765,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

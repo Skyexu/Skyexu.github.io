@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="HBase," />
+  <meta name="keywords" content="Oracle," />
 
 
 
@@ -96,25 +96,19 @@
 
 
 
-<meta name="description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_">
+<meta name="description" content="问题一启动dbstart 报错1ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME
+linux成功安装Oracle后切换到Oracle用户后，直接使用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HBase集群搭建">
-<meta property="og:url" content="http://yoursite.com/2016/06/16/HBase集群搭建/index.html">
+<meta property="og:title" content="oracle启动dbstart出错或无反应的解决办法及自启动">
+<meta property="og:url" content="http://yoursite.com/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_">
-<meta property="og:updated_time" content="2016-06-16T12:02:51.320Z">
+<meta property="og:description" content="问题一启动dbstart 报错1ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME
+linux成功安装Oracle后切换到Oracle用户后，直接使用">
+<meta property="og:updated_time" content="2016-08-20T16:23:55.670Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HBase集群搭建">
-<meta name="twitter:description" content="1. 上传hbase安装包2. 解压3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下
-vim hbase-env.shexport JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_">
+<meta name="twitter:title" content="oracle启动dbstart出错或无反应的解决办法及自启动">
+<meta name="twitter:description" content="问题一启动dbstart 报错1ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME
+linux成功安装Oracle后切换到Oracle用户后，直接使用">
 
 
 
@@ -135,9 +129,9 @@ export HBASE_MANAGES_">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/16/HBase集群搭建/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/"/>
 
-  <title> HBase集群搭建 | Skye's Blog </title>
+  <title> oracle启动dbstart出错或无反应的解决办法及自启动 | Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -267,7 +261,7 @@ export HBASE_MANAGES_">
             
             
               
-                HBase集群搭建
+                oracle启动dbstart出错或无反应的解决办法及自启动
               
             
           </h1>
@@ -279,8 +273,8 @@ export HBASE_MANAGES_">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-16T16:26:16+08:00" content="2016-06-16">
-              2016-06-16
+            <time itemprop="dateCreated" datetime="2016-08-20T09:51:07+08:00" content="2016-08-20">
+              2016-08-20
             </time>
           </span>
 
@@ -293,8 +287,8 @@ export HBASE_MANAGES_">
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -309,8 +303,8 @@ export HBASE_MANAGES_">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/06/16/HBase集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/16/HBase集群搭建/" itemprop="commentsCount"></span>
+                <a href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -333,45 +327,16 @@ export HBASE_MANAGES_">
       
 
       
-        <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
-<h4 id="vim-hbase-env-sh"><a href="#vim-hbase-env-sh" class="headerlink" title="vim hbase-env.sh"></a>vim hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_ZK=false
-</code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
-    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.rootdir&lt;/name&gt;
-            &lt;value&gt;hdfs://ns1/hbase&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定hbase是分布式的 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
-            &lt;value&gt;true&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
-            &lt;value&gt;itcast04:2181,itcast05:2181,itcast06:2181&lt;/value&gt;
-    &lt;/property&gt;
-&lt;/configuration&gt;
-</code></pre><h4 id="vim-regionservers"><a href="#vim-regionservers" class="headerlink" title="vim regionservers"></a>vim regionservers</h4><pre><code>itcast03
-itcast04
-itcast05
-itcast06
-</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间</h2><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
-</code></pre><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
-    ./zkServer.sh start
-启动hbase集群
-    start-dfs.sh
-启动hbase，在主节点上运行：
-    start-hbase.sh
-</code></pre><h2 id="6-通过浏览器访问hbase管理页面"><a href="#6-通过浏览器访问hbase管理页面" class="headerlink" title="6.通过浏览器访问hbase管理页面"></a>6.通过浏览器访问hbase管理页面</h2><pre><code>192.168.1.201:60010
-</code></pre><h2 id="7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><a href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动" class="headerlink" title="7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动"></a>7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</h2><pre><code>hbase-daemon.sh start master
-</code></pre>
+        <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p>启动dbstart 报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME</span><br></pre></td></tr></table></figure></p>
+<p>linux成功安装Oracle后切换到Oracle用户后，直接使用<code>dbstart</code>($ORACLE_HOME/bin中)启动oracle数据库报错如上。原因是dbstart调用的tnslsnr脚本位置有错。解决办法：<br>打开该脚本：<code>vim $ORACLE_HOME/bin/dbstart</code><br>查找“ORACLE_HOME_LISTENER”变量的定义处，<br>修改<br><code>ORACLE_HOME_LISTENER＝$1</code><br>为<code>ORACLE_HOME_LISTENER＝$ORACLE_HOME</code></p>
+<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><p>启动<code>dbstart</code>没有反应，即不报错也不显示启动信息<br>原因是oracle的配置需要修改才能使用dbstart启动对应的数据实例。<br>解决办法：</p>
+<p><code>sudo vim /etc/oratab</code><br>将<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:N</code>改为<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:Y</code></p>
+<h3 id="问题三"><a href="#问题三" class="headerlink" title="问题三"></a>问题三</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;dbstart</span><br><span class="line">Can&apos;t find init file for Database &quot;orcl&quot;.</span><br><span class="line"></span><br><span class="line">Database &quot;orcl&quot; NOT started.</span><br></pre></td></tr></table></figure>
+<p>原因就是没有找到init文件 我的数据库实例是orcl<br>这个文件<code>在$ORACLE_HOME/dbs/</code>目录下<br><code>cd $ORACLE_HOME/dbs</code><br>解决办法就是建立一个initorcl.ora的软连接就可以了<br><code>ln -s spfileego.ora initorcl.ora</code></p>
+<h3 id="Oracle自启动"><a href="#Oracle自启动" class="headerlink" title="Oracle自启动"></a>Oracle自启动</h3><p>创建开机自动启动数据库的脚本<br>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># vi /etc/init.d/Oracledb</span><br><span class="line">文件内容如下：</span><br><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># /etc/init.d/oracledb</span><br><span class="line">#</span><br><span class="line"># Run-level Startup script for the Oracle Instance, Listener, and</span><br><span class="line"># Web Interface</span><br><span class="line"></span><br><span class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">ORA_OWNR=&quot;oracle&quot;</span><br><span class="line"># if the executables do not exist -- display error</span><br><span class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</span><br><span class="line">then</span><br><span class="line">echo &quot;Oracle startup: cannot start&quot;</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line"># depending on parameter -- startup, shutdown, restart</span><br><span class="line"># of the instance and listener or usage display</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">start)</span><br><span class="line"># Oracle listener and instance startup</span><br><span class="line">echo -n &quot;Starting Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</span><br><span class="line">touch /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line"># Oracle listener and instance shutdown</span><br><span class="line">echo -n &quot;Shutdown Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</span><br><span class="line">rm -f /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">reload|restart)</span><br><span class="line">$0 stop</span><br><span class="line">$0 start</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</span><br><span class="line">exit 1</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 /etc/init.d/Oracledb</span><br><span class="line"># update-rc.d Oracledb defaults 99</span><br></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+
       
     </div>
 
@@ -392,7 +357,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
       
         <div class="post-tags">
           
-            <a href="/tags/HBase/" rel="tag">#HBase</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
           
         </div>
       
@@ -401,12 +366,16 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/08/19/Linux日常操作笔记/" rel="next" title="Linux日常操作笔记">
+                <i class="fa fa-chevron-left"></i> Linux日常操作笔记
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/16/MapReduce 多文件输入/" rel="prev" title="MapReduce 多文件输入">
-                MapReduce 多文件输入 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/22/Hive安装笔记/" rel="prev" title="Hive1.2.1安装笔记">
+                Hive1.2.1安装笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -433,8 +402,8 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/16/HBase集群搭建/"
-           data-title="HBase集群搭建" data-url="http://yoursite.com/2016/06/16/HBase集群搭建/">
+      <div class="ds-thread" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/"
+           data-title="oracle启动dbstart出错或无反应的解决办法及自启动" data-url="http://yoursite.com/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/">
       </div>
     
   </div>
@@ -545,7 +514,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-上传hbase安装包"><span class="nav-number">1.</span> <span class="nav-text">1. 上传hbase安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-解压"><span class="nav-number">2.</span> <span class="nav-text">2. 解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><span class="nav-number">3.</span> <span class="nav-text">3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-hbase-env-sh"><span class="nav-number">3.0.1.</span> <span class="nav-text">vim hbase-env.sh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-hbase-site-xml"><span class="nav-number">3.0.2.</span> <span class="nav-text">vim hbase-site.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim-regionservers"><span class="nav-number">3.0.3.</span> <span class="nav-text">vim regionservers</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-将配置好的HBase拷贝到每一个节点并同步时间"><span class="nav-number">4.</span> <span class="nav-text">4. 将配置好的HBase拷贝到每一个节点并同步时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-启动所有的hbase"><span class="nav-number">5.</span> <span class="nav-text">5. 启动所有的hbase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-通过浏览器访问hbase管理页面"><span class="nav-number">6.</span> <span class="nav-text">6.通过浏览器访问hbase管理页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><span class="nav-number">7.</span> <span class="nav-text">7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题一"><span class="nav-number">1.</span> <span class="nav-text">问题一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题二"><span class="nav-number">2.</span> <span class="nav-text">问题二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题三"><span class="nav-number">3.</span> <span class="nav-text">问题三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle自启动"><span class="nav-number">4.</span> <span class="nav-text">Oracle自启动</span></a></li></ol></div>
             
           </div>
         </section>
