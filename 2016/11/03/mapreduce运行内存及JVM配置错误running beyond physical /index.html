@@ -1,0 +1,691 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MapReduce," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="错误描述：123416/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILEDContainer [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mapreduce运行内存及JVM配置错误running beyond physical memory limits">
+<meta property="og:url" content="http://yoursite.com/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /index.html">
+<meta property="og:site_name" content="Skye's Blog">
+<meta property="og:description" content="错误描述：123416/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILEDContainer [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyon">
+<meta property="og:updated_time" content="2016-11-03T12:18:25.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mapreduce运行内存及JVM配置错误running beyond physical memory limits">
+<meta name="twitter:description" content="错误描述：123416/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILEDContainer [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyon">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /"/>
+
+  <title> mapreduce运行内存及JVM配置错误running beyond physical memory limits | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mapreduce运行内存及JVM配置错误running beyond physical memory limits
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T20:09:27+08:00" content="2016-11-03">
+              2016-11-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="错误描述："><a href="#错误描述：" class="headerlink" title="错误描述："></a>错误描述：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILED</span><br><span class="line">Container [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyond physical memory limits. Current usage: 4.0 GB of 3 GB physical memory used; 6.9 GB of 6.3 GB virtual memory used. Killing container.</span><br><span class="line">Dump of the process-tree for container_1476760655616_0575_01_000052 :</span><br><span class="line">	|- PID PPID PGRPID SESSID CMD_NAME USER_MODE_TIME(MILLIS) SYSTEM_TIME(MILLIS) VMEM_USAGE(BYTES) RSSMEM_USAGE(PAGES) FULL_CMD_LINE</span><br></pre></td></tr></table></figure>
+<h3 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h3><p>查看hadoop配置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">      &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">          &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;-Xmx3072m&lt;/value&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property&gt;</span><br><span class="line">              &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;-Xmx6144m&lt;/value&gt;</span><br><span class="line">                &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>mapreduce.reduce.java.opts</code>参数大于<code>mapreduce.reduce.memory.mb</code>,需小于才行</p>
+<p>在mapreduce执行函数中设置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf.setInt(&quot;mapreduce.reduce.memory.mb&quot;, 6144);</span><br></pre></td></tr></table></figure></p>
+<p>1.</p>
+<p>参考 </p>
+<blockquote>
+<p><a href="http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits" target="_blank" rel="external">http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits</a></p>
+</blockquote>
+<p>我们集群中的每台机器都有48 GB的RAM。此RAM的一些应保留为操作系统使用。在每个节点上，我们将为YARN分配40 GB RAM以使用操作系统并保留8 GB</p>
+<p>对于我们的示例集群，我们有一个容器的最小RAM（yarn.scheduler.minimum-allocation-mb）= 2 GB。因此，我们将为Map任务容器分配4 GB，为Reduce任务容器分配8 GB。</p>
+<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb：4096</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.memory.mb：8192</span><br></pre></td></tr></table></figure></p>
+<p>每个容器将运行Map和Reduce任务的JVM。 JVM堆大小应设置为低于上面定义的Map和Reduce内存，以使它们在YARN分配的Container内存的边界内。</p>
+<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.java.opts：-Xmx3072m</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.java.opts：-Xmx6144m</span><br></pre></td></tr></table></figure></p>
+<p>以上设置配置Map和Reduce任务将使用的物理RAM的上限。<br>。</p>
+<p>2.</p>
+<blockquote>
+<p><a href="http://blog.chinaunix.net/uid-25691489-id-5587957.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-25691489-id-5587957.html</a></p>
+</blockquote>
+<p>大概是job运行超过了map和reduce设置的内存大小，导致任务失败，调整增加了map和reduce的内容，问题排除，一些参数介绍如下：</p>
+<p>RM的内存资源配置，主要是通过下面的两个参数进行的（这两个值是Yarn平台特性，应在yarn-site.xml中配置好）：<br>yarn.scheduler.minimum-allocation-mb<br>yarn.scheduler.maximum-allocation-mb<br>说明：单个容器可申请的最小与最大内存，应用在运行申请内存时不能超过最大值，小于最小值则分配最小值，从这个角度看，最小值有点想操作系统中的页。最小值还有另外一种用途，计算一个节点的最大container数目注：这两个值一经设定不能动态改变(此处所说的动态改变是指应用运行时)。</p>
+<p>NM的内存资源配置，主要是通过下面两个参数进行的（这两个值是Yarn平台特性，应在yarn-sit.xml中配置） ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn.nodemanager.resource.memory-mb</span><br><span class="line">yarn.nodemanager.vmem-pmem-ratio</span><br></pre></td></tr></table></figure></p>
+<p>说明：每个节点可用的最大内存，RM中的两个值不应该超过此值。此数值可以用于计算container最大数目，即：用此值除以RM中的最小容器内存。虚拟内存率，是占task所用内存的百分比，默认值为2.1倍;注意：第一个参数是不可修改的，一旦设置，整个运行过程中不可动态修改，且该值的默认大小是8G，即使计算机内存不足8G也会按着8G内存来使用。</p>
+<p>AM内存配置相关参数，此处以MapReduce为例进行说明（这两个值是AM特性，应在mapred-site.xml中配置），如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb</span><br><span class="line">mapreduce.reduce.memory.mb</span><br></pre></td></tr></table></figure></p>
+<p>说明：这两个参数指定用于MapReduce的两个任务（Map and Reduce task）的内存大小，其值应该在RM中的最大最小container之间。如果没有配置则通过如下简单公式获得：<br>max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))<br>一般的reduce应该是map的2倍。注：这两个值可以在应用启动时通过参数改变；</p>
+<p>AM中其它与内存相关的参数，还有JVM相关的参数，这些参数可以通过，如下选项配置：<br>mapreduce.map.java.opts<br>mapreduce.reduce.java.opts<br>说明：这两个参主要是为需要运行JVM程序（java、scala等）准备的，通过这两个设置可以向JVM中传递参数的，与内存有关的是，-Xmx，-Xms等选项。此数值大小，应该在AM中的map.mb和reduce.mb之间。</p>
+<p>我们对上面的内容进行下总结，当配置Yarn内存的时候主要是配置如下三个方面：每个Map和Reduce可用物理内存限制；对于每个任务的JVM对大小的限制；虚拟内存的限制；</p>
+<p>下面通过一个具体错误实例，进行内存相关说明，错误如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Container[pid=41884,containerID=container_1405950053048_0016_01_000284] is running beyond virtual memory limits. Current usage: 314.6 MB of 2.9 GB physical memory used; 8.7 GB of 6.2 GB virtual memory used. Killing container.</span><br></pre></td></tr></table></figure></p>
+<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;100000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.maximum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;10000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.minimum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;3000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;2000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>通过配置我们看到，容器的最小内存和最大内存分别为：3000m和10000m，而reduce设置的默认值小于2000m，map没有设置，所以两个值均为3000m，也就是log中的“2.9 GB physical<br>memory used”。而由于使用了默认虚拟内存率(也就是2.1倍)，所以对于Map Task和Reduce Task总的虚拟内存为都为3000*2.1=6.2G。而应用的虚拟内存超过了这个数值，故报错 。解决办<br>法：在启动Yarn是调节虚拟内存率或者应用运行时调节内存大小。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MapReduce/" rel="tag">#MapReduce</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/03/mapreduce执行错误Mapper.init错误/" rel="next" title="mapreduce执行错误Mapper.<init>错误">
+                <i class="fa fa-chevron-left"></i> mapreduce执行错误Mapper.<init>错误
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/05/hadoop Job命令/" rel="prev" title="Hadoop Job相关命令">
+                Hadoop Job相关命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /"
+           data-title="mapreduce运行内存及JVM配置错误running beyond physical memory limits" data-url="http://yoursite.com/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误描述："><span class="nav-number">1.</span> <span class="nav-text">错误描述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决："><span class="nav-number">2.</span> <span class="nav-text">解决：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

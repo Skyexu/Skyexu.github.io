@@ -114,7 +114,7 @@
 检查MySQL服务器占用端口 netstat -nlt|grep 3306
 检查MySQL服务器系统进程 ps -aux|grep mysql
 查看数据库的字符集编码">
-<meta property="og:updated_time" content="2016-08-16T04:25:08.805Z">
+<meta property="og:updated_time" content="2016-10-25T07:26:48.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu 16.04 mysql安装配置">
 <meta name="twitter:description" content="安装mysqlsudo apt-get install mysql-server mysql-client
@@ -352,7 +352,7 @@
 </ul>
 <h3 id="让MySQL服务器被远程访问"><a href="#让MySQL服务器被远程访问" class="headerlink" title="让MySQL服务器被远程访问"></a>让MySQL服务器被远程访问</h3><ul>
 <li><p>打开mysql配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf</span><br><span class="line">#找到将bind-address = 127.0.0.1注销​</span><br><span class="line">#bind-address            = 127.0.0.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/mysql/my.cnf</span><br><span class="line">#找到将bind-address = 127.0.0.1注销​</span><br><span class="line">#bind-address            = 127.0.0.1</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>修改后，重启MySQL服务器<br><code>sudo /etc/init.d/mysql restart</code></p>
 </li>
@@ -364,8 +364,8 @@
 </li>
 </ul>
 <p>我们看到从之间的网络监听从 127.0.0.1:3306 变成 0 0.0.0.0:3306，表示MySQL已经允许远程登陆访问。</p>
-<h3 id="将字符编码设置为UTF-8"><a href="#将字符编码设置为UTF-8" class="headerlink" title="将字符编码设置为UTF-8"></a>将字符编码设置为UTF-8</h3><p>默认情况下，MySQL的字符集是latin1，因此在存储中文的时候，会出现乱码的情况，所以我们需要把字符集统一改成UTF-8。<br>打开mysql配置文件<br><code>sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#在[mysqld]标签下，增加服务器端的字符编码</span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8</span><br><span class="line">collation-server=utf8_general_ci</span><br></pre></td></tr></table></figure>
+<h3 id="将字符编码设置为UTF-8"><a href="#将字符编码设置为UTF-8" class="headerlink" title="将字符编码设置为UTF-8"></a>将字符编码设置为UTF-8</h3><p>默认情况下，MySQL的字符集是latin1，因此在存储中文的时候，会出现乱码的情况，所以我们需要把字符集统一改成UTF-8。<br>打开mysql配置文件<br><code>sudo vim /etc/mysql/my.cnf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a） 打开mysql配置文件：</span><br><span class="line"></span><br><span class="line">                vim/etc/mysql/my.cnf</span><br><span class="line">b） 在[client]下追加：</span><br><span class="line"></span><br><span class="line">                default-character-set=utf8</span><br><span class="line">c） 在[mysqld]下追加：</span><br><span class="line"></span><br><span class="line">                character-set-server=utf8</span><br><span class="line">d） 在[mysql]下追加：</span><br><span class="line"></span><br><span class="line">                default-character-set=utf8</span><br></pre></td></tr></table></figure>
 <p>修改后，重启MySQL服务器,并登录<br><code>mysql -uroot -p</code></p>
 <p>再次查看字符串编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;%char%&apos;;</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line">| character_set_database   | utf8                       |</span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line">| character_set_server     | utf8                       |</span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line">| character_sets_dir       | /usr/share/mysql/charsets/ |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">8 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
 
@@ -480,7 +480,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -488,7 +488,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -497,7 +497,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
