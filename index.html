@@ -260,8 +260,154 @@
             
               
                 
-                <a class="post-title-link" href="/2016/11/26/Jena学习笔记/" itemprop="url">
-                  Jena学习笔记
+                <a class="post-title-link" href="/2016/11/29/Jena学习笔记（二） SPARQL/" itemprop="url">
+                  Jena学习笔记（二） SPARQL
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-29T22:11:29+08:00" content="2016-11-29">
+              2016-11-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index">
+                    <span itemprop="name">paper</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/29/Jena学习笔记（二） SPARQL/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/29/Jena学习笔记（二） SPARQL/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>官方描述：Apache Jena（或简称Jena）是一个用于构建语义Web和关联数据应用程序的自由和开源的Java框架。 该框架由不同的API组成，用于处理RDF数据。</p>
+<p>Jena是一个用于Java语义Web应用程序的API（应用程序编程接口）。它不是一个程序或工具，如果这是你正在寻找，我建议或许TopBraid Composer作为一个好的选择。因此，Jena的主要用途是帮助您编写处理RDF和OWL文档和描述的Java代码。</p>
+<p>SPARQL是用于访问由W3C RDF数据访问工作组设计的RDF的查询语言和协议。</p>
+<p>作为一种查询语言，SPARQL是“数据导向的”，因为它只查询模型中保存的信息;在查询语言本身没有推理。当然，Jena模型是“聪明的”，因为它提供了某些三元组存在的印象，即按需创建它们，包括OWL推理。除了以查询的形式获取应用程序想要的描述外，SPARQL不执行任何操作，并以一组bindings或RDF图形的形式返回该信息。</p>
+</blockquote>
+<p>官方网站：<a href="http://jena.apache.org/index.html" target="_blank" rel="external">http://jena.apache.org/index.html</a><br>SPARQL教程：<a href="http://jena.apache.org/tutorials/sparql.html" target="_blank" rel="external">http://jena.apache.org/tutorials/sparql.html</a></p>
+<hr>
+<h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Setting up your Environment</span><br><span class="line">An environment variable JENAROOT is used by all the command line tools to configure the class path automatically for you. You can set this up as follows:</span><br><span class="line"></span><br><span class="line">On Linux / Mac</span><br><span class="line"></span><br><span class="line">export JENAROOT=the directory you downloaded Jena to</span><br><span class="line">export PATH=$PATH:$JENAROOT/bin</span><br><span class="line">On Windows</span><br><span class="line"></span><br><span class="line">SET JENAROOT=the directory you downloaded Jena to</span><br><span class="line">SET PATH=%PATH%;%JENAROOT%\bat</span><br></pre></td></tr></table></figure>
+<h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><p>首先，我们需要清楚查询要查询的数据。 SPARQL查询RDF图。 RDF图是一组三元组（Jena调用RDF图“模型”和三元组“语句”，因为这是他们在第一次设计Jena API时调用的）。</p>
+<p>重要的是要意识到三元组的重要性，而不是序列化。序列化只是一种写三元组的方式。 RDF / XML是W3C的建议，但是可能很难看到序列化形式的三元组，因为有多种方法来编码同一个图。在本教程中，我们使用了一个更像“三元组”的序列化，称为Turtle（另请参阅W3C语义网络引文中描述的N3语言）。</p>
+<p>我们将从vc-db-1.rdf中的简单数据开始：此文件包含用于多个vCard人员描述的RDF。 vCard在RFC2426中描述，并且RDF翻译在W3C笔记“在RDF / XML中表示vCard对象”中描述。我们的示例数据库只包含一些名称信息。</p>
+<p>图形上，数据看起来像：<br><img src="http://i.imgur.com/Nd0fFky.png" alt=""></p>
+<p>在三元组中，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@prefix vCard:   &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .</span><br><span class="line">@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .</span><br><span class="line">@prefix :        &lt;#&gt; .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/MattJones/&gt;</span><br><span class="line">    vCard:FN    &quot;Matt Jones&quot; ;</span><br><span class="line">    vCard:N     [ vCard:Family</span><br><span class="line">                              &quot;Jones&quot; ;</span><br><span class="line">                  vCard:Given</span><br><span class="line">                              &quot;Matthew&quot;</span><br><span class="line">                ] .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/RebeccaSmith/&gt;</span><br><span class="line">    vCard:FN    &quot;Becky Smith&quot; ;</span><br><span class="line">    vCard:N     [ vCard:Family</span><br><span class="line">                              &quot;Smith&quot; ;</span><br><span class="line">                  vCard:Given</span><br><span class="line">                              &quot;Rebecca&quot;</span><br><span class="line">                ] .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/JohnSmith/&gt;</span><br><span class="line">    vCard:FN    &quot;John Smith&quot; ;</span><br><span class="line">    vCard:N     [ vCard:Family</span><br><span class="line">                              &quot;Smith&quot; ;</span><br><span class="line">                  vCard:Given</span><br><span class="line">                              &quot;John&quot;</span><br><span class="line">                ] .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/SarahJones/&gt;</span><br><span class="line">    vCard:FN    &quot;Sarah Jones&quot; ;</span><br><span class="line">    vCard:N     [ vCard:Family</span><br><span class="line">                              &quot;Jones&quot; ;</span><br><span class="line">                  vCard:Given</span><br><span class="line">                              &quot;Sarah&quot;</span><br><span class="line">                ] .</span><br></pre></td></tr></table></figure></p>
+<p>更加明确的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@prefix vCard:   &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .</span><br><span class="line">@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/MattJones/&gt;  vCard:FN   &quot;Matt Jones&quot; .</span><br><span class="line">&lt;http://somewhere/MattJones/&gt;  vCard:N    _:b0 .</span><br><span class="line">_:b0  vCard:Family &quot;Jones&quot; .</span><br><span class="line">_:b0  vCard:Given  &quot;Matthew&quot; .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/RebeccaSmith/&gt; vCard:FN    &quot;Becky Smith&quot; .</span><br><span class="line">&lt;http://somewhere/RebeccaSmith/&gt; vCard:N     _:b1 .</span><br><span class="line">_:b1 vCard:Family &quot;Smith&quot; .</span><br><span class="line">_:b1 vCard:Given  &quot;Rebecca&quot; .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/JohnSmith/&gt;    vCard:FN    &quot;John Smith&quot; .</span><br><span class="line">&lt;http://somewhere/JohnSmith/&gt;    vCard:N     _:b2 .</span><br><span class="line">_:b2 vCard:Family &quot;Smith&quot; .</span><br><span class="line">_:b2 vCard:Given  &quot;John&quot;  .</span><br><span class="line"></span><br><span class="line">&lt;http://somewhere/SarahJones/&gt;   vCard:FN    &quot;Sarah Jones&quot; .</span><br><span class="line">&lt;http://somewhere/SarahJones/&gt;   vCard:N     _:b3 .</span><br><span class="line">_:b3 vCard:Family  &quot;Jones&quot; .</span><br><span class="line">_:b3 vCard:Given   &quot;Sarah&quot; .</span><br></pre></td></tr></table></figure></p>
+<p>重要的是要意识到这些是相同的RDF图，并且图中的三元组没有特定的顺序。计算机不在乎其顺序。</p>
+<h3 id="第一个SPARQL查询"><a href="#第一个SPARQL查询" class="headerlink" title="第一个SPARQL查询"></a>第一个SPARQL查询</h3><p>看一个简单的查询并展示如何使用Jena执行它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT ?x</span><br><span class="line">WHERE &#123; ?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  &quot;John Smith&quot; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>用命令行查询应用程序执行所述查询:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---------------------------------</span><br><span class="line">| x                             |</span><br><span class="line">=================================</span><br><span class="line">| &lt;http://somewhere/JohnSmith/&gt; |</span><br><span class="line">---------------------------------</span><br></pre></td></tr></table></figure></p>
+<p>这通过将WHERE子句中的三元模式与RDF图中的三元组进行匹配来实现。三元组的谓词和对象是固定值，因此模式将只匹配与这些值的三元组。主体是一个变量，并且对变量没有其他限制。模式匹配任何三元组与这些谓词和对象值，它匹配x的结果。</p>
+<p>&lt;&gt;中包含的项目是一个URI（实际上是一个IRI），而包含在“”中的项目是一个普通的字面量。就像Turtle，N3或N-triples一样，输入的文字用\ ^ \ ^编写，语言标签可以用@添加。</p>
+<p>？x是一个称为x的变量。？不会形成名称的一部分，这就是为什么它不会出现在表的输出中。<br>该查询返回x查询变量中的匹配项。所示的输出是通过一条ARQ的命令获得的。</p>
+<h4 id="执行查询"><a href="#执行查询" class="headerlink" title="执行查询"></a>执行查询</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Windows setup</span><br><span class="line">Execute:</span><br><span class="line"></span><br><span class="line">bat\sparql.bat --data=doc\Tutorial\vc-db-1.rdf --query=doc\Tutorial\q1.rq</span><br><span class="line">You can just put the bat/ directory on your classpath or copy the programs out of it.</span><br><span class="line"></span><br><span class="line">bash scripts for Linux/Cygwin/Unix</span><br><span class="line">Execute:</span><br><span class="line"></span><br><span class="line">bin/sparql --data=doc/Tutorial/vc-db-1.rdf --query=doc/Tutorial/q1.rq</span><br></pre></td></tr></table></figure>
+<p>在Linux中执行结果<br><img src="http://i.imgur.com/HvWk6xW.png" alt=""></p>
+<h4 id="获取所有人的FullName"><a href="#获取所有人的FullName" class="headerlink" title="获取所有人的FullName"></a>获取所有人的FullName</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT ?x ?fname</span><br><span class="line">WHERE &#123;?x  &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt;  ?fname&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//执行</span><br><span class="line">ubuntu@master:~/paper/doc$ sparql --data=vc-db-1.rdf --query=q-bp1.rq</span><br><span class="line">----------------------------------------------------</span><br><span class="line">| x                                | fname         |</span><br><span class="line">====================================================</span><br><span class="line">| &lt;http://somewhere/JohnSmith/&gt;    | &quot;John Smith&quot;  |</span><br><span class="line">| &lt;http://somewhere/SarahJones/&gt;   | &quot;Sarah Jones&quot; |</span><br><span class="line">| &lt;http://somewhere/MattJones/&gt;    | &quot;Matt Jones&quot;  |</span><br><span class="line">| &lt;http://somewhere/RebeccaSmith/&gt; | &quot;Becky Smith&quot; |</span><br><span class="line">----------------------------------------------------</span><br></pre></td></tr></table></figure>
+<h4 id="指定前缀"><a href="#指定前缀" class="headerlink" title="指定前缀"></a>指定前缀</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@master:~/paper/doc$ cat q2.rq </span><br><span class="line">PREFIX vCard:      &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;</span><br><span class="line"></span><br><span class="line">SELECT ?x</span><br><span class="line">WHERE</span><br><span class="line"> &#123; ?x vCard:FN &quot;John Smith&quot; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@master:~/paper/doc$ sparql --data=vc-db-1.rdf --query=q2.rq</span><br><span class="line">---------------------------------</span><br><span class="line">| x                             |</span><br><span class="line">=================================</span><br><span class="line">| &lt;http://somewhere/JohnSmith/&gt; |</span><br><span class="line">---------------------------------</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/26/Jena学习笔记（一） RDF/" itemprop="url">
+                  Jena学习笔记（一） RDF
                 </a>
               
             
@@ -304,8 +450,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/26/Jena学习笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/Jena学习笔记/" itemprop="commentsCount"></span>
+                <a href="/2016/11/26/Jena学习笔记（一） RDF/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/Jena学习笔记（一） RDF/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -330,11 +476,11 @@
       
         
           
-            <h2 id="Jena学习笔记"><a href="#Jena学习笔记" class="headerlink" title="Jena学习笔记"></a>Jena学习笔记</h2><blockquote>
+            <h2 id="Jena学习笔记（一）-RDF"><a href="#Jena学习笔记（一）-RDF" class="headerlink" title="Jena学习笔记（一） RDF"></a>Jena学习笔记（一） RDF</h2><blockquote>
 <p>官方描述：Apache Jena（或简称Jena）是一个用于构建语义Web和关联数据应用程序的自由和开源的Java框架。 该框架由不同的API组成，用于处理RDF数据。</p>
 <p>Jena是一个用于Java语义Web应用程序的API（应用程序编程接口）。它不是一个程序或工具，如果这是你正在寻找，我建议或许TopBraid Composer作为一个好的选择。因此，Jena的主要用途是帮助您编写处理RDF和OWL文档和描述的Java代码。</p>
 </blockquote>
-<p>官方网站：<a href="http://jena.apache.org/index.html" target="_blank" rel="external">http://jena.apache.org/index.html</a></p>
+<p>官方网站：<a href="http://jena.apache.org/index.html" target="_blank" rel="external">http://jena.apache.org/index.html</a><br>RDF API教程：<a href="http://jena.apache.org/tutorials/rdf_api.html" target="_blank" rel="external">http://jena.apache.org/tutorials/rdf_api.html</a></p>
 <hr>
 <h3 id="RDF定义"><a href="#RDF定义" class="headerlink" title="RDF定义"></a>RDF定义</h3><p>资源描述框架（RDF）是最初设计为元数据数据模型的万维网联盟（W3C）规范[1]的家族。 它已经被用作用于概念描述或者在web资源中实现的信息的建模的一般方法，使用各种语法符号和数据串行化格式。 它也用于知识管理应用程序中。<br>RDF数据模型类似于诸如实体关系或类图的经典概念建模方法，因为它基于以主语谓词对象的形式对资源（特别是web资源）进行语句表。这些表达式在RDF术语中称为三元组。主语表示资源，谓词表示资源的特征或方面，并且表示主语和对象之间的关系。例如，在RDF中表示“天空具有蓝色”的概念的一种方式是作为三元组：表示“天空”的主题，表示“具有颜色”的谓词和表示“蓝色”的对象。因此，RDF将面向对象设计中的实体 - 属性 - 值模型的经典符号中使用的对象交换对象;实体（天空），属性（颜色）和值（蓝色）。 RDF是具有几种串行格式（即，文件格式）的抽象模型，因此资源或三元组被编码的特定方式随格式而变化。</p>
 <h3 id="下载Jena并从Eclipse建立工程，导入jar"><a href="#下载Jena并从Eclipse建立工程，导入jar" class="headerlink" title="下载Jena并从Eclipse建立工程，导入jar"></a>下载Jena并从Eclipse建立工程，导入jar</h3><ul>
@@ -350,6 +496,30 @@
 <p>此RDF XML中有错误;它不完全代表我们创建的模型。模型中的空白节点已经被赋予URI引用。它不再是空白。 RDF / XML语法不能表示所有RDF模型;例如它不能表示作为两个语句的对象的空白节点。我们用来编写这个RDF / XML的’dumb’作者没有尝试正确地写入可以正确写入的Models子集。它为每个空白节点提供一个URI，使其不再为空。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// now write the model in XML form to a file</span><br><span class="line">model.write(System.out, &quot;RDF/XML-ABBREV&quot;);</span><br><span class="line"></span><br><span class="line">// now write the model in N-TRIPLES form to a file</span><br><span class="line">model.write(System.out, &quot;N-TRIPLES&quot;);</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;rdf:RDF</span><br><span class="line">    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span><br><span class="line">    xmlns:vcard=&quot;http://www.w3.org/2001/vcard-rdf/3.0#&quot;&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&quot;http://somewhere/JohnSmith&quot;&gt;</span><br><span class="line">    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">      &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">      &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;</span><br><span class="line">    &lt;/vcard:N&gt;</span><br><span class="line">    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">&lt;/rdf:RDF&gt;</span><br><span class="line">&lt;http://somewhere/JohnSmith&gt; &lt;http://www.w3.org/2001/vcard-rdf/3.0#N&gt; _:BX2D71b38d8eX3A1589596bd63X3AX2D7fff .</span><br><span class="line">&lt;http://somewhere/JohnSmith&gt; &lt;http://www.w3.org/2001/vcard-rdf/3.0#FN&gt; &quot;John Smith&quot; .</span><br><span class="line">_:BX2D71b38d8eX3A1589596bd63X3AX2D7fff &lt;http://www.w3.org/2001/vcard-rdf/3.0#Family&gt; &quot;Smith&quot; .</span><br><span class="line">_:BX2D71b38d8eX3A1589596bd63X3AX2D7fff &lt;http://www.w3.org/2001/vcard-rdf/3.0#Given&gt; &quot;John&quot; .</span><br></pre></td></tr></table></figure>
+<p>###读取RDF<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static final String inputFileName = &quot;vc-db-1.rdf&quot;;</span><br><span class="line"></span><br><span class="line"> // create an empty model</span><br><span class="line"> Model model = ModelFactory.createDefaultModel();</span><br><span class="line"></span><br><span class="line"> // use the FileManager to find the input file</span><br><span class="line"> InputStream in = FileManager.get().open( inputFileName );</span><br><span class="line">if (in == null) &#123;</span><br><span class="line">    throw new IllegalArgumentException(</span><br><span class="line">                                 &quot;File: &quot; + inputFileName + &quot; not found&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// read the RDF/XML file</span><br><span class="line">model.read(in, null);</span><br><span class="line"></span><br><span class="line">// write it to standard out</span><br><span class="line">model.write(System.out);</span><br></pre></td></tr></table></figure></p>
+<p><strong>读取结果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;rdf:RDF</span><br><span class="line">  xmlns:rdf=&apos;http://www.w3.org/1999/02/22-rdf-syntax-ns#&apos;</span><br><span class="line">  xmlns:vcard=&apos;http://www.w3.org/2001/vcard-rdf/3.0#&apos;</span><br><span class="line"> &gt;</span><br><span class="line">  &lt;rdf:Description rdf:nodeID=&quot;A0&quot;&gt;</span><br><span class="line">    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&apos;http://somewhere/JohnSmith/&apos;&gt;</span><br><span class="line">    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;</span><br><span class="line">    &lt;vcard:N rdf:nodeID=&quot;A0&quot;/&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&apos;http://somewhere/SarahJones/&apos;&gt;</span><br><span class="line">    &lt;vcard:FN&gt;Sarah Jones&lt;/vcard:FN&gt;</span><br><span class="line">    &lt;vcard:N rdf:nodeID=&quot;A1&quot;/&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&apos;http://somewhere/MattJones/&apos;&gt;</span><br><span class="line">    &lt;vcard:FN&gt;Matt Jones&lt;/vcard:FN&gt;</span><br><span class="line">    &lt;vcard:N rdf:nodeID=&quot;A2&quot;/&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:nodeID=&quot;A3&quot;&gt;</span><br><span class="line">    &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;vcard:Given&gt;Rebecca&lt;/vcard:Given&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:nodeID=&quot;A1&quot;&gt;</span><br><span class="line">    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;vcard:Given&gt;Sarah&lt;/vcard:Given&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:nodeID=&quot;A2&quot;&gt;</span><br><span class="line">    &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;vcard:Given&gt;Matthew&lt;/vcard:Given&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&apos;http://somewhere/RebeccaSmith/&apos;&gt;</span><br><span class="line">    &lt;vcard:FN&gt;Becky Smith&lt;/vcard:FN&gt;</span><br><span class="line">    &lt;vcard:N rdf:nodeID=&quot;A3&quot;/&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">&lt;/rdf:RDF&gt;</span><br></pre></td></tr></table></figure></p>
+<p>###Jena RDF包<br>Jena是用于语义Web应用程序的Java API。应用程序开发人员的关键RDF包是org.apache.jena.rdf.model。 API已经根据接口进行了定义，以便应用程序代码可以在不改变的情况下与不同的实现工作。此包包含用于表示模型，资源，属性，文字，语句和RDF的所有其他关键概念的接口，以及用于创建模型的ModelFactory。所以应用程序代码保持独立的实现，最好是尽可能使用接口，而不是特定的类实现。</p>
+<p>org.apache.jena.tutorial包包含本教程中使用的所有示例的工作源代码。</p>
+<p>org.apache.jena … impl包包含可能对许多实现通用的实现类。例如，它们定义类ResourceImpl，PropertyImpl和LiteralImpl，它们可以被不同的实现直接使用或子类化。应用程序应该很少，如果有的话，直接使用这些类。例如，不是创建ResourceImpl的新实例，最好使用正在使用的任何模型的createResource方法。这样，如果模型实现使用了Resource的优化实现，则两种类型之间不需要转换。</p>
+<h3 id="浏览模型"><a href="#浏览模型" class="headerlink" title="浏览模型"></a>浏览模型</h3><p>给定资源的URI，可以使用Model.getResource（String uri）方法从模型中检索资源对象。 此方法定义为返回一个Resource对象（如果模型中存在），否则创建一个新对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">static final String inputFileName = &quot;vc-db-1.rdf&quot;;</span><br><span class="line">    static final String johnSmithURI = &quot;http://somewhere/JohnSmith/&quot;;</span><br><span class="line">    </span><br><span class="line">    public static void main (String args[]) &#123;</span><br><span class="line">        // create an empty model</span><br><span class="line">        Model model = ModelFactory.createDefaultModel();</span><br><span class="line">       </span><br><span class="line">        // use the FileManager to find the input file</span><br><span class="line">        InputStream in = FileManager.get().open(inputFileName);</span><br><span class="line">        if (in == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException( &quot;File: &quot; + inputFileName + &quot; not found&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        // read the RDF/XML file</span><br><span class="line">        model.read(new InputStreamReader(in), &quot;&quot;);</span><br><span class="line">        </span><br><span class="line">        // retrieve the Adam Smith vcard resource from the model</span><br><span class="line">        Resource vcard = model.getResource(johnSmithURI);</span><br><span class="line"></span><br><span class="line">        // retrieve the value of the N property</span><br><span class="line">        Resource name = (Resource) vcard.getRequiredProperty(VCARD.N)</span><br><span class="line">                                        .getObject();</span><br><span class="line">        // retrieve the given name property</span><br><span class="line">        String fullName = vcard.getRequiredProperty(VCARD.FN)</span><br><span class="line">                               .getString();</span><br><span class="line">        // add two nick name properties to vcard</span><br><span class="line">		// 获取johnSmithURI资源后，对其添加两个nickname属性</span><br><span class="line">        vcard.addProperty(VCARD.NICKNAME, &quot;Smithy&quot;)</span><br><span class="line">             .addProperty(VCARD.NICKNAME, &quot;Adman&quot;);</span><br><span class="line">        </span><br><span class="line">        // set up the output</span><br><span class="line">        System.out.println(&quot;The nicknames of \&quot;&quot; + fullName + &quot;\&quot; are:&quot;);</span><br><span class="line">        // list the nicknames</span><br><span class="line">		//返回声明迭代器，获取对象</span><br><span class="line">        StmtIterator iter = vcard.listProperties(VCARD.NICKNAME);</span><br><span class="line">        while (iter.hasNext()) &#123;</span><br><span class="line">            System.out.println(&quot;    &quot; + iter.nextStatement().getObject()</span><br><span class="line">                                            .toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">The nicknames of &quot;John Smith&quot; are:</span><br><span class="line">    Adman</span><br><span class="line">    Smithy</span><br></pre></td></tr></table></figure>
+<h3 id="查询模型"><a href="#查询模型" class="headerlink" title="查询模型"></a>查询模型</h3><p>上一节讨论从具有已知URI的资源导航模型的情况。 本节介绍搜索模型。 核心Jena API仅支持有限的查询原语。 更强大的查询功能在SPARQL中。</p>
+<p>Model.listStatements（）方法列出了模型中的所有语句，也许是查询模型的最粗糙的方法。 它的使用不推荐在非常大的模型。 Model.listSubjects（）是类似的，但返回一个迭代器在所有具有属性的资源，即一些语句的主题。</p>
+<p>Model.listSubjectsWithProperty（Property p，RDFNode o）将返回所有资源的迭代器，这些资源具有值为o的属性p。 如果我们假设只有vcard资源会有vcard：FN属性，并且在我们的数据中，所有这些资源都有这样的属性，那么我们可以找到所有的vcards：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">static final String inputFileName = &quot;vc-db-1.rdf&quot;;</span><br><span class="line">   </span><br><span class="line">   public static void main (String args[]) &#123;</span><br><span class="line">       // create an empty model</span><br><span class="line">       Model model = ModelFactory.createDefaultModel();</span><br><span class="line">      </span><br><span class="line">       // use the FileManager to find the input file</span><br><span class="line">       InputStream in = FileManager.get().open(inputFileName);</span><br><span class="line">       if (in == null) &#123;</span><br><span class="line">           throw new IllegalArgumentException( &quot;File: &quot; + inputFileName + &quot; not found&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       // read the RDF/XML file</span><br><span class="line">       model.read( in, &quot;&quot;);</span><br><span class="line">       </span><br><span class="line">       // select all the resources with a VCARD.FN property</span><br><span class="line">       ResIterator iter = model.listResourcesWithProperty(VCARD.FN);</span><br><span class="line">       if (iter.hasNext()) &#123;</span><br><span class="line">           System.out.println(&quot;The database contains vcards for:&quot;);</span><br><span class="line">           while (iter.hasNext()) &#123;</span><br><span class="line">               System.out.println(&quot;  &quot; + iter.nextResource()</span><br><span class="line">                                             .getRequiredProperty(VCARD.FN)</span><br><span class="line">                                             .getString() );</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           System.out.println(&quot;No vcards were found in the database&quot;);</span><br><span class="line">       &#125;            </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">The database contains vcards for:</span><br><span class="line">  Sarah Jones</span><br><span class="line">  John Smith</span><br><span class="line">  Becky Smith</span><br><span class="line">  Matt Jones</span><br></pre></td></tr></table></figure>
+<h3 id="模型操作"><a href="#模型操作" class="headerlink" title="模型操作"></a>模型操作</h3><p>Jena提供了操作模型作为一个整体的三个操作,分別是并集，交集和差的运算。</p>
+<p>两个模型的并集是表示每个模型的语句集合的合并。这是RDF设计支持的关键操作之一。它允许合并来自不同数据源的数据。 考虑以下两个模型：<br><img src="http://i.imgur.com/F1ooVdI.png" alt=""> <img src="http://i.imgur.com/HDmwweL.png" alt=""></p>
+<p>当这些被合并时，两个http：//…JohnSmith节点被合并成一个，并且vcard：FN 弧被丢弃以产生：<br><img src="http://i.imgur.com/6cZO0rR.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">static final String inputFileName1 = &quot;vc-db-3.rdf&quot;;    </span><br><span class="line"> static final String inputFileName2 = &quot;vc-db-4.rdf&quot;;</span><br><span class="line"> </span><br><span class="line"> public static void main (String args[]) &#123;</span><br><span class="line">     // create an empty model</span><br><span class="line">     Model model1 = ModelFactory.createDefaultModel();</span><br><span class="line">     Model model2 = ModelFactory.createDefaultModel();</span><br><span class="line">    </span><br><span class="line">     // use the class loader to find the input file</span><br><span class="line">     InputStream in1 = FileManager.get().open(inputFileName1);</span><br><span class="line">     if (in1 == null) &#123;</span><br><span class="line">         throw new IllegalArgumentException( &quot;File: &quot; + inputFileName1 + &quot; not found&quot;);</span><br><span class="line">     &#125;</span><br><span class="line">     InputStream in2 = FileManager.get().open(inputFileName2);</span><br><span class="line">     if (in2 == null) &#123;</span><br><span class="line">         throw new IllegalArgumentException( &quot;File: &quot; + inputFileName2 + &quot; not found&quot;);</span><br><span class="line">     &#125;</span><br><span class="line">     </span><br><span class="line">     // read the RDF/XML files</span><br><span class="line">     model1.read( in1, &quot;&quot; );</span><br><span class="line">     model2.read( in2, &quot;&quot; );</span><br><span class="line">     </span><br><span class="line">     // merge the graphs</span><br><span class="line">     Model model = model1.union(model2);</span><br><span class="line">     </span><br><span class="line">     // print the graph as RDF/XML</span><br><span class="line">     model.write(System.out, &quot;RDF/XML-ABBREV&quot;);</span><br><span class="line">     System.out.println();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;rdf:RDF</span><br><span class="line">    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span><br><span class="line">    xmlns:vcard=&quot;http://www.w3.org/2001/vcard-rdf/3.0#&quot;&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&quot;http://somewhere/JohnSmith/&quot;&gt;</span><br><span class="line">    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">      &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;</span><br><span class="line">      &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;/vcard:N&gt;</span><br><span class="line">    &lt;vcard:EMAIL&gt;</span><br><span class="line">      &lt;vcard:internet&gt;</span><br><span class="line">        &lt;rdf:value&gt;John@somewhere.com&lt;/rdf:value&gt;</span><br><span class="line">      &lt;/vcard:internet&gt;</span><br><span class="line">    &lt;/vcard:EMAIL&gt;</span><br><span class="line">    &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">&lt;/rdf:RDF&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p>RDF定义了一种特殊的资源来表示事物的集合。 这些资源称为容器。 容器的成员可以是文字或资源。 有三种容器：</p>
+<p>BAG是一个无序的集合<br>ALT是旨在表示可选的无序集合<br>SEQ是有序集合<br>容器由资源表示。 该资源将有一个rdf：type属性，其值应为rdf：Bag，rdf：Alt或rdf：Seq之一，或其中一个的子类，具体取决于容器的类型。 容器的第一个成员是容器的rdf：_1属性的值; 容器的第二个成员是容器的rdf：_2属性的值，等等。 rdf：_nnn属性被称为序数属性。</p>
+<p>例如，包含Smith的vcards的简单包的模型可能如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">static final String inputFileName = &quot;vc-db-1.rdf&quot;;</span><br><span class="line">   </span><br><span class="line">   public static void main (String args[]) &#123;</span><br><span class="line">       // create an empty model</span><br><span class="line">       Model model = ModelFactory.createDefaultModel();</span><br><span class="line">      </span><br><span class="line">       // use the class loader to find the input file</span><br><span class="line">       InputStream in = FileManager.get().open( inputFileName );</span><br><span class="line">       if (in == null) &#123;</span><br><span class="line">           throw new IllegalArgumentException( &quot;File: &quot; + inputFileName + &quot; not found&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       // read the RDF/XML file</span><br><span class="line">       model.read(new InputStreamReader(in), &quot;&quot;);</span><br><span class="line">       </span><br><span class="line">       // create a bag</span><br><span class="line">       Bag smiths = model.createBag();</span><br><span class="line">       </span><br><span class="line">       // select all the resources with a VCARD.FN property</span><br><span class="line">       // whose value ends with &quot;Smith&quot;</span><br><span class="line">       StmtIterator iter = model.listStatements(</span><br><span class="line">           new </span><br><span class="line">               SimpleSelector(null, VCARD.FN, (RDFNode) null) &#123;</span><br><span class="line">                   @Override</span><br><span class="line">                   public boolean selects(Statement s) &#123;</span><br><span class="line">                           return s.getString().endsWith(&quot;Smith&quot;);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;);</span><br><span class="line">       // add the Smith&apos;s to the bag</span><br><span class="line">       while (iter.hasNext()) &#123;</span><br><span class="line">           smiths.add( iter.nextStatement().getSubject());</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       // print the graph as RDF/XML</span><br><span class="line">       model.write(new PrintWriter(System.out));</span><br><span class="line">       System.out.println();</span><br><span class="line">       </span><br><span class="line">       // print out the members of the bag</span><br><span class="line">       NodeIterator iter2 = smiths.iterator();</span><br><span class="line">       if (iter2.hasNext()) &#123;</span><br><span class="line">           System.out.println(&quot;The bag contains:&quot;);</span><br><span class="line">           while (iter2.hasNext()) &#123;</span><br><span class="line">               System.out.println(&quot;  &quot; +</span><br><span class="line">                   ((Resource) iter2.next())</span><br><span class="line">                                    .getRequiredProperty(VCARD.FN)</span><br><span class="line">                                    .getString());</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           System.out.println(&quot;The bag is empty&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;rdf:RDF</span><br><span class="line">    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span><br><span class="line">    xmlns:vcard=&quot;http://www.w3.org/2001/vcard-rdf/3.0#&quot;&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&quot;http://somewhere/SarahJones/&quot;&gt;</span><br><span class="line">    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">      &lt;vcard:Given&gt;Sarah&lt;/vcard:Given&gt;</span><br><span class="line">      &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;/vcard:N&gt;</span><br><span class="line">    &lt;vcard:FN&gt;Sarah Jones&lt;/vcard:FN&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">  &lt;rdf:Bag&gt;</span><br><span class="line">    &lt;rdf:li&gt;</span><br><span class="line">      &lt;rdf:Description rdf:about=&quot;http://somewhere/RebeccaSmith/&quot;&gt;</span><br><span class="line">        &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">          &lt;vcard:Given&gt;Rebecca&lt;/vcard:Given&gt;</span><br><span class="line">          &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">        &lt;/vcard:N&gt;</span><br><span class="line">        &lt;vcard:FN&gt;Becky Smith&lt;/vcard:FN&gt;</span><br><span class="line">      &lt;/rdf:Description&gt;</span><br><span class="line">    &lt;/rdf:li&gt;</span><br><span class="line">    &lt;rdf:li&gt;</span><br><span class="line">      &lt;rdf:Description rdf:about=&quot;http://somewhere/JohnSmith/&quot;&gt;</span><br><span class="line">        &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">          &lt;vcard:Given&gt;John&lt;/vcard:Given&gt;</span><br><span class="line">          &lt;vcard:Family&gt;Smith&lt;/vcard:Family&gt;</span><br><span class="line">        &lt;/vcard:N&gt;</span><br><span class="line">        &lt;vcard:FN&gt;John Smith&lt;/vcard:FN&gt;</span><br><span class="line">      &lt;/rdf:Description&gt;</span><br><span class="line">    &lt;/rdf:li&gt;</span><br><span class="line">  &lt;/rdf:Bag&gt;</span><br><span class="line">  &lt;rdf:Description rdf:about=&quot;http://somewhere/MattJones/&quot;&gt;</span><br><span class="line">    &lt;vcard:N rdf:parseType=&quot;Resource&quot;&gt;</span><br><span class="line">      &lt;vcard:Given&gt;Matthew&lt;/vcard:Given&gt;</span><br><span class="line">      &lt;vcard:Family&gt;Jones&lt;/vcard:Family&gt;</span><br><span class="line">    &lt;/vcard:N&gt;</span><br><span class="line">    &lt;vcard:FN&gt;Matt Jones&lt;/vcard:FN&gt;</span><br><span class="line">  &lt;/rdf:Description&gt;</span><br><span class="line">&lt;/rdf:RDF&gt;</span><br><span class="line"></span><br><span class="line">The bag contains:</span><br><span class="line">  Becky Smith</span><br><span class="line">  John Smith</span><br></pre></td></tr></table></figure>
+<h3 id="词汇表"><a href="#词汇表" class="headerlink" title="词汇表"></a>词汇表</h3><p>空白节点（Blank Node）<br>表示资源，但不指示资源的URI。空白节点表现为一阶逻辑中存在的合格变量。<br>Dublin Core<br>关于Web资源的元数据标准。更多信息可以在Dublin Core网站上找到。<br>文字（Literal）<br>可以是属性值的字符串。<br>对象（Object）<br>三元组的一部分，即语句的值。<br>谓词（Predicate）<br>三元组的属性部分。<br>属性（Property）<br>属性是资源的属性。例如DC.title是一个属性，和RDF.type一样。<br>资源（Resource）<br>一些实体。它可以是诸如网页的web资源，或者它可以是具体的物理事物，例如树或汽车。它可以是一个抽象的想法，如象棋或足球。资源由URI命名。<br>声明（Statement）<br>RDF模型中的弧，通常被解释为事实。<br>主语Subject）<br>作为RDF模型中的弧源的资源<br>三元组（Triple）<br>包含主语，谓词和对象的结构。语句的另一个术语。</p>
+<h3 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h3><p>RDF资源的标识符可以包括片段标识符，例如， http：// hostname / rdf / tutorial /＃ch-简介，因此，严格地说，RDF资源由URI引用标识。<br>除了作为一个字符串，字面量还有一个可选的语言编码来表示字符串的语言。例如，文字“two”对于英语可能具有“en”的语言编码，而对于法国，文字“deux”可能具有“fr”的语言编码。</p>
+
           
         
       
@@ -470,7 +640,7 @@
           
             <p>Distributed Cache 在 MapReduce 任务中应用很广， 它可以大大提高一些被频繁读取文件的访问速度。被添加到 Distributed Cache 的文件会被拷贝到 Mapper 和 Reducer 的运行目录中。</p>
 <p><strong>在job添加如下方法 </strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">remoteReGamePath为hdfs文件路径字符串</span><br><span class="line">job.addCacheFile(new Path(remoteReGamePath).toUri());</span><br></pre></td></tr></table></figure></p>
-<p><strong>一下例子为在map中读取此文件并存入集合</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private Set&lt;String&gt; recommendGame = new HashSet&lt;String&gt;();</span><br><span class="line">/**</span><br><span class="line">		 * 读取推荐游戏文件</span><br><span class="line">		 * </span><br><span class="line">		 * @param uri</span><br><span class="line">		 */</span><br><span class="line">		private void readReGame(URI uri) &#123;</span><br><span class="line">			try &#123;</span><br><span class="line">				Path patternsPath = new Path(uri.getPath());</span><br><span class="line">				String patternsFileName = patternsPath.getName().toString();</span><br><span class="line">				BufferedReader reader = new BufferedReader(new FileReader(</span><br><span class="line">						patternsFileName));</span><br><span class="line">				String line;</span><br><span class="line">				while ((line = reader.readLine()) != null) &#123;</span><br><span class="line">					// TODO: your code here</span><br><span class="line">					//</span><br><span class="line">					recommendGame.add(line.split(&quot;,&quot;)[0]);</span><br><span class="line">				&#125;</span><br><span class="line">				reader.close();</span><br><span class="line"></span><br><span class="line">			&#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">				// TODO Auto-generated catch block</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; catch (IOException e) &#123;</span><br><span class="line">				// TODO Auto-generated catch block</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		protected void setup(</span><br><span class="line">				Mapper&lt;LongWritable, Text, Text, Text&gt;.Context context)</span><br><span class="line">				throws IOException, InterruptedException &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.setup(context);</span><br><span class="line">			//获取cache  uri</span><br><span class="line">			URI[] uri = context.getCacheFiles();</span><br><span class="line"></span><br><span class="line">			readReGame(uri[0]);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>以下例子为在map中读取此文件并存入集合</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private Set&lt;String&gt; recommendGame = new HashSet&lt;String&gt;();</span><br><span class="line">/**</span><br><span class="line">		 * 读取推荐游戏文件</span><br><span class="line">		 * </span><br><span class="line">		 * @param uri</span><br><span class="line">		 */</span><br><span class="line">		private void readReGame(URI uri) &#123;</span><br><span class="line">			try &#123;</span><br><span class="line">				Path patternsPath = new Path(uri.getPath());</span><br><span class="line">				String patternsFileName = patternsPath.getName().toString();</span><br><span class="line">				BufferedReader reader = new BufferedReader(new FileReader(</span><br><span class="line">						patternsFileName));</span><br><span class="line">				String line;</span><br><span class="line">				while ((line = reader.readLine()) != null) &#123;</span><br><span class="line">					// TODO: your code here</span><br><span class="line">					//</span><br><span class="line">					recommendGame.add(line.split(&quot;,&quot;)[0]);</span><br><span class="line">				&#125;</span><br><span class="line">				reader.close();</span><br><span class="line"></span><br><span class="line">			&#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">				// TODO Auto-generated catch block</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; catch (IOException e) &#123;</span><br><span class="line">				// TODO Auto-generated catch block</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		protected void setup(</span><br><span class="line">				Mapper&lt;LongWritable, Text, Text, Text&gt;.Context context)</span><br><span class="line">				throws IOException, InterruptedException &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">			super.setup(context);</span><br><span class="line">			//获取cache  uri</span><br><span class="line">			URI[] uri = context.getCacheFiles();</span><br><span class="line"></span><br><span class="line">			readReGame(uri[0]);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1391,146 +1561,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/27/spark-1.6.0安装/" itemprop="url">
-                  spark-1.6.0安装
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-27T12:52:59+08:00" content="2016-10-27">
-              2016-10-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/27/spark-1.6.0安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/27/spark-1.6.0安装/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>已安装Hadoop2.7.2的三节点集群</p>
-</blockquote>
-<h3 id="安装Scala"><a href="#安装Scala" class="headerlink" title="安装Scala"></a>安装Scala</h3><ol>
-<li>下载scala-2.11.7.tgz</li>
-<li><p>解压Scala</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf scala-2.11.7.tgz -C ~/cloud/</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export  SCALA_HOME=/home/ubuntu/cloud/scala-2.11.7</span><br><span class="line">export PATH = $PATH:$SCALA_HOME/bin</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala -version</span><br><span class="line">Scala code runner version 2.11.7 -- Copyright 2002-2013, LAMP/EPFL</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置到每台节点</p>
-</li>
-</ol>
-<h3 id="安装Spark"><a href="#安装Spark" class="headerlink" title="安装Spark"></a>安装Spark</h3><p>#Spark<br>export SPARK_HOME=/home/ubuntu/cloud/spark-1.6.0<br>export PATH=$PATH:$SPARK_HOME/bin</p>
-<p>export JAVA_HOME=/usr/java/jdk1.8.0_91<br>export SPARK_MASTER_IP=10.0.0.7</p>
-<p>#export SPARK_WORKER_MEMORY=2g<br>export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop</p>
-<p>slave1<br>slave2</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1576,7 +1606,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
