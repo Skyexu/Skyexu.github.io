@@ -260,6 +260,186 @@
             
               
                 
+                <a class="post-title-link" href="/2016/12/02/mapreduce调优/" itemprop="url">
+                  mapreduce调优
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-02T09:16:39+08:00" content="2016-12-02">
+              2016-12-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/02/mapreduce调优/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/02/mapreduce调优/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="对应用程序进行调优"><a href="#对应用程序进行调优" class="headerlink" title="对应用程序进行调优"></a>对应用程序进行调优</h2><ol>
+<li><p>避免输入大量小文件。大量的小文件(不足一个block大小)作为输入数据会产生很多的Map任务(默认一个分片对应一个Map任务)，而每个Map任务实际工作量又非常小，系统要花更多的时间来将这些Map任务的输出进行整合。如果将大量的小文件进行预处理合并成一个或几个大文件，任务执行的效率可能会提升几十倍。可手动将小文件合并成大文件，或通过Hadoop的SequenceFile、CombineFileInputFormat将多个文件打包到一个输入单元中，使得每个Map处理更多的数据，从而提高性能。</p>
+</li>
+<li><p>输入文件size巨大，但不是小文件。这种情况可以通过增大每个mapper的input size，即增大minSize或者增大blockSize来减少所需的mapper的数量。增大blockSize通常不可行，因为当HDFS被hadoop namenode -format之后，blockSize就已经确定了（由格式化时dfs.block.size决定），如果要更改blockSize，需要重新格式化HDFS，这样当然会丢失已有的数据。所以通常情况下只能通过增大minSize，即增大mapred.min.split.size的值。</p>
+</li>
+<li><p>预判并过滤无用数据。可以使用一些过滤工具，在作业执行之前将数据中无用的数据进行过滤，可极大提高MapReduce执行效率。Bloom Filter是一种功能强大的过滤器，执行效率高，时间复杂度为O(1)，缺点是存在一定的误判可能，详细参考《Bloom Filter概念和原理》。当将一个非常大的表和一个非常小的表进行表连接操作时，可以使用Bloom Filter将小表数据作为Bloom Filter的输入数据，将大表的原始数据进行过滤(过滤不通过的数据一定是不可用的，过滤通过的数据可能有用可能无用)，可提高程序执行的效率。</p>
+</li>
+<li><p>合理使用分布式缓存DistributedCache。DistributedCache可以将一些字典、jar包、配置文件等缓存到需要执行map任务的节点中，避免map任务多次重复读取这些资源，尤其在join操作时，使用DistributedCache缓存小表数据在map端进行join操作，可避免shuffle、reduce等操作，提高程序运行效率。</p>
+</li>
+<li><p>重用Writable类型。避免大量多次new这些Writable对象，这会花费java垃圾收集器大量的清理工作，建议在map函数外定义这些Writable对象，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class MyMapper … &#123;</span><br><span class="line">    Text wordText = new Text();</span><br><span class="line">    IntWritable one = new IntWritable(1);</span><br><span class="line">    public void map(...) &#123;</span><br><span class="line">        for (String word: words) &#123;</span><br><span class="line">            wordText.set(word);</span><br><span class="line">            context.write(wordText, one);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合理设置Combiner。Combine阶段处于Map端操作的最后一步，设置Combine操作可大大提高MapReduce的执行效率，前提是增加Combine不能改变最终的结果值，换句话说，不是所有的MapReduce程序都能添加Combine，如求平均数的MapReduce程序就不适合设置Combine操作。通常Combine函数与Reduce函数一致</p>
+</li>
+</ol>
+<h2 id="对参数进行调优（基于hadoop2-6-0）"><a href="#对参数进行调优（基于hadoop2-6-0）" class="headerlink" title="对参数进行调优（基于hadoop2.6.0）"></a>对参数进行调优（基于hadoop2.6.0）</h2><p><strong>HDFS参数调优(hdfs-site.xml)</strong></p>
+<ul>
+<li><p>dfs.namenode.handler.count：namenode用于处理RPC的线程数，默认值10，可根据NameNode所在节点机器配置适当调大，如32、64；</p>
+</li>
+<li><p>dfs.datanode.handler.count：datanode上用于处理RPC的线程数，2.6版本默认值10，早期1.x版本默认值为3，可根据datanode节点的配置适当调整；</p>
+</li>
+</ul>
+<p><strong>MapReduce参数调优(mapred-site.xml)</strong></p>
+<ul>
+<li><p>mapreduce.tasktracker.map.tasks.maximum：每个nodemanager节点上可运行的最大map任务数，默认值2，可根据实际值调整为10~100；</p>
+</li>
+<li><p>mapreduce.tasktracker.reduce.tasks.maximum：每个nodemanager节点上可运行的最大reduce任务数，默认值2，可根据实际值调整为10~100；</p>
+</li>
+<li><p>mapreduce.output.fileoutputformat.compress：是否对任务输出产生的结果进行压缩，默认值false。对传输数据进行压缩，既可以减少文件的存储空间，又可以加快数据在网络不同节点之间的传输速度。</p>
+</li>
+<li><p>mapreduce.output.fileoutputformat.compress.type：输出产生任务数据的压缩方式，默认值RECORD，可配置值有：NONE、RECORD、BLOCK</p>
+</li>
+<li><p>mapreduce.map.output.compress：map端压缩</p>
+</li>
+<li><p>mapreduce.map.output.compress.codec：map压缩格式</p>
+</li>
+<li><p>mapreduce.task.io.sort.mb：map任务输出结果的内存环形缓冲区大小，默认值100M，可根据map节点的机器进行配置，貌似不能超过值mapred.child.java.opts；</p>
+</li>
+<li><p>mapreduce.map.sort.spill.percent：map任务输出环形缓冲区大小溢写触发最大比例，默认值80%，这个值一般不建议修改；</p>
+</li>
+<li><p>mapreduce.reduce.shuffle.parallelcopies：reduce节点通过http拷贝map输出结果数据到本地的最大工作线程数，默认值5，可根据节点机器配置适当修改；</p>
+</li>
+<li><p>mapreduce.reduce.shuffle.input.buffer.percent：reduce节点在shuffle阶段拷贝map输出结果数据到本地时，内存缓冲区大小所占JVM内存的比例，默认值0.7，一般不建议修改；</p>
+</li>
+<li><p>mapreduce.reduce.shuffle.merge.percent：reduce节点shuffle内存缓冲区溢写触发最大比例，默认值0.66，一般不建议修改；</p>
+</li>
+<li><p>mapred.child.java.opts：配置每个map或reduce使用的内存数量，默认值-Xmx200m，即200M。如果nodemanager所在节点</p>
+</li>
+</ul>
+<h2 id="Map和Reduce个数设置"><a href="#Map和Reduce个数设置" class="headerlink" title="Map和Reduce个数设置"></a>Map和Reduce个数设置</h2><ol>
+<li><p>map的数量<br>map的数量通常是由hadoop集群的DFS块大小确定的，也就是输入文件的总块数，正常的map数量的并行规模大致是每一个Node是10~100个，对于CPU消耗较小的作业可以设置Map数量为300个左右，但是由于hadoop的没一个任务在初始化时需要一定的时间，因此比较合理的情况是每个map执行的时间至少超过1分钟。具体的数据分片是这样的，InputFormat在默认情况下会根据hadoop集群的DFS块大小进行分片，每一个分片会由一个map任务来进行处理，当然用户还是可以通过参数mapred.min.split.size参数在作业提交客户端进行自定义设置。还有一个重要参数就是mapred.map.tasks，这个参数设置的map数量仅仅是一个提示，只有当InputFormat 决定了map任务的个数比mapred.map.tasks值小时才起作用。同样，Map任务的个数也能通过使用JobConf 的conf.setNumMapTasks(int num)方法来手动地设置。这个方法能够用来增加map任务的个数，但是不能设定任务的个数小于Hadoop系统通过分割输入数据得到的值。因此，如果你有一个大小是10TB的输入数据，并设置DFS块大小为 128M，你必须设置至少82K个map任务，除非你设置的mapred.map.tasks参数比这个数还要大。当然为了提高集群的并发效率，可以设置一个默认的map数量，当用户的map数量较小或者比本身自动分割的值还小时可以使用一个相对交大的默认值，从而提高整体hadoop集群的效率。</p>
+</li>
+<li><p>reduece的数量<br>reduce在运行时往往需要从相关map端复制数据到reduce节点来处理，因此相比于map任务。reduce节点资源是相对比较缺少的，同时相对运行较慢，正确的reduce任务的个数应该是0.95或者1.75 *（节点数 ×mapred.tasktracker.tasks.maximum参数值）。mapred.tasktracker.tasks.reduce.maximum的数量一般设置为各节点cpu core数量,或者数量减1，即能同时计算的slot数量。如果任务数是节点个数的0.95倍，那么所有的reduce任务能够在 map任务的输出传输结束后同时开始运行。如果任务数是节点个数的1.75倍，那么高速的节点会在完成他们第一批reduce任务计算之后开始计算第二批 reduce任务，这样的情况更有利于负载均衡。同时需要注意增加reduce的数量虽然会增加系统的资源开销，但是可以改善负载匀衡，降低任务失败带来的负面影响。同样，Reduce任务也能够与 map任务一样，通过设定JobConf 的conf.setNumReduceTasks(int num)方法来增加任务个数。<br>cpu数量 = 服务器CPU总核数 / 每个CPU的核数<br>服务器CPU总核数 = more /proc/cpuinfo | grep ‘processor’ | wc -l<br>每个CPU的核数 = more /proc/cpuinfo | grep ‘cpu cores’</p>
+</li>
+<li><p>reduce数量为0<br>有些作业不需要进行归约进行处理，那么就可以设置reduce的数量为0来进行处理，这种情况下用户的作业运行速度相对较高，map的输出会直接写入到 SetOutputPath(path)设置的输出目录，而不是作为中间结果写到本地。同时Hadoop框架在写入文件系统前并不对之进行排序。</p>
+</li>
+</ol>
+<p>参考转载</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/hanganglin/p/4563716.html" target="_blank" rel="external">http://www.cnblogs.com/hanganglin/p/4563716.html</a><br><a href="https://my.oschina.net/Chanthon/blog/150500" target="_blank" rel="external">https://my.oschina.net/Chanthon/blog/150500</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/29/Jena学习笔记（二） SPARQL/" itemprop="url">
                   Jena学习笔记（二） SPARQL
                 </a>
@@ -1433,134 +1613,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/28/Git SSH公钥配置/" itemprop="url">
-                  Git SSH公钥配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-28T16:28:47+08:00" content="2016-10-28">
-              2016-10-28
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/28/Git SSH公钥配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/Git SSH公钥配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Coding.net配置</p>
-</blockquote>
-<h3 id="账户-SSH-公钥"><a href="#账户-SSH-公钥" class="headerlink" title="账户 SSH 公钥"></a>账户 SSH 公钥</h3><p>账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，SSH 就拥有账户下所有项目仓库的读写权限。 设置“账户 SSH 公钥”是开发者使用 SSH 方式访问/修改代码仓库的“前置工作”，分为“获取 SSH 协议地址”、“生成公钥”、“在 Coding.net 添加公钥”三个步骤。</p>
-<h3 id="获取-SSH-协议地址"><a href="#获取-SSH-协议地址" class="headerlink" title="获取 SSH 协议地址"></a>获取 SSH 协议地址</h3><p>在项目的代码页面点击 SSH 切换到 SSH 协议， 获得 clone 地址，形如<code>git@git.coding.net:wzw/leave-a-message.git</code>。 请使用这个地址来访问您的代码仓库。</p>
-<h3 id="生成公钥"><a href="#生成公钥" class="headerlink" title="生成公钥"></a>生成公钥</h3><p>Mac/Linux 打开命令行终端, Windows 打开 Git Bash 。 输入<code>ssh-keygen -t rsa -C &quot;username@example.com&quot;</code>,( 注册的邮箱)，接下来点击enter键即可（也可以输入密码）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</span><br><span class="line"># Creates a new ssh key, using the provided email as a label</span><br><span class="line"># Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/Users/you/.ssh/id_rsa): [Press enter]  // 推荐使用默认地址,如果使用非默认地址可能需要配置 .ssh/config</span><br><span class="line">成功之后</span><br><span class="line"></span><br><span class="line">Your identification has been saved in /Users/you/.ssh/id_rsa.</span><br><span class="line"># Your public key has been saved in /Users/you/.ssh/id_rsa.pub.</span><br><span class="line"># The key fingerprint is:</span><br><span class="line"># 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</span><br></pre></td></tr></table></figure></p>
-<h3 id="在-Coding-net-添加公钥"><a href="#在-Coding-net-添加公钥" class="headerlink" title="在 Coding.net 添加公钥"></a>在 Coding.net 添加公钥</h3><p>本地打开 id_rsa.pub 文件（或执行 $cat id_rsa.pub ），复制其中全部内容，添加到账户“SSH 公钥”页面 中，公钥名称可以随意起名字。<br>完成后点击“添加”，然后输入密码或动态码即可添加完成。</p>
-<h3 id="完成后在命令行测试，首次建立链接会要求信任主机"><a href="#完成后在命令行测试，首次建立链接会要求信任主机" class="headerlink" title="完成后在命令行测试，首次建立链接会要求信任主机"></a>完成后在命令行测试，首次建立链接会要求信任主机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@git.coding.net // 注意 git.coding.net 接入到 CDN 上所以会解析多个不同的 host ip The authenticity of host ‘git.coding.net (61.146.73.68)’ can not be established. RSA key fingerprint is 98:ab:2b:30:60:00:82:86:bb:85:db:87:22:c4:4f:b1. Are you sure you want to continue connecting (yes/no)? yes Warning: Permanently added ‘git.coding.net,61.146.73.68’ (RSA) to the list of kn own hosts.</span><br><span class="line"></span><br><span class="line">Enter passphrase for key ‘/c/Users/Yuankai/.ssh/id_rsa’: Coding.net Tips : [ Hello Kyle_lyk! You have connected to Coding.net by SSH successfully! ]</span><br></pre></td></tr></table></figure>
-<p>接下来就可以用git操作仓库了，是使用SourceTree非常方便</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1606,7 +1658,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
