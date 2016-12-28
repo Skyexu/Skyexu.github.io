@@ -1,0 +1,690 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="加入log4j-1.2.8.jar到lib下。
+
+在CLASSPATH下建立log4j.properties。
+
+在bin目录下加入  log4j.properties
+
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Log4j配置">
+<meta property="og:url" content="http://yoursite.com/2016/12/09/Log4j配置/index.html">
+<meta property="og:site_name" content="Skye's Blog">
+<meta property="og:description" content="加入log4j-1.2.8.jar到lib下。
+
+在CLASSPATH下建立log4j.properties。
+
+在bin目录下加入  log4j.properties
+
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+<meta property="og:updated_time" content="2016-12-09T13:32:05.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Log4j配置">
+<meta name="twitter:description" content="加入log4j-1.2.8.jar到lib下。
+
+在CLASSPATH下建立log4j.properties。
+
+在bin目录下加入  log4j.properties
+
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/09/Log4j配置/"/>
+
+  <title> Log4j配置 | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Log4j配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T21:31:24+08:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/09/Log4j配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/09/Log4j配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><p>加入log4j-1.2.8.jar到lib下。</p>
+</li>
+<li><p>在CLASSPATH下建立log4j.properties。</p>
+</li>
+<li><p>在bin目录下加入  log4j.properties</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#①配置根Logger，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.rootLogger = [level],appenderName,appenderName2,... </span><br><span class="line">#level是日志记录的优先级，分为OFF,TRACE,DEBUG,INFO,WARN,ERROR,FATAL,ALL </span><br><span class="line">##Log4j建议只使用四个级别，优先级从低到高分别是DEBUG,INFO,WARN,ERROR </span><br><span class="line">#通过在这里定义的级别，您可以控制到应用程序中相应级别的日志信息的开关 </span><br><span class="line">#比如在这里定义了INFO级别，则应用程序中所有DEBUG级别的日志信息将不被打印出来 </span><br><span class="line">#appenderName就是指定日志信息输出到哪个地方。可同时指定多个输出目的 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#②配置日志信息输出目的地Appender，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.appender.appenderName = fully.qualified.name.of.appender.class </span><br><span class="line">#log4j.appender.appenderName.optionN = valueN </span><br><span class="line"># </span><br><span class="line">#Log4j提供的appender有以下几种： </span><br><span class="line">#1)org.apache.log4j.ConsoleAppender(输出到控制台) </span><br><span class="line">#2)org.apache.log4j.FileAppender(输出到文件) </span><br><span class="line">#3)org.apache.log4j.DailyRollingFileAppender(每天产生一个日志文件) </span><br><span class="line">#4)org.apache.log4j.RollingFileAppender(文件大小到达指定尺寸的时候产生一个新的文件) </span><br><span class="line">#5)org.apache.log4j.WriterAppender(将日志信息以流格式发送到任意指定的地方) </span><br><span class="line"># </span><br><span class="line">#1)ConsoleAppender选项属性 </span><br><span class="line"># -Threshold = DEBUG:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -Target = System.err:默认值System.out,输出到控制台(err为红色,out为黑色) </span><br><span class="line"># </span><br><span class="line">#2)FileAppender选项属性 </span><br><span class="line"># -Threshold = INFO:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:\log4j.log:指定消息输出到C:\log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line"># </span><br><span class="line">#3)DailyRollingFileAppender选项属性 </span><br><span class="line"># -Threshold = WARN:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:\log4j.log:指定消息输出到C:\log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -DatePattern=&apos;.&apos;yyyy-ww:每周滚动一次文件,即每周产生一个新的文件。还可以按用以下参数: </span><br><span class="line">#              &apos;.&apos;yyyy-MM:每月 </span><br><span class="line">#              &apos;.&apos;yyyy-ww:每周 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd:每天 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-a:每天两次 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-HH:每小时 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-HH-mm:每分钟 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line"># </span><br><span class="line">#4)RollingFileAppender选项属性 </span><br><span class="line"># -Threshold = ERROR:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:/log4j.log:指定消息输出到C:/log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -MaxFileSize = 100KB:后缀可以是KB,MB,GB.在日志文件到达该大小时,将会自动滚动.如:log4j.log.1 </span><br><span class="line"># -MaxBackupIndex = 2:指定可以产生的滚动文件的最大数 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#③配置日志信息的格式(布局)，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.appender.appenderName.layout = fully.qualified.name.of.layout.class </span><br><span class="line">#log4j.appender.appenderName.layout.optionN = valueN </span><br><span class="line"># </span><br><span class="line">#Log4j提供的layout有以下几种： </span><br><span class="line">#5)org.apache.log4j.HTMLLayout(以HTML表格形式布局) </span><br><span class="line">#6)org.apache.log4j.PatternLayout(可以灵活地指定布局模式) </span><br><span class="line">#7)org.apache.log4j.SimpleLayout(包含日志信息的级别和信息字符串) </span><br><span class="line">#8)org.apache.log4j.TTCCLayout(包含日志产生的时间、线程、类别等等信息) </span><br><span class="line">#9)org.apache.log4j.xml.XMLLayout(以XML形式布局) </span><br><span class="line"># </span><br><span class="line">#5)HTMLLayout选项属性 </span><br><span class="line"># -LocationInfo = TRUE:默认值false,输出java文件名称和行号 </span><br><span class="line"># -Title=Struts Log Message:默认值 Log4J Log Messages </span><br><span class="line"># </span><br><span class="line">#6)PatternLayout选项属性 </span><br><span class="line"># -ConversionPattern = %m%n:格式化指定的消息(参数意思下面有) </span><br><span class="line"># </span><br><span class="line">#9)XMLLayout选项属性 </span><br><span class="line"># -LocationInfo = TRUE:默认值false,输出java文件名称和行号 </span><br><span class="line"># </span><br><span class="line">#Log4J采用类似C语言中的printf函数的打印格式格式化日志信息，打印参数如下： </span><br><span class="line"># %m 输出代码中指定的消息 </span><br><span class="line"># %p 输出优先级，即DEBUG,INFO,WARN,ERROR,FATAL </span><br><span class="line"># %r 输出自应用启动到输出该log信息耗费的毫秒数 </span><br><span class="line"># %c 输出所属的类目,通常就是所在类的全名 </span><br><span class="line"># %t 输出产生该日志事件的线程名 </span><br><span class="line"># %n 输出一个回车换行符，Windows平台为“\r\n”，Unix平台为“\n” </span><br><span class="line"># %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式 </span><br><span class="line">#    如：%d&#123;yyyy年MM月dd日 HH:mm:ss,SSS&#125;，输出类似：2012年01月05日 22:10:28,921 </span><br><span class="line"># %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数 </span><br><span class="line">#    如：Testlog.main(TestLog.java:10) </span><br><span class="line"># %F 输出日志消息产生时所在的文件名称 </span><br><span class="line"># %L 输出代码中的行号 </span><br><span class="line"># %x 输出和当前线程相关联的NDC(嵌套诊断环境),像java servlets多客户多线程的应用中 </span><br><span class="line"># %% 输出一个&quot;%&quot;字符 </span><br><span class="line"># </span><br><span class="line"># 可以在%与模式字符之间加上修饰符来控制其最小宽度、最大宽度、和文本的对齐方式。如： </span><br><span class="line">#  %5c: 输出category名称，最小宽度是5，category&lt;5，默认的情况下右对齐 </span><br><span class="line">#  %-5c:输出category名称，最小宽度是5，category&lt;5，&quot;-&quot;号指定左对齐,会有空格 </span><br><span class="line">#  %.5c:输出category名称，最大宽度是5，category&gt;5，就会将左边多出的字符截掉，&lt;5不会有空格 </span><br><span class="line">#  %20.30c:category名称&lt;20补空格，并且右对齐，&gt;30字符，就从左边交远销出的字符截掉 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#④指定特定包的输出特定的级别 </span><br><span class="line">#log4j.logger.org.springframework=DEBUG </span><br><span class="line">################################################################################ </span><br><span class="line"></span><br><span class="line">#OFF,systemOut,logFile,logDailyFile,logRollingFile,logMail,logDB,ALL </span><br><span class="line">log4j.rootLogger =ALL,systemOut,logFile,logDailyFile,logRollingFile,logMail,logDB </span><br><span class="line"></span><br><span class="line">#输出到控制台 </span><br><span class="line">log4j.appender.systemOut = org.apache.log4j.ConsoleAppender </span><br><span class="line">log4j.appender.systemOut.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.systemOut.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.systemOut.Threshold = DEBUG </span><br><span class="line">log4j.appender.systemOut.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.systemOut.Target = System.out </span><br><span class="line"></span><br><span class="line">#输出到文件 </span><br><span class="line">log4j.appender.logFile = org.apache.log4j.FileAppender </span><br><span class="line">log4j.appender.logFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logFile.Append = TRUE </span><br><span class="line">log4j.appender.logFile.File = ../Struts2/WebRoot/log/File/log4j_Struts.log </span><br><span class="line">log4j.appender.logFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#按DatePattern输出到文件 </span><br><span class="line">log4j.appender.logDailyFile = org.apache.log4j.DailyRollingFileAppender </span><br><span class="line">log4j.appender.logDailyFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logDailyFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logDailyFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logDailyFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logDailyFile.Append = TRUE </span><br><span class="line">log4j.appender.logDailyFile.File = ../Struts2/WebRoot/log/DailyFile/log4j_Struts </span><br><span class="line">log4j.appender.logDailyFile.DatePattern = &apos;.&apos;yyyy-MM-dd-HH-mm&apos;.log&apos; </span><br><span class="line">log4j.appender.logDailyFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#设定文件大小输出到文件 </span><br><span class="line">log4j.appender.logRollingFile = org.apache.log4j.RollingFileAppender </span><br><span class="line">log4j.appender.logRollingFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logRollingFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logRollingFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logRollingFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logRollingFile.Append = TRUE </span><br><span class="line">log4j.appender.logRollingFile.File = ../Struts2/WebRoot/log/RollingFile/log4j_Struts.log </span><br><span class="line">log4j.appender.logRollingFile.MaxFileSize = 1MB </span><br><span class="line">log4j.appender.logRollingFile.MaxBackupIndex = 10 </span><br><span class="line">log4j.appender.logRollingFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#用Email发送日志 </span><br><span class="line">log4j.appender.logMail = org.apache.log4j.net.SMTPAppender </span><br><span class="line">log4j.appender.logMail.layout = org.apache.log4j.HTMLLayout </span><br><span class="line">log4j.appender.logMail.layout.LocationInfo = TRUE </span><br><span class="line">log4j.appender.logMail.layout.Title = Struts2 Mail LogFile </span><br><span class="line">log4j.appender.logMail.Threshold = DEBUG </span><br><span class="line">log4j.appender.logMail.SMTPDebug = FALSE </span><br><span class="line">log4j.appender.logMail.SMTPHost = SMTP.163.com </span><br><span class="line">log4j.appender.logMail.From = xly3000@163.com </span><br><span class="line">log4j.appender.logMail.To = xly3000@gmail.com </span><br><span class="line">#log4j.appender.logMail.Cc = xly3000@gmail.com </span><br><span class="line">#log4j.appender.logMail.Bcc = xly3000@gmail.com </span><br><span class="line">log4j.appender.logMail.SMTPUsername = xly3000 </span><br><span class="line">log4j.appender.logMail.SMTPPassword = 1234567 </span><br><span class="line">log4j.appender.logMail.Subject = Log4j Log Messages </span><br><span class="line">#log4j.appender.logMail.BufferSize = 1024 </span><br><span class="line">#log4j.appender.logMail.SMTPAuth = TRUE </span><br><span class="line"></span><br><span class="line">#将日志登录到MySQL数据库 </span><br><span class="line">log4j.appender.logDB = org.apache.log4j.jdbc.JDBCAppender </span><br><span class="line">log4j.appender.logDB.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logDB.Driver = com.mysql.jdbc.Driver </span><br><span class="line">log4j.appender.logDB.URL = jdbc:mysql://127.0.0.1:3306/xly </span><br><span class="line">log4j.appender.logDB.User = root </span><br><span class="line">log4j.appender.logDB.Password = 123456 </span><br><span class="line">log4j.appender.logDB.Sql = INSERT INTOT_log4j(project_name,create_date,level,category,file_name,thread_name,line,all_category,message)values(&apos;Struts2&apos;,&apos;%d&#123;yyyy-MM-ddHH:mm:ss&#125;&apos;,&apos;%p&apos;,&apos;%c&apos;,&apos;%F&apos;,&apos;%t&apos;,&apos;%L&apos;,&apos;%l&apos;,&apos;%m&apos;)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/02/mapreduce调优/" rel="next" title="mapreduce调优">
+                <i class="fa fa-chevron-left"></i> mapreduce调优
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/09/Java获取与当天相差几天的日期两种方式/" rel="prev" title="Java获取与当天相差几天的日期两种方式">
+                Java获取与当天相差几天的日期两种方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/09/Log4j配置/"
+           data-title="Log4j配置" data-url="http://yoursite.com/2016/12/09/Log4j配置/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

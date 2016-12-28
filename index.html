@@ -260,6 +260,603 @@
             
               
                 
+                <a class="post-title-link" href="/2016/12/16/MapReduce程序异常捕获存储/" itemprop="url">
+                  MapReduce程序异常捕获存储
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-16T15:24:29+08:00" content="2016-12-16">
+              2016-12-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/16/MapReduce程序异常捕获存储/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/16/MapReduce程序异常捕获存储/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在Map或reduce中使用multipleOutput来进行异常存储：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">	context.write(newKey,newValue);</span><br><span class="line"></span><br><span class="line">&#125;catch(Exception e)&#123;</span><br><span class="line">	multipleOutput.write(new Text( null == e.getMessage()? (&quot;error:&quot;): e.getMessage),new Text(value.toString()),&quot;_error/part&quot;);</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="url">
+                  MapReduce应用中CombineFileInputFormat原理与用法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-12T21:26:41+08:00" content="2016-12-12">
+              2016-12-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载自：<a href="http://ju.outofmemory.cn/entry/72024" target="_blank" rel="external">http://ju.outofmemory.cn/entry/72024</a></p>
+</blockquote>
+<p>HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。</p>
+<p>MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的map任务，导致资源过度消耗，且效率低下。Hadoop自身包含了CombineFileInputFormat，其功能是将多个小文件合并如一个分片，由一个map任务处理，这样就减少了不必要的map数量。</p>
+<p>在了解CombineFileInputFormat之前，我们应了解其父类FileInputFormat的基本处理逻辑。注意这里的FileInputFormat的路径是<strong>org.apache.hadoop.mapreduce.lib.input.FileInputFormat</strong>，是新的MapReduce API。 mapred包下的FileInputFormat对应老的API，不再推荐使用。</p>
+<p><a href="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" target="_blank" rel="external"><img src="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" alt="CombineFileInputFormat_type"></a></p>
+<h2 id="FileInputFormat的基本处理逻辑"><a href="#FileInputFormat的基本处理逻辑" class="headerlink" title="FileInputFormat的基本处理逻辑"></a>FileInputFormat的基本处理逻辑</h2><p>FileInputFormat是基于文件的InputFormat的抽象基类，如上图所示，基于文件的衍生类有很多，如文本文件TextInputFormat，序列文件SequenceFileInputFormat等。</p>
+<p>FileInputFormat提供了分片的基本实现getSplits(JobContext)，其子类可以重写isSplitable(JobContext, Path)方法，来使得输入的一个或多个文件是否不做分片，完整由被一个Map任务进行处理。</p>
+<p>FileInputFormat有如下特点：</p>
+<ol>
+<li>将以下划线&#8221;_&#8221;或点&#8221;.&#8221;开头的文件作为隐藏文件，不做为输入文件。</li>
+<li>所有文件isSplitable(JobContext, Path)都是true，但是针对如果输入文件时压缩的、流式的，那么子类中应重新该函数，判断是否真的可以分片。</li>
+<li><p>由于每个文件块大小可能不一样，所以每个文件分别计算分片大小，计算规则如下：</p>
+<ol>
+<li><p>取值A：</p>
+<ol>
+<li>FormatMinSplitSize，本Format设置的最小Split大小，通过GetFormatMinSplitSize()获取，此类中定义为1个字节。</li>
+<li>MinSplitSize，配置文件(配置键mapreduce.input.fileinputformat.split.minsize)或者直接设置，通过GetMinSplitSize()获取)，未设置则为0。</li>
+<li>取两者较大值。</li>
+</ol>
+</li>
+<li><p>取值B:</p>
+<ol>
+<li>MaxSplitSize，通过配置文件设置或者SetMaxSplitSize()设置，通过GetMaxSplitSize()获取，无设置则取LONG.MAXVALUE。</li>
+<li>文件块大小BLOCKSIZE</li>
+<li>取两者较小值</li>
+</ol>
+</li>
+<li><p>再取A、B的较大值。</p>
+</li>
+<li>例：常用的TextInputFormat类中，没有对分片算法进行重写，那么我们可以认为，使用TextInputFormat时，在未做其他设置的情况下，默认分片大小等于BLOCKSIZE，如果设置了mapreduce.input.fileinputformat.split.minsize，则取其与BLOCK的较大值。</li>
+</ol>
+</li>
+<li><p>分片大小确定后，就将文件进行依次划分。</p>
+</li>
+</ol>
+<h2 id="文本类型TextInputFormat的使用"><a href="#文本类型TextInputFormat的使用" class="headerlink" title="文本类型TextInputFormat的使用"></a>文本类型TextInputFormat的使用</h2><p>如上我们知道TextInputFormat是FileInputFormat的子类，其自定义内容很少，通过它可以大致知道扩展FileInputFormat大致需要做些什么。整个类如下：</p>
+<pre><code>public class TextInputFormat extends FileInputFormat&amp;lt;LongWritable, Text&amp;gt; {
+
+  @Override
+  public RecordReader&amp;lt;LongWritable, Text&amp;gt;
+    createRecordReader(InputSplit split,
+                       TaskAttemptContext context) {
+    String delimiter = context.getConfiguration().get(
+        &amp;quot;textinputformat.record.delimiter&amp;quot; );
+    byte[] recordDelimiterBytes = null;
+    if ( null != delimiter)
+      recordDelimiterBytes = delimiter.getBytes(Charsets. UTF_8);
+    return new LineRecordReader(recordDelimiterBytes);
+  }
+
+  @Override
+  protected boolean isSplitable(JobContext context, Path file) {
+    final CompressionCodec codec =
+      new CompressionCodecFactory(context.getConfiguration()).getCodec(file);
+    if ( null == codec) {
+      return true;
+    }
+    return codec instanceof SplittableCompressionCodec;
+  }
+}
+</code></pre><p>分片的方式采用的是父类FileInputFormat的逻辑，上文中已经说明。重写了isSplitable()，根据文本文件的压缩属性来判断是否可以进行分片。</p>
+<p>而createRecorderReader()是定义文本文件的读取方式，实际文件读取是通过它返回的RecordReader&lt;LongWritable, Text&gt;类实现的。</p>
+<p>这样，在整个输入文件读取过程，大致会涉及如下几个步骤：</p>
+<ol>
+<li>指定输入文件路径，如FileInputFormat.addInputPaths(job, args[0])</li>
+<li>指定文件的处理类型，如job.setInputFormatClass(MyInputFormat. class)</li>
+<li><p>在这个InputFormatClass内部，考虑:</p>
+<ol>
+<li>是否可以进行分片 isSplitable(JobContext context, Path file)</li>
+<li>如何分片 List&lt;InputSplit&gt; getSplits(JobContext job)</li>
+<li>如何读取分片中的记录 RecordReader&lt;LongWritable, Text&gt; createRecordReader(InputSplit split,TaskAttemptContext context)</li>
+<li>以上确定后，用户开发的Map任务中就可以直接处理每一条记录KeyValue。</li>
+</ol>
+</li>
+</ol>
+<p>这些步骤下，我们基本就可以理解TextInputFormat如何被使用了。其他类型的InputFormat子类，其流程步骤也基本与上相同，可以重写相关的类方法来实现不同处理方式。</p>
+<p>从TextInputFormat中的分片逻辑(FileInputFormat的getSplits)中可以确定，分片都是针对单个文件而言的，如果文件本身较小，没有达到一个分片大小，那么每个小文件都是一个分片。而一个分片就对应一个Map任务。如果有大量的小文件作为Map的输入，那么其会导致生成大量Map任务，造成处理的缓慢、资源的浪费，如何减少map任务的数量提高处理效率呢？CombineInputFormat就是为解决这样的问题。</p>
+<h2 id="3-CombineInputFormat原理与用法"><a href="#3-CombineInputFormat原理与用法" class="headerlink" title="3.CombineInputFormat原理与用法"></a>3.CombineInputFormat原理与用法</h2><p>CombineInputFormat的功能，是将一个<strong>目录</strong>（可能包括多个小文件，不包括子目录）作为一个map的输入，而不是通常使用一个<strong>文件</strong>作为输入。</p>
+<p>CombineInputFormat本身是个抽象类，要使用它，涉及：</p>
+<p><strong> 1)CombineFileSplit </strong></p>
+<p>我们的目标是使得一个split不是属于一个文件，而是可能包含多个文件，所以这里不再使用常用的FileSplit，而是CombineFileSplit，包括了各个文件的路径、长度、读的起始位置等信息。CombineFileSplit是CombineInputFormat中getSplits()的对象类型。</p>
+<p><strong>2)CombineInputFormat 核心处理类</strong></p>
+<p>2.1)其基本思想：</p>
+<p>分片从指定路径下的多个文件构建，不同文件可以放入不同的pool，一个分片只能包含一个pool中的文件，可以包括多个文件的Block。pool其实是针对文件进行了逻辑划分，不同的pool中的文件分别进行分片。分片的逻辑如下文所示。</p>
+<p>2.2)分片的逻辑：</p>
+<ol>
+<li>如果指定了maxSplitSize(&#8220;mapreduce.input.fileinputformat.split.maxsize&#8221;)，那么在同一个节点上的Blocks合并，一个超过maxSplitSize就生成新分片。如果没有指定，则只汇总本节点BLock，暂不分片。</li>
+<li>如果指定了minSizeNode(&#8220;mapreduce.input.fileinputformat.split.minsize.per.node&#8221;),那么会把1.中处理剩余的Block，进行合并，如果超过minSizeNode，那么全部作为一个分片。否则这些Block与同一机架Rack上的块进行合并。</li>
+<li>每个节点上如上同样的方式处理，然后针对整个Rack的所有Block，按照1.方式处理。剩余部分，如果指定了minSizeRack(&#8220;mapreduce.input.fileinputformat.split.minsize.per.rack&#8221;)，并且超过minSizeRack，则全部作为一个分片，否则这些Block保留，等待与所有机架上的剩余Block进行汇总处理。</li>
+<li>每个机架上都按照1，2，3方式处理，汇总所有处理剩下的部分，再按照1的逻辑处理。再剩余的，作为一个分片。</li>
+</ol>
+<p>以上逻辑我们可以知道：</p>
+<p>如果只设置maxSplitSize(如job.getConfiguration().set( &#8220;mapreduce.input.fileinputformat.split.maxsize&#8221; , &#8220;33554432&#8243;))，那么基本每个分片大小都需凑满maxSplitSize。</p>
+<p><strong>如果maxSplitSize，minSizeNode，minSizeRack三个都没有设置，那是所有输入整合成一个分片！</strong></p>
+<p><strong>3)CombineFileRecordReader </strong></p>
+<p>针对一个CombineFileSplit分片的通用RecordReader。CombineFileSplit中包含多个文件的块信息，CombineFileRecordReader是文件层面的处理，例如何时切换到分片中的下一个文件，而单个文件的处理，则需要自定义RecordReader的子类，读取文件的记录。</p>
+<p>hadoop自带的示例应用org.apache.hadoop.examples.MultiFileWordCount，用到了CombineInputFormat，其处理流程：</p>
+<p><a href="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png" target="_blank" rel="external"><img src="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png" alt="MultiFileWordCount"></a></p>
+<p>要使用CombineInputFormat进行应用开发，可以参考org.apache.hadoop.examples.MultiFileWordCount中使用方式，需要自行实现CombineFileInputFormat的子类与实际读取逐条记录的RecordReader子类。</p>
+<p>而MultiFileWordCount的使用如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">shell&amp;gt; hadoop fs -ls -h /tmp/carl/2013-07-12/</span><br><span class="line"></span><br><span class="line"> Found 4 items</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    246.6 M 2013-12-03 13:07 /tmp/carl/2013-07-12/000059_0</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    244.9 M 2013-12-03 13:11 /tmp/carl/2013-07-12/000124_0</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    244.9 M 2013-12-03 13:15 /tmp/carl/2013-07-12/000126_0</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop     85.2 M 2013-12-03 13:17 /tmp/carl/2013-07-12/000218_0</span><br><span class="line"></span><br><span class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar multifilewc /tmp/carl/2013-07-12/ /tmp/carl/c8/</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/24 19:31:23 INFO input.FileInputFormat: Total input paths to process : 4</span><br><span class="line"></span><br><span class="line"> 13/12/24 19:31:23 INFO mapreduce.JobSubmitter: number of splits:1</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> Job Counters</span><br><span class="line"></span><br><span class="line"> Killed reduce tasks=1</span><br><span class="line"></span><br><span class="line"> Launched map tasks=1</span><br><span class="line"></span><br><span class="line"> Launched reduce tasks=17</span><br><span class="line"></span><br><span class="line"> Other local map tasks=1</span><br><span class="line"></span><br><span class="line"> Total time spent by all maps in occupied slots (ms)=37923</span><br><span class="line"></span><br><span class="line"> Total time spent by all reduces in occupied slots (ms)=1392681</span><br><span class="line"></span><br><span class="line"> ...</span><br></pre></td></tr></table></figure></p>
+<p>因为MultiFileWordCount没有设置maxSplitSize，所以这里只有一个分片。</p>
+<h2 id="4-CombineInputFormat应用"><a href="#4-CombineInputFormat应用" class="headerlink" title="4.CombineInputFormat应用"></a>4.CombineInputFormat应用</h2><h3 id="4-1-使用场景"><a href="#4-1-使用场景" class="headerlink" title="4.1.使用场景"></a>4.1.使用场景</h3><p>CombineInputFormat处理少量，较大的文件没有优势，相反，如果没有合理的设置maxSplitSize，minSizeNode，minSizeRack，则可能会导致一个map任务需要大量访问非本地的Block造成网络开销，反而比正常的非合并方式更慢。</p>
+<p>而针对大量远小于块大小的小文件处理，CombineInputFormat的使用还是很有优势。</p>
+<h3 id="4-2-测试"><a href="#4-2-测试" class="headerlink" title="4.2.测试"></a>4.2.测试</h3><p>我们以hadoop的示例程序WordCount和MulitFileWordCount来处理1000个小文件为例进行对比。</p>
+<p>生成小文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">shell&amp;gt; cat file_gen.sh</span><br><span class="line"></span><br><span class="line"> #!/bin/sh</span><br><span class="line"></span><br><span class="line"> for i in $(seq 1000)</span><br><span class="line"></span><br><span class="line"> do</span><br><span class="line"></span><br><span class="line"> echo &amp;#8220;abc asdf as df asd f sadf  werweiro &amp;#8220;$i &amp;gt; file_$&#123;i&#125;</span><br><span class="line"></span><br><span class="line"> done</span><br><span class="line"></span><br><span class="line"> shell&amp;gt; ./file_gen.sh</span><br><span class="line"></span><br><span class="line"> shell&amp;gt; ls -lh</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_962</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_963</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_964</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_965</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_966</span><br><span class="line"></span><br><span class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_967</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line">上面生成大量小文件，上传这些小文件：</span><br><span class="line"></span><br><span class="line">shell&amp;gt; hadoop fs -put file* /tmp/carl2/</span><br><span class="line"></span><br><span class="line">**wordcount**使用TextInputFormat方式，小文件一个个处理：</span><br><span class="line"></span><br><span class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar wordcount /tmp/carl2/ /tmp/carl_result3/</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:34:25 INFO input.FileInputFormat: Total input paths to process : 1000</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:34:27 INFO mapreduce.JobSubmitter: number of splits:1000</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:34:33 INFO mapreduce.Job:  map 0% reduce 0%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:34:40 INFO mapreduce.Job:  map 1% reduce 0%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:34:41 INFO mapreduce.Job:  map 2% reduce 0%</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:40:56 INFO mapreduce.Job:  map 100% reduce 94%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:40:57 INFO mapreduce.Job:  map 100% reduce 100%</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line">可以看到，生成了1000个map任务，总耗时超过6分钟!</span><br><span class="line"></span><br><span class="line">**multifilewc**使用CombineInputFormat方式，没有设置maxSplitSize的情况下，所有小文件会汇总成一个Split。</span><br><span class="line"></span><br><span class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar multifilewc /tmp/carl2/ /tmp/carl_result4/</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:04 INFO input.FileInputFormat: Total input paths to process : 1000</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:07 INFO mapreduce.JobSubmitter: number of splits:1</span><br><span class="line"></span><br><span class="line"> &amp;#8230;</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:12 INFO mapreduce.Job:  map 0% reduce 0%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:19 INFO mapreduce.Job:  map 100% reduce 0%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:24 INFO mapreduce.Job:  map 100% reduce 25%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:25 INFO mapreduce.Job:  map 100% reduce 31%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:27 INFO mapreduce.Job:  map 100% reduce 38%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:28 INFO mapreduce.Job:  map 100% reduce 56%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:29 INFO mapreduce.Job:  map 100% reduce 63%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:30 INFO mapreduce.Job:  map 100% reduce 69%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:31 INFO mapreduce.Job:  map 100% reduce 81%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:32 INFO mapreduce.Job:  map 100% reduce 88%</span><br><span class="line"></span><br><span class="line"> 13/12/25 10:42:33 INFO mapreduce.Job:  map 100% reduce 100%</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，只用一个map任务进行处理，大量小文件可以使用网络迅速的汇总，总耗时不到30秒！</p>
+<p>测试的结果可以大致看出，针对大量小文件，使用CombineInputFormat具有较大优势。</p>
+<p>参考：</p>
+<p><a href="http://stackoverflow.com/questions/14541759/how-can-i-work-with-large-number-of-small-files-in-hadoop" target="_blank" rel="external">http://stackoverflow.com/questions/14541759/how-can-i-work-with-large-number-of-small-files-in-hadoop</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/09/Java获取与当天相差几天的日期两种方式/" itemprop="url">
+                  Java获取与当天相差几天的日期两种方式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T21:32:27+08:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/09/Java获取与当天相差几天的日期两种方式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/09/Java获取与当天相差几天的日期两种方式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Date date=new Date();//取时间  </span><br><span class="line">Calendar calendar = new GregorianCalendar();  </span><br><span class="line">calendar.setTime(date);  </span><br><span class="line">calendar.add(calendar.DATE,1);//把日期往后增加一天.整数往后推,负数往前移动  </span><br><span class="line">date=calendar.getTime(); //这个时间就是日期往后推一天的结果   </span><br><span class="line">SimpleDateFormat formatter = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);  </span><br><span class="line">String dateString = formatter.format(date);  </span><br><span class="line">System.out.println(dateString);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line">     *获取两日期之间天数 </span><br><span class="line">     */  </span><br><span class="line">    public String getDate(Date d,long i)&#123;  </span><br><span class="line">         SimpleDateFormat df=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);     </span><br><span class="line">         /*System.out.println(&quot;今天的日期：&quot;+df.format(d));    </span><br><span class="line">         System.out.println(&quot;两天前的日期：&quot; + df.format(new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000)));   </span><br><span class="line">         System.out.println(&quot;三天后的日期：&quot; + df.format(new Date(d.getTime() + 3 * 24 * 60 * 60 * 1000)));*/  </span><br><span class="line">         return df.format(new Date(d.getTime() + i * 24 * 60 * 60 * 1000));  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/09/Log4j配置/" itemprop="url">
+                  Log4j配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T21:31:24+08:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/09/Log4j配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/09/Log4j配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>加入log4j-1.2.8.jar到lib下。</p>
+</li>
+<li><p>在CLASSPATH下建立log4j.properties。</p>
+</li>
+<li><p>在bin目录下加入  log4j.properties</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#①配置根Logger，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.rootLogger = [level],appenderName,appenderName2,... </span><br><span class="line">#level是日志记录的优先级，分为OFF,TRACE,DEBUG,INFO,WARN,ERROR,FATAL,ALL </span><br><span class="line">##Log4j建议只使用四个级别，优先级从低到高分别是DEBUG,INFO,WARN,ERROR </span><br><span class="line">#通过在这里定义的级别，您可以控制到应用程序中相应级别的日志信息的开关 </span><br><span class="line">#比如在这里定义了INFO级别，则应用程序中所有DEBUG级别的日志信息将不被打印出来 </span><br><span class="line">#appenderName就是指定日志信息输出到哪个地方。可同时指定多个输出目的 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#②配置日志信息输出目的地Appender，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.appender.appenderName = fully.qualified.name.of.appender.class </span><br><span class="line">#log4j.appender.appenderName.optionN = valueN </span><br><span class="line"># </span><br><span class="line">#Log4j提供的appender有以下几种： </span><br><span class="line">#1)org.apache.log4j.ConsoleAppender(输出到控制台) </span><br><span class="line">#2)org.apache.log4j.FileAppender(输出到文件) </span><br><span class="line">#3)org.apache.log4j.DailyRollingFileAppender(每天产生一个日志文件) </span><br><span class="line">#4)org.apache.log4j.RollingFileAppender(文件大小到达指定尺寸的时候产生一个新的文件) </span><br><span class="line">#5)org.apache.log4j.WriterAppender(将日志信息以流格式发送到任意指定的地方) </span><br><span class="line"># </span><br><span class="line">#1)ConsoleAppender选项属性 </span><br><span class="line"># -Threshold = DEBUG:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -Target = System.err:默认值System.out,输出到控制台(err为红色,out为黑色) </span><br><span class="line"># </span><br><span class="line">#2)FileAppender选项属性 </span><br><span class="line"># -Threshold = INFO:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:\log4j.log:指定消息输出到C:\log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line"># </span><br><span class="line">#3)DailyRollingFileAppender选项属性 </span><br><span class="line"># -Threshold = WARN:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:\log4j.log:指定消息输出到C:\log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -DatePattern=&apos;.&apos;yyyy-ww:每周滚动一次文件,即每周产生一个新的文件。还可以按用以下参数: </span><br><span class="line">#              &apos;.&apos;yyyy-MM:每月 </span><br><span class="line">#              &apos;.&apos;yyyy-ww:每周 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd:每天 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-a:每天两次 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-HH:每小时 </span><br><span class="line">#              &apos;.&apos;yyyy-MM-dd-HH-mm:每分钟 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line"># </span><br><span class="line">#4)RollingFileAppender选项属性 </span><br><span class="line"># -Threshold = ERROR:指定日志消息的输出最低层次 </span><br><span class="line"># -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出 </span><br><span class="line"># -File = C:/log4j.log:指定消息输出到C:/log4j.log文件 </span><br><span class="line"># -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容 </span><br><span class="line"># -MaxFileSize = 100KB:后缀可以是KB,MB,GB.在日志文件到达该大小时,将会自动滚动.如:log4j.log.1 </span><br><span class="line"># -MaxBackupIndex = 2:指定可以产生的滚动文件的最大数 </span><br><span class="line"># -Encoding = UTF-8:可以指定文件编码格式 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#③配置日志信息的格式(布局)，其语法为： </span><br><span class="line"># </span><br><span class="line">#log4j.appender.appenderName.layout = fully.qualified.name.of.layout.class </span><br><span class="line">#log4j.appender.appenderName.layout.optionN = valueN </span><br><span class="line"># </span><br><span class="line">#Log4j提供的layout有以下几种： </span><br><span class="line">#5)org.apache.log4j.HTMLLayout(以HTML表格形式布局) </span><br><span class="line">#6)org.apache.log4j.PatternLayout(可以灵活地指定布局模式) </span><br><span class="line">#7)org.apache.log4j.SimpleLayout(包含日志信息的级别和信息字符串) </span><br><span class="line">#8)org.apache.log4j.TTCCLayout(包含日志产生的时间、线程、类别等等信息) </span><br><span class="line">#9)org.apache.log4j.xml.XMLLayout(以XML形式布局) </span><br><span class="line"># </span><br><span class="line">#5)HTMLLayout选项属性 </span><br><span class="line"># -LocationInfo = TRUE:默认值false,输出java文件名称和行号 </span><br><span class="line"># -Title=Struts Log Message:默认值 Log4J Log Messages </span><br><span class="line"># </span><br><span class="line">#6)PatternLayout选项属性 </span><br><span class="line"># -ConversionPattern = %m%n:格式化指定的消息(参数意思下面有) </span><br><span class="line"># </span><br><span class="line">#9)XMLLayout选项属性 </span><br><span class="line"># -LocationInfo = TRUE:默认值false,输出java文件名称和行号 </span><br><span class="line"># </span><br><span class="line">#Log4J采用类似C语言中的printf函数的打印格式格式化日志信息，打印参数如下： </span><br><span class="line"># %m 输出代码中指定的消息 </span><br><span class="line"># %p 输出优先级，即DEBUG,INFO,WARN,ERROR,FATAL </span><br><span class="line"># %r 输出自应用启动到输出该log信息耗费的毫秒数 </span><br><span class="line"># %c 输出所属的类目,通常就是所在类的全名 </span><br><span class="line"># %t 输出产生该日志事件的线程名 </span><br><span class="line"># %n 输出一个回车换行符，Windows平台为“\r\n”，Unix平台为“\n” </span><br><span class="line"># %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式 </span><br><span class="line">#    如：%d&#123;yyyy年MM月dd日 HH:mm:ss,SSS&#125;，输出类似：2012年01月05日 22:10:28,921 </span><br><span class="line"># %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数 </span><br><span class="line">#    如：Testlog.main(TestLog.java:10) </span><br><span class="line"># %F 输出日志消息产生时所在的文件名称 </span><br><span class="line"># %L 输出代码中的行号 </span><br><span class="line"># %x 输出和当前线程相关联的NDC(嵌套诊断环境),像java servlets多客户多线程的应用中 </span><br><span class="line"># %% 输出一个&quot;%&quot;字符 </span><br><span class="line"># </span><br><span class="line"># 可以在%与模式字符之间加上修饰符来控制其最小宽度、最大宽度、和文本的对齐方式。如： </span><br><span class="line">#  %5c: 输出category名称，最小宽度是5，category&lt;5，默认的情况下右对齐 </span><br><span class="line">#  %-5c:输出category名称，最小宽度是5，category&lt;5，&quot;-&quot;号指定左对齐,会有空格 </span><br><span class="line">#  %.5c:输出category名称，最大宽度是5，category&gt;5，就会将左边多出的字符截掉，&lt;5不会有空格 </span><br><span class="line">#  %20.30c:category名称&lt;20补空格，并且右对齐，&gt;30字符，就从左边交远销出的字符截掉 </span><br><span class="line">################################################################################ </span><br><span class="line">################################################################################ </span><br><span class="line">#④指定特定包的输出特定的级别 </span><br><span class="line">#log4j.logger.org.springframework=DEBUG </span><br><span class="line">################################################################################ </span><br><span class="line"></span><br><span class="line">#OFF,systemOut,logFile,logDailyFile,logRollingFile,logMail,logDB,ALL </span><br><span class="line">log4j.rootLogger =ALL,systemOut,logFile,logDailyFile,logRollingFile,logMail,logDB </span><br><span class="line"></span><br><span class="line">#输出到控制台 </span><br><span class="line">log4j.appender.systemOut = org.apache.log4j.ConsoleAppender </span><br><span class="line">log4j.appender.systemOut.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.systemOut.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.systemOut.Threshold = DEBUG </span><br><span class="line">log4j.appender.systemOut.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.systemOut.Target = System.out </span><br><span class="line"></span><br><span class="line">#输出到文件 </span><br><span class="line">log4j.appender.logFile = org.apache.log4j.FileAppender </span><br><span class="line">log4j.appender.logFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logFile.Append = TRUE </span><br><span class="line">log4j.appender.logFile.File = ../Struts2/WebRoot/log/File/log4j_Struts.log </span><br><span class="line">log4j.appender.logFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#按DatePattern输出到文件 </span><br><span class="line">log4j.appender.logDailyFile = org.apache.log4j.DailyRollingFileAppender </span><br><span class="line">log4j.appender.logDailyFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logDailyFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logDailyFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logDailyFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logDailyFile.Append = TRUE </span><br><span class="line">log4j.appender.logDailyFile.File = ../Struts2/WebRoot/log/DailyFile/log4j_Struts </span><br><span class="line">log4j.appender.logDailyFile.DatePattern = &apos;.&apos;yyyy-MM-dd-HH-mm&apos;.log&apos; </span><br><span class="line">log4j.appender.logDailyFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#设定文件大小输出到文件 </span><br><span class="line">log4j.appender.logRollingFile = org.apache.log4j.RollingFileAppender </span><br><span class="line">log4j.appender.logRollingFile.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logRollingFile.layout.ConversionPattern = [%-5p][%-22d&#123;yyyy/MM/dd HH:mm:ssS&#125;][%l]%n%m%n </span><br><span class="line">log4j.appender.logRollingFile.Threshold = DEBUG </span><br><span class="line">log4j.appender.logRollingFile.ImmediateFlush = TRUE </span><br><span class="line">log4j.appender.logRollingFile.Append = TRUE </span><br><span class="line">log4j.appender.logRollingFile.File = ../Struts2/WebRoot/log/RollingFile/log4j_Struts.log </span><br><span class="line">log4j.appender.logRollingFile.MaxFileSize = 1MB </span><br><span class="line">log4j.appender.logRollingFile.MaxBackupIndex = 10 </span><br><span class="line">log4j.appender.logRollingFile.Encoding = UTF-8 </span><br><span class="line"></span><br><span class="line">#用Email发送日志 </span><br><span class="line">log4j.appender.logMail = org.apache.log4j.net.SMTPAppender </span><br><span class="line">log4j.appender.logMail.layout = org.apache.log4j.HTMLLayout </span><br><span class="line">log4j.appender.logMail.layout.LocationInfo = TRUE </span><br><span class="line">log4j.appender.logMail.layout.Title = Struts2 Mail LogFile </span><br><span class="line">log4j.appender.logMail.Threshold = DEBUG </span><br><span class="line">log4j.appender.logMail.SMTPDebug = FALSE </span><br><span class="line">log4j.appender.logMail.SMTPHost = SMTP.163.com </span><br><span class="line">log4j.appender.logMail.From = xly3000@163.com </span><br><span class="line">log4j.appender.logMail.To = xly3000@gmail.com </span><br><span class="line">#log4j.appender.logMail.Cc = xly3000@gmail.com </span><br><span class="line">#log4j.appender.logMail.Bcc = xly3000@gmail.com </span><br><span class="line">log4j.appender.logMail.SMTPUsername = xly3000 </span><br><span class="line">log4j.appender.logMail.SMTPPassword = 1234567 </span><br><span class="line">log4j.appender.logMail.Subject = Log4j Log Messages </span><br><span class="line">#log4j.appender.logMail.BufferSize = 1024 </span><br><span class="line">#log4j.appender.logMail.SMTPAuth = TRUE </span><br><span class="line"></span><br><span class="line">#将日志登录到MySQL数据库 </span><br><span class="line">log4j.appender.logDB = org.apache.log4j.jdbc.JDBCAppender </span><br><span class="line">log4j.appender.logDB.layout = org.apache.log4j.PatternLayout </span><br><span class="line">log4j.appender.logDB.Driver = com.mysql.jdbc.Driver </span><br><span class="line">log4j.appender.logDB.URL = jdbc:mysql://127.0.0.1:3306/xly </span><br><span class="line">log4j.appender.logDB.User = root </span><br><span class="line">log4j.appender.logDB.Password = 123456 </span><br><span class="line">log4j.appender.logDB.Sql = INSERT INTOT_log4j(project_name,create_date,level,category,file_name,thread_name,line,all_category,message)values(&apos;Struts2&apos;,&apos;%d&#123;yyyy-MM-ddHH:mm:ss&#125;&apos;,&apos;%p&apos;,&apos;%c&apos;,&apos;%F&apos;,&apos;%t&apos;,&apos;%L&apos;,&apos;%l&apos;,&apos;%m&apos;)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/12/02/mapreduce调优/" itemprop="url">
                   mapreduce调优
                 </a>
@@ -1099,525 +1696,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/05/hadoop Job命令/" itemprop="url">
-                  Hadoop Job相关命令
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-05T10:54:40+08:00" content="2016-11-05">
-              2016-11-05
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/05/hadoop Job命令/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/hadoop Job命令/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>hadoop命令行 与job相关的：<br>命令行工具 •<br>1.查看 Job 信息：<br>hadoop job -list<br>2.杀掉 Job：<br>hadoop  job -kill  job_id<br>3.指定路径下查看历史日志汇总：<br>hadoop job -history output-dir<br>4.作业的更多细节：<br>hadoop job -history all output-dir<br>5.打印map和reduce完成百分比和所有计数器：<br>hadoop job -status job_id<br>6.杀死任务。被杀死的任务不会不利于失败尝试：<br>hadoop jab -kill-task <task-id><br>7.使任务失败。被失败的任务会对失败尝试不利：<br>hadoop job  -fail-task <task-id></task-id></task-id></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /" itemprop="url">
-                  mapreduce运行内存及JVM配置错误running beyond physical memory limits
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T20:09:27+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="错误描述："><a href="#错误描述：" class="headerlink" title="错误描述："></a>错误描述：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILED</span><br><span class="line">Container [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyond physical memory limits. Current usage: 4.0 GB of 3 GB physical memory used; 6.9 GB of 6.3 GB virtual memory used. Killing container.</span><br><span class="line">Dump of the process-tree for container_1476760655616_0575_01_000052 :</span><br><span class="line">	|- PID PPID PGRPID SESSID CMD_NAME USER_MODE_TIME(MILLIS) SYSTEM_TIME(MILLIS) VMEM_USAGE(BYTES) RSSMEM_USAGE(PAGES) FULL_CMD_LINE</span><br></pre></td></tr></table></figure>
-<h3 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h3><p>查看hadoop配置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">      &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">          &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;-Xmx3072m&lt;/value&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property&gt;</span><br><span class="line">              &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;-Xmx6144m&lt;/value&gt;</span><br><span class="line">                &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>mapreduce.reduce.java.opts</code>参数大于<code>mapreduce.reduce.memory.mb</code>,需小于才行</p>
-<p>在mapreduce执行函数中设置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf.setInt(&quot;mapreduce.reduce.memory.mb&quot;, 6144);</span><br></pre></td></tr></table></figure></p>
-<p>1.</p>
-<p>参考 </p>
-<blockquote>
-<p><a href="http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits" target="_blank" rel="external">http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits</a></p>
-</blockquote>
-<p>我们集群中的每台机器都有48 GB的RAM。此RAM的一些应保留为操作系统使用。在每个节点上，我们将为YARN分配40 GB RAM以使用操作系统并保留8 GB</p>
-<p>对于我们的示例集群，我们有一个容器的最小RAM（yarn.scheduler.minimum-allocation-mb）= 2 GB。因此，我们将为Map任务容器分配4 GB，为Reduce任务容器分配8 GB。</p>
-<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb：4096</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.memory.mb：8192</span><br></pre></td></tr></table></figure></p>
-<p>每个容器将运行Map和Reduce任务的JVM。 JVM堆大小应设置为低于上面定义的Map和Reduce内存，以使它们在YARN分配的Container内存的边界内。</p>
-<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.java.opts：-Xmx3072m</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.java.opts：-Xmx6144m</span><br></pre></td></tr></table></figure></p>
-<p>以上设置配置Map和Reduce任务将使用的物理RAM的上限。<br>。</p>
-<p>2.</p>
-<blockquote>
-<p><a href="http://blog.chinaunix.net/uid-25691489-id-5587957.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-25691489-id-5587957.html</a></p>
-</blockquote>
-<p>大概是job运行超过了map和reduce设置的内存大小，导致任务失败，调整增加了map和reduce的内容，问题排除，一些参数介绍如下：</p>
-<p>RM的内存资源配置，主要是通过下面的两个参数进行的（这两个值是Yarn平台特性，应在yarn-site.xml中配置好）：<br>yarn.scheduler.minimum-allocation-mb<br>yarn.scheduler.maximum-allocation-mb<br>说明：单个容器可申请的最小与最大内存，应用在运行申请内存时不能超过最大值，小于最小值则分配最小值，从这个角度看，最小值有点想操作系统中的页。最小值还有另外一种用途，计算一个节点的最大container数目注：这两个值一经设定不能动态改变(此处所说的动态改变是指应用运行时)。</p>
-<p>NM的内存资源配置，主要是通过下面两个参数进行的（这两个值是Yarn平台特性，应在yarn-sit.xml中配置） ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn.nodemanager.resource.memory-mb</span><br><span class="line">yarn.nodemanager.vmem-pmem-ratio</span><br></pre></td></tr></table></figure></p>
-<p>说明：每个节点可用的最大内存，RM中的两个值不应该超过此值。此数值可以用于计算container最大数目，即：用此值除以RM中的最小容器内存。虚拟内存率，是占task所用内存的百分比，默认值为2.1倍;注意：第一个参数是不可修改的，一旦设置，整个运行过程中不可动态修改，且该值的默认大小是8G，即使计算机内存不足8G也会按着8G内存来使用。</p>
-<p>AM内存配置相关参数，此处以MapReduce为例进行说明（这两个值是AM特性，应在mapred-site.xml中配置），如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb</span><br><span class="line">mapreduce.reduce.memory.mb</span><br></pre></td></tr></table></figure></p>
-<p>说明：这两个参数指定用于MapReduce的两个任务（Map and Reduce task）的内存大小，其值应该在RM中的最大最小container之间。如果没有配置则通过如下简单公式获得：<br>max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))<br>一般的reduce应该是map的2倍。注：这两个值可以在应用启动时通过参数改变；</p>
-<p>AM中其它与内存相关的参数，还有JVM相关的参数，这些参数可以通过，如下选项配置：<br>mapreduce.map.java.opts<br>mapreduce.reduce.java.opts<br>说明：这两个参主要是为需要运行JVM程序（java、scala等）准备的，通过这两个设置可以向JVM中传递参数的，与内存有关的是，-Xmx，-Xms等选项。此数值大小，应该在AM中的map.mb和reduce.mb之间。</p>
-<p>我们对上面的内容进行下总结，当配置Yarn内存的时候主要是配置如下三个方面：每个Map和Reduce可用物理内存限制；对于每个任务的JVM对大小的限制；虚拟内存的限制；</p>
-<p>下面通过一个具体错误实例，进行内存相关说明，错误如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Container[pid=41884,containerID=container_1405950053048_0016_01_000284] is running beyond virtual memory limits. Current usage: 314.6 MB of 2.9 GB physical memory used; 8.7 GB of 6.2 GB virtual memory used. Killing container.</span><br></pre></td></tr></table></figure></p>
-<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;100000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.maximum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;10000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.minimum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;3000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;2000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
-<p>通过配置我们看到，容器的最小内存和最大内存分别为：3000m和10000m，而reduce设置的默认值小于2000m，map没有设置，所以两个值均为3000m，也就是log中的“2.9 GB physical<br>memory used”。而由于使用了默认虚拟内存率(也就是2.1倍)，所以对于Map Task和Reduce Task总的虚拟内存为都为3000*2.1=6.2G。而应用的虚拟内存超过了这个数值，故报错 。解决办<br>法：在启动Yarn是调节虚拟内存率或者应用运行时调节内存大小。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/03/mapreduce执行错误Mapper.init错误/" itemprop="url">
-                  mapreduce执行错误Mapper.<init>错误
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T20:07:23+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/03/mapreduce执行错误Mapper.init错误/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/mapreduce执行错误Mapper.init错误/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>参考<br><a href="http://blog.itpub.net/30066956/viewspace-2107549/" target="_blank" rel="external">http://blog.itpub.net/30066956/viewspace-2107549/</a></p>
-</blockquote>
-<p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:37:26 INFO mapreduce.Job: Task Id : attempt_1476760655616_0574_m_000027_2, Status : FAILED</span><br><span class="line">Error: java.lang.RuntimeException: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:131)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:742)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:168)</span><br><span class="line">	at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">	at javax.security.auth.Subject.doAs(Subject.java:415)</span><br><span class="line">	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1614)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:163)</span><br><span class="line">Caused by: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at java.lang.Class.getConstructor0(Class.java:2849)</span><br><span class="line">	at java.lang.Class.getDeclaredConstructor(Class.java:2053)</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:125)</span><br><span class="line">	... 7 more</span><br></pre></td></tr></table></figure></p>
-<p>解决：<br>注意Mapper 与 Reducer 类写成内部类，一定要加static ！！！！</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/" itemprop="url">
-                  eclipse中操作hive错误org.apache.hadoop.security.AccessControlException
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T19:27:08+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask</span><br><span class="line"></span><br><span class="line">Job Submission failed with exception &apos;org.apache.hadoop.security.AccessControlException(Permission denied: user=anonymous, access=WRITE, inode=&quot;/user&quot;:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
-<p>解决：<br>权限问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -chmod -R 777  /</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1658,7 +1741,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

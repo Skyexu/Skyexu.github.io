@@ -260,6 +260,536 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/29/Java BufferdReader读取文件乱码/" itemprop="url">
+                  Java BufferdReader读取文件乱码
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-29T21:23:57+08:00" content="2016-08-29">
+              2016-08-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/29/Java BufferdReader读取文件乱码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/29/Java BufferdReader读取文件乱码/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="javaBufferdReader读取文件乱码"><a href="#javaBufferdReader读取文件乱码" class="headerlink" title="javaBufferdReader读取文件乱码"></a>javaBufferdReader读取文件乱码</h3><p>以下为读取文件方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">private static void putIdGame()&#123;</span><br><span class="line">	</span><br><span class="line">	URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());</span><br><span class="line">	int count = 0;</span><br><span class="line">	try &#123;</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">		URL url = new URL(HDFS + path);</span><br><span class="line">		InputStream gameList = url.openStream();</span><br><span class="line">		BufferedReader reader_url = new BufferedReader(new InputStreamReader(gameList,&quot;UTF-8&quot;));</span><br><span class="line">		String inString_RL = reader_url.readLine();</span><br><span class="line">		</span><br><span class="line">		while (inString_RL != null &amp;&amp; count &lt; 50) &#123;</span><br><span class="line">			int userId;</span><br><span class="line">			String[] str = inString_RL.split(&quot;,&quot;); </span><br><span class="line">			count ++;</span><br><span class="line">			map.put(str[1], str[0]);</span><br><span class="line">			System.out.println(str[0]);</span><br><span class="line">			inString_RL = reader_url.readLine();</span><br><span class="line">		&#125;</span><br><span class="line">		reader_url.close();</span><br><span class="line">	&#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">		System.out.println(&quot;未找文件！&quot;);</span><br><span class="line">	&#125; catch (IOException e1) &#123;</span><br><span class="line">		System.out.println(&quot;文件读写错误！&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>InputStreamReader</code>中加入”UTF-8”即可</p>
+<h3 id="Java读取文件时第一行出现乱码“？”问号"><a href="#Java读取文件时第一行出现乱码“？”问号" class="headerlink" title="Java读取文件时第一行出现乱码“？”问号"></a>Java读取文件时第一行出现乱码“？”问号</h3><p>在windows 环境下，使用java文件流读取文本文件时，会出现第一个字符为未知字符”?” ,其他字符完整。而且第一个字符显示为？但是用equals比对发现并非是”?”号,google之，了解到bom编码标记。使用 16进制打印输出结果：</p>
+<p>只要出现该头的16进制编码为这种字符便可以断定该文本文件的编码方式了。</p>
+<p>bom编码标记：</p>
+<p>bom全称是：byte order mark，汉语意思是标记字节顺序码。只是出现在：unicode字符集中，只有unicode字符集，存储时候，要求指定编码，如果不指定，windows还会用默认的：ANSI读取。常见的bom头是：</p>
+<p>  UTF-8 ║ EF BB BF<br>  UTF-16LE ║ FF FE (小尾）<br>  UTF-16BE ║ FE FF （大尾）<br>  UTF-32LE ║ FF FE 00 00<br>  UTF-32BE ║ 00 00 FE FF</p>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4><ol>
+<li><p>工具将txt文件另存为UTF-8无BOM格式</p>
+</li>
+<li></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public String readerFile(InputStream in) throws IOException &#123;</span><br><span class="line">		StringBuffer strBuff = new StringBuffer();</span><br><span class="line">		String temp = null;</span><br><span class="line">		BufferedReader reader = new BufferedReader(new InputStreamReader(in,Charset.forName(&quot;utf-8&quot;)));</span><br><span class="line">		while ((temp = reader.readLine()) != null) &#123;</span><br><span class="line">			byte[] by = temp.getBytes();</span><br><span class="line">			String header = Integer.toHexString(by[0]).toUpperCase();</span><br><span class="line">			//判断是否拥有无法识别的字符</span><br><span class="line">			if (header.equalsIgnoreCase(&quot;FFFFFFEF&quot;) || header.equalsIgnoreCase(&quot;3F&quot;)) &#123;</span><br><span class="line">				strBuff.append(temp.substring(1) + &quot;\n&quot;);</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			strBuff.append(temp + &quot;\n&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		reader.close();</span><br><span class="line">		in.close();</span><br><span class="line">		return strBuff.toString();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/26/HDFS工具类/" itemprop="url">
+                  HDFS工具类
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-26T23:51:58+08:00" content="2016-08-26">
+              2016-08-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/26/HDFS工具类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/26/HDFS工具类/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>花了点时间整理了验证一下在本地eclipse上操作HDFS的工具类，实现在本地通过API操作HDFS。</p>
+<p>实现以下功能：</p>
+<ul>
+<li>ls </li>
+<li>rmr</li>
+<li>mkdir</li>
+<li>copyFromLocal</li>
+<li>cat</li>
+<li>copyToLocal</li>
+<li>创建一个新文件，并写入内容</li>
+</ul>
+<p>主要引用参考：</p>
+<blockquote>
+<p><a href="http://blog.fens.me/hadoop-hdfs-api/" target="_blank" rel="external">http://blog.fens.me/hadoop-hdfs-api/</a></p>
+</blockquote>
+<p>类如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.hdfs;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.net.URI;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.fs.BlockLocation;</span><br><span class="line">import org.apache.hadoop.fs.FSDataInputStream;</span><br><span class="line">import org.apache.hadoop.fs.FSDataOutputStream;</span><br><span class="line">import org.apache.hadoop.fs.FileStatus;</span><br><span class="line">import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">import org.apache.hadoop.fs.Hdfs;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.hdfs.web.HsftpFileSystem;</span><br><span class="line">import org.apache.hadoop.io.IOUtils;</span><br><span class="line">import org.apache.hadoop.mapred.JobConf;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * HDFS工具类</span><br><span class="line"> * </span><br><span class="line"> * 实现功能：</span><br><span class="line"> * hadoop fs -ls / </span><br><span class="line"> * hadoop fs -mkdir /data </span><br><span class="line"> * hadoop fs -rmr /data/test.txt</span><br><span class="line"> * hadoop fs -copyFromLocal /test/test.txt /data </span><br><span class="line"> * hadoop fs -cat /data/test.txt</span><br><span class="line"> * hadoop fs -copyToLocal /data /test/test.txt </span><br><span class="line"> * 创建一个新文件，并写入内容  </span><br><span class="line"> * 重命名</span><br><span class="line"> * </span><br><span class="line"> * 需要导入以下路径的所有jar包： hadoop-2.7.2\share\hadoop\common</span><br><span class="line"> * hadoop-2.7.2\share\hadoop\common\lib hadoop-2.7.2\share\hadoop\hdfs</span><br><span class="line"> * hadoop-2.7.2\share\hadoop\hdfs\lib hadoop-2.7.2\share\hadoop\mapreduce</span><br><span class="line"> * </span><br><span class="line"> * </span><br><span class="line"> * @author Skye</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">public class HdfsDAO &#123;</span><br><span class="line"></span><br><span class="line">	// HDFS访问地址</span><br><span class="line">	private static final String HDFS = &quot;hdfs://192.168.1.111:9000/&quot;;</span><br><span class="line">	// hdfs路径</span><br><span class="line">	private String hdfsPath;</span><br><span class="line">	// Hadoop系统配置</span><br><span class="line">	private Configuration conf;</span><br><span class="line"></span><br><span class="line">	public HdfsDAO(Configuration conf) &#123;</span><br><span class="line">		this(HDFS, conf);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public HdfsDAO(String hdfs, Configuration conf) &#123;</span><br><span class="line">		this.hdfsPath = hdfs;</span><br><span class="line">		this.conf = conf;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 启动函数</span><br><span class="line">	public static void main(String[] args) throws IOException &#123;</span><br><span class="line">		JobConf conf = config();</span><br><span class="line">		HdfsDAO hdfs = new HdfsDAO(conf);</span><br><span class="line">		// hdfs.mkdirs(&quot;/new&quot;);</span><br><span class="line">		// 可以同时建多级目录</span><br><span class="line">		// hdfs.mkdirs(&quot;/new/new3&quot;);</span><br><span class="line">		// hdfs.ls(&quot;/tuijian&quot;);</span><br><span class="line">		// hdfs.rmr(&quot;/new&quot;);</span><br><span class="line">		// 可用当前eclipse工作空间的相对路径和文件绝对路径 以及当前项目的路径不加&quot;/&quot;</span><br><span class="line">		// hdfs.copyFileToHdfs(&quot;data/hive笔记.md&quot;, &quot;/data&quot;);</span><br><span class="line">		// hdfs.copyFileToHdfs(&quot;/Xiaomi/MiFlashClean.cmd&quot;, &quot;/data&quot;);</span><br><span class="line">		// hdfs.copyFileToHdfs(&quot;E:/推荐系统/100万用户数据/user_pay&quot;, &quot;/data&quot;);</span><br><span class="line">		// hdfs.rmr(&quot;/data/MiFlashClean.cmd&quot;);</span><br><span class="line">		// hdfs.rmr(&quot;/data/user_pay_201606&quot;);</span><br><span class="line">		// hdfs.createFile(&quot;/new/createTest&quot;, &quot;1,英雄联盟&quot;);</span><br><span class="line">		// hdfs.download(&quot;/data/RecommendList&quot;, &quot;C:/Users/Skye/Desktop&quot;);</span><br><span class="line">		// hdfs.cat(&quot;/data/RecommendList1&quot;);</span><br><span class="line">		// hdfs.renameFile(&quot;/data/RecommendList&quot;, &quot;/data/RecommendListOld&quot;);</span><br><span class="line">		// hdfs.ls(&quot;/data&quot;);</span><br><span class="line">		//hdfs.findLocationOnHadoop(&quot;/data/RecommendListOld&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 加载Hadoop配置文件</span><br><span class="line">	public static JobConf config() &#123;</span><br><span class="line">		JobConf conf = new JobConf(HdfsDAO.class);</span><br><span class="line">		conf.setJobName(&quot;HdfsDAO&quot;);</span><br><span class="line">		// conf.addResource(&quot;classpath:/hadoop/core-site.xml&quot;);</span><br><span class="line">		// conf.addResource(&quot;classpath:/hadoop/hdfs-site.xml&quot;);</span><br><span class="line">		// conf.addResource(&quot;classpath:/hadoop/mapred-site.xml&quot;);</span><br><span class="line">		return conf;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void mkdirs(String folder) throws IOException &#123;</span><br><span class="line">		Path path = new Path(folder);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		if (!fs.exists(path)) &#123;</span><br><span class="line">			fs.mkdirs(path);</span><br><span class="line">			System.out.println(&quot;Create: &quot; + folder);</span><br><span class="line">		&#125;</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void rmr(String folder) throws IOException &#123;</span><br><span class="line">		Path path = new Path(folder);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		fs.deleteOnExit(path);</span><br><span class="line">		System.out.println(&quot;Delete: &quot; + folder);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void ls(String folder) throws IOException &#123;</span><br><span class="line">		Path path = new Path(folder);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		FileStatus[] list = fs.listStatus(path);</span><br><span class="line">		System.out.println(&quot;ls: &quot; + folder);</span><br><span class="line">		System.out.println(&quot;==========================================================&quot;);</span><br><span class="line">		for (FileStatus f : list) &#123;</span><br><span class="line">			System.out.printf(&quot;name: %s, folder: %s, size: %d\n&quot;, f.getPath(), f.isDir(), f.getLen());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(&quot;==========================================================&quot;);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void createFile(String file, String content) throws IOException &#123;</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		byte[] buff = content.getBytes();</span><br><span class="line">		FSDataOutputStream os = null;</span><br><span class="line">		try &#123;</span><br><span class="line">			os = fs.create(new Path(file));</span><br><span class="line">			os.write(buff, 0, buff.length);</span><br><span class="line">			System.out.println(&quot;Create: &quot; + file);</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			if (os != null)</span><br><span class="line">				os.close();</span><br><span class="line">		&#125;</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void copyFileToHdfs(String local, String remote) throws IOException &#123;</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		fs.copyFromLocalFile(new Path(local), new Path(remote));</span><br><span class="line">		System.out.println(&quot;copy from: &quot; + local + &quot; to &quot; + remote);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void download(String remote, String local) throws IOException &#123;</span><br><span class="line">		Path path = new Path(remote);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		fs.copyToLocalFile(path, new Path(local));</span><br><span class="line">		System.out.println(&quot;download: from&quot; + remote + &quot; to &quot; + local);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void renameFile(String oldFileName, String newFileName) throws IOException &#123;</span><br><span class="line">		boolean isSuccess = true;</span><br><span class="line"></span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		try &#123;</span><br><span class="line">			isSuccess = fs.rename(new Path(oldFileName), new Path(newFileName));</span><br><span class="line">		&#125; catch (IOException e) &#123;</span><br><span class="line">			isSuccess = false;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(isSuccess ? &quot;Rename success！ &quot; + oldFileName + &quot; to &quot; + newFileName</span><br><span class="line">				: &quot;Rename failed！&quot; + oldFileName + &quot; to &quot; + newFileName);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 查看某个文件在HDFS集群的位置</span><br><span class="line">	 * </span><br><span class="line">	 * @throws IOException</span><br><span class="line">	 */</span><br><span class="line"></span><br><span class="line">	public void findLocationOnHadoop(String filePath) throws IOException &#123;</span><br><span class="line">		// Path targetFile=new Path(rootPath+&quot;user/hdfsupload/AA.txt&quot;);</span><br><span class="line">		// FileStatus fileStaus=coreSys.getFileStatus(targetFile);</span><br><span class="line">		Path targetFile = new Path(HDFS + filePath);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		FileStatus fileStaus = fs.getFileStatus(targetFile);</span><br><span class="line">		BlockLocation[] bloLocations = fs.getFileBlockLocations(fileStaus, 0, fileStaus.getLen());</span><br><span class="line">		for (int i = 0; i &lt; bloLocations.length; i++) &#123;</span><br><span class="line">			System.out.println(&quot;block_&quot; + i + &quot;_location:&quot; + bloLocations[i].getHosts()[0]);</span><br><span class="line">		&#125;</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void cat(String remoteFile) throws IOException &#123;</span><br><span class="line">		Path path = new Path(remoteFile);</span><br><span class="line">		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);</span><br><span class="line">		FSDataInputStream fsdis = null;</span><br><span class="line">		System.out.println(&quot;cat: &quot; + remoteFile);</span><br><span class="line">		try &#123;</span><br><span class="line">			fsdis = fs.open(path);</span><br><span class="line">			IOUtils.copyBytes(fsdis, System.out, 4096, false);</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			IOUtils.closeStream(fsdis);</span><br><span class="line">			fs.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/22/Hive安装笔记/" itemprop="url">
+                  Hive1.2.1安装笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T00:47:36+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/22/Hive安装笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/Hive安装笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ubuntu 16.04</span><br><span class="line">4台机器的Hadoop2.7.2集群</span><br><span class="line">Mysql安装在slave2中</span><br><span class="line">hive安装在master上</span><br></pre></td></tr></table></figure>
+<h3 id="下载Hive"><a href="#下载Hive" class="headerlink" title="下载Hive"></a>下载Hive</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://mirrors.cnnic.cn/apache/hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz</span><br><span class="line"># 解压</span><br><span class="line">$ tar -zxvf apache-hive-1.2.1-bin.tar.gz /home/ubuntu/cloud</span><br></pre></td></tr></table></figure>
+<h3 id="配置Hive环境变量"><a href="#配置Hive环境变量" class="headerlink" title="配置Hive环境变量"></a>配置Hive环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /etc/profile</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">export HIVE_HOME=/home/ubuntu/cloud/apache-hive-1.2.1-bin</span><br><span class="line">export PATH=$PATH:$HIVE_HOME/bin</span><br><span class="line"></span><br><span class="line">$source /etc/profile</span><br></pre></td></tr></table></figure>
+<h3 id="在Mysql中创建Hive用户"><a href="#在Mysql中创建Hive用户" class="headerlink" title="在Mysql中创建Hive用户"></a>在Mysql中创建Hive用户</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;CREATE USER &apos;hive&apos; IDENTIFIED BY &apos;hive&apos;;</span><br><span class="line">mysql&gt;GRANT ALL PRIVILEGES ON *.* TO &apos;hive&apos;@&apos;%&apos; IDENTIFIED BY &apos;hive&apos; WITH GRANT OPTION;</span><br><span class="line">mysql&gt;flush privileges;</span><br></pre></td></tr></table></figure>
+<h3 id="创建Hive数据库"><a href="#创建Hive数据库" class="headerlink" title="创建Hive数据库"></a>创建Hive数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -uhive -phive</span><br><span class="line">mysql&gt;create database hive;</span><br></pre></td></tr></table></figure>
+<h3 id="配置Hive"><a href="#配置Hive" class="headerlink" title="配置Hive"></a>配置Hive</h3><p>进入Hive的conf目录,找到<code>hive-default.xml.template</code>，cp份为<code>hive-site.xml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ vim hive-site.xml</span><br><span class="line"># 删除configuration标签里的所有内容 添加如下内容</span><br><span class="line"></span><br><span class="line">	&lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;jdbc:mysql://slave2:3306/hive?createDatabaseIfNotExist=true&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;JDBC connect string for a JDBC metastore&lt;/description&gt;    </span><br><span class="line">	&lt;/property&gt;   </span><br><span class="line">	&lt;property&gt; </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt; </span><br><span class="line">        &lt;description&gt;Driver class name for a JDBC metastore&lt;/description&gt;     </span><br><span class="line">	&lt;/property&gt;               </span><br><span class="line"> </span><br><span class="line">	&lt;property&gt; </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hive&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;username to use against metastore database&lt;/description&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property&gt;  </span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hive&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;password to use against metastore database&lt;/description&gt;  </span><br><span class="line">	&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="下载mysql-connector-java-5-1-32-bin-jar"><a href="#下载mysql-connector-java-5-1-32-bin-jar" class="headerlink" title="下载mysql-connector-java-5.1.32-bin.jar"></a>下载mysql-connector-java-5.1.32-bin.jar</h3><p>这里用5.1.32版本测试不报错，5.1.38会报warn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#将连接jar包拷贝到Hive的lib目录</span><br><span class="line">$ cp mysql-connector-java-5.1.32-bin.jar /home/ubuntu/cloud/apache-hive-1.2.1-bin/lib/</span><br></pre></td></tr></table></figure>
+<h3 id="若要装hive客户端可在客户端节点设置"><a href="#若要装hive客户端可在客户端节点设置" class="headerlink" title="若要装hive客户端可在客户端节点设置"></a>若要装hive客户端可在客户端节点设置</h3><p><code>vim hive-site.xml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- thrift://&lt;host_name&gt;:&lt;port&gt; 默认端口是9083 --&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;hive.metastore.uris&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;thrift://master:9083&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Thrift uri for the remote metastore. Used by metastore client to connect to remote metastore.&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"> </span><br><span class="line">&lt;!--  hive表的默认存储路径 --&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;/user/hive/warehouse&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;location of default database for the warehouse&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Hive启动"><a href="#Hive启动" class="headerlink" title="Hive启动"></a>Hive启动</h3><p>要启动metastore服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ hive --service metastore &amp;</span><br><span class="line">$ jps</span><br><span class="line">10288 RunJar  #多了一个进程</span><br><span class="line">9365 NameNode</span><br><span class="line">9670 SecondaryNameNode</span><br><span class="line">11096 Jps</span><br><span class="line">9944 NodeManager</span><br><span class="line">9838 ResourceManager</span><br><span class="line">9471 DataNode</span><br></pre></td></tr></table></figure></p>
+<p>启动hive命令行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@master:~$ hive</span><br><span class="line"></span><br><span class="line">Logging initialized using configuration in jar:file:/home/ubuntu/cloud/apache-hive-1.2.1-bin/lib/hive-common-1.2.1.jar!/hive-log4j.properties</span><br><span class="line">hive&gt; show tables;</span><br><span class="line">OK</span><br><span class="line">Time taken: 0.705 seconds</span><br></pre></td></tr></table></figure></p>
+<p>启动hiveserver2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --service hiveserver2 start &amp;</span><br></pre></td></tr></table></figure></p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>问题：创建表出先如下错误，删除表卡住</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. MetaException(message:For direct MetaStore DB connections, we don&apos;t support retries at the client level.</span><br></pre></td></tr></table></figure>
+<p>初始化<br>注意：初始化之前先删除hdfs上的metastore,否则会出错<code>/user/hive/warehouse</code><br>在hive服务端输入以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schematool -dbType mysql -initSchema</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="url">
+                  oracle启动dbstart出错或无反应的解决办法及自启动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-20T09:51:07+08:00" content="2016-08-20">
+              2016-08-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p>启动dbstart 报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME</span><br></pre></td></tr></table></figure></p>
+<p>linux成功安装Oracle后切换到Oracle用户后，直接使用<code>dbstart</code>($ORACLE_HOME/bin中)启动oracle数据库报错如上。原因是dbstart调用的tnslsnr脚本位置有错。解决办法：<br>打开该脚本：<code>vim $ORACLE_HOME/bin/dbstart</code><br>查找“ORACLE_HOME_LISTENER”变量的定义处，<br>修改<br><code>ORACLE_HOME_LISTENER＝$1</code><br>为<code>ORACLE_HOME_LISTENER＝$ORACLE_HOME</code></p>
+<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><p>启动<code>dbstart</code>没有反应，即不报错也不显示启动信息<br>原因是oracle的配置需要修改才能使用dbstart启动对应的数据实例。<br>解决办法：</p>
+<p><code>sudo vim /etc/oratab</code><br>将<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:N</code>改为<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:Y</code></p>
+<h3 id="问题三"><a href="#问题三" class="headerlink" title="问题三"></a>问题三</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;dbstart</span><br><span class="line">Can&apos;t find init file for Database &quot;orcl&quot;.</span><br><span class="line"></span><br><span class="line">Database &quot;orcl&quot; NOT started.</span><br></pre></td></tr></table></figure>
+<p>原因就是没有找到init文件 我的数据库实例是orcl<br>这个文件<code>在$ORACLE_HOME/dbs/</code>目录下<br><code>cd $ORACLE_HOME/dbs</code><br>解决办法就是建立一个initorcl.ora的软连接就可以了<br><code>ln -s spfileego.ora initorcl.ora</code></p>
+<h3 id="Oracle自启动"><a href="#Oracle自启动" class="headerlink" title="Oracle自启动"></a>Oracle自启动</h3><p>创建开机自动启动数据库的脚本<br>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># vi /etc/init.d/Oracledb</span><br><span class="line">文件内容如下：</span><br><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># /etc/init.d/oracledb</span><br><span class="line">#</span><br><span class="line"># Run-level Startup script for the Oracle Instance, Listener, and</span><br><span class="line"># Web Interface</span><br><span class="line"></span><br><span class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">ORA_OWNR=&quot;oracle&quot;</span><br><span class="line"># if the executables do not exist -- display error</span><br><span class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</span><br><span class="line">then</span><br><span class="line">echo &quot;Oracle startup: cannot start&quot;</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line"># depending on parameter -- startup, shutdown, restart</span><br><span class="line"># of the instance and listener or usage display</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">start)</span><br><span class="line"># Oracle listener and instance startup</span><br><span class="line">echo -n &quot;Starting Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</span><br><span class="line">touch /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line"># Oracle listener and instance shutdown</span><br><span class="line">echo -n &quot;Shutdown Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</span><br><span class="line">rm -f /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">reload|restart)</span><br><span class="line">$0 stop</span><br><span class="line">$0 start</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</span><br><span class="line">exit 1</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 /etc/init.d/Oracledb</span><br><span class="line"># update-rc.d Oracledb defaults 99</span><br></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/19/Linux日常操作笔记/" itemprop="url">
                   Linux日常操作笔记
                 </a>
@@ -1174,553 +1704,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/15/Hadoop2.7.2集群搭建/" itemprop="url">
-                  Hadoop2.7.2集群搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-15T17:26:16+08:00" content="2016-08-15">
-              2016-08-15
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/15/Hadoop2.7.2集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/Hadoop2.7.2集群搭建/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="四台电脑集群"><a href="#四台电脑集群" class="headerlink" title="四台电脑集群"></a>四台电脑集群</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.111   master</span><br><span class="line">192.168.1.112   slave1</span><br><span class="line">192.168.1.113   slave2</span><br><span class="line">192.168.1.114   slave3</span><br></pre></td></tr></table></figure>
-<h3 id="修改hosts"><a href="#修改hosts" class="headerlink" title="修改hosts"></a>修改hosts</h3><p><code>vim /etc/hosts</code></p>
-<h3 id="配置master到其它三台slave的免密码登陆"><a href="#配置master到其它三台slave的免密码登陆" class="headerlink" title="配置master到其它三台slave的免密码登陆"></a>配置master到其它三台slave的免密码登陆</h3><p>各服务器上使用   ssh-keygen -t rsa    一路按回车就行了。<br>刚才都作甚了呢？主要是设置ssh的密钥和密钥的存放路径。 路径为~/.ssh下。<br>打开~/.ssh 下面有三个文件<br>authorized_keys，已认证的keys<br>id_rsa，私钥<br>id_rsa.pub，公钥   三个文件。<br>下面就是关键的地方了，（我们要做ssh认证。进行下面操作前，可以先搜关于认证和加密区别以及各自的过程。）<br>①在master上将公钥放到authorized_keys里。命令：<br><code>sudo cat id_rsa.pub &gt;&gt; authorized_keys</code><br>②将master上的authorized_keys放到其他linux的~/.ssh目录下。命令：<br><code>sudo scp authorized_keys ubuntu@192.168.1.112:~/.ssh</code><br>sudo scp authorized_keys 远程主机用户名@远程主机名或ip:存放路径。<br>③修改authorized_keys权限，命令：chmod 644 authorized_keys<br>④测试是否成功<br>ssh slave1 输入用户名密码，然后退出，再次ssh slave1不用密码，直接进入系统。这就表示成功了。</p>
-<h3 id="安装jdk1-7"><a href="#安装jdk1-7" class="headerlink" title="安装jdk1.7"></a>安装jdk1.7</h3><ol>
-<li><code>mkdir /usr/java</code></li>
-<li><code>sudo tar -zxvf jdk-7u79-linux-x64.tar.gz -C /usr/java</code></li>
-<li><p><code>vim /etc/profile</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.7.0_79</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>刷新配置<br><code>source /etc/profile</code></p>
-</li>
-<li>测试<br><code>java -version</code></li>
-</ol>
-<h3 id="关闭每台机器的防火墙"><a href="#关闭每台机器的防火墙" class="headerlink" title="关闭每台机器的防火墙"></a>关闭每台机器的防火墙</h3><p><code>sudo ufw disable</code> (重启生效)</p>
-<h3 id="创建-home-cloud目录"><a href="#创建-home-cloud目录" class="headerlink" title="创建/home/cloud目录"></a>创建/home/cloud目录</h3><p><code>mkdir ~/cloud</code></p>
-<h3 id="解压hadoop"><a href="#解压hadoop" class="headerlink" title="解压hadoop"></a>解压hadoop</h3><p><code>tar -zxvf hadoop-2.7.2.tar.gz -C ./cloud</code></p>
-<h3 id="配置hadoop-env-sh-yarn-env-sh"><a href="#配置hadoop-env-sh-yarn-env-sh" class="headerlink" title="配置hadoop-env.sh yarn-env.sh"></a>配置hadoop-env.sh yarn-env.sh</h3><p>修改JAVA_HOME值<code>export JAVA_HOME=/usr/java/jdk1.7.0_79</code></p>
-<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/tmp</span><br><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/dfs/data</span><br><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/dfs/name</span><br></pre></td></tr></table></figure>
-<h3 id="配置slaves"><a href="#配置slaves" class="headerlink" title="配置slaves"></a>配置slaves</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slave1</span><br><span class="line">slave2</span><br><span class="line">slave3</span><br></pre></td></tr></table></figure>
-<h3 id="配置core-site-xml"><a href="#配置core-site-xml" class="headerlink" title="配置core-site.xml"></a>配置core-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">                &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://master:9000&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">                &lt;name&gt;io.file.buffer.size&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;131072&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/tmp&lt;/value&gt;</span><br><span class="line">               &lt;description&gt;Abase for other temporary   directories.&lt;/description&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.proxyuser.ubuntu.hosts&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.proxyuser.ubuntu.groups&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="配置hdfs-site-xml"><a href="#配置hdfs-site-xml" class="headerlink" title="配置hdfs-site.xml"></a>配置hdfs-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;master:9001&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;4&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.permissions.enabled&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;false&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/dfs/name&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/dfs/data&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="配置mapred-site-xml"><a href="#配置mapred-site-xml" class="headerlink" title="配置mapred-site.xml"></a>配置mapred-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">          &lt;property&gt;                                                                  &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">           &lt;/property&gt;</span><br><span class="line">          &lt;property&gt;</span><br><span class="line">                  &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">                  &lt;value&gt;master:10020&lt;/value&gt;</span><br><span class="line">          &lt;/property&gt;</span><br><span class="line">          &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;master:19888&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="配置yarn-site-xml"><a href="#配置yarn-site-xml" class="headerlink" title="配置yarn-site.xml"></a>配置yarn-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;                                                                </span><br><span class="line">            &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8032&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8030&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</span><br><span class="line">             &lt;value&gt;master:8031&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">      &lt;property&gt;</span><br><span class="line">              &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8033&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8088&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="复制到其它节点"><a href="#复制到其它节点" class="headerlink" title="复制到其它节点"></a>复制到其它节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave1:~/</span><br><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave2:~/</span><br><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave3:~/</span><br></pre></td></tr></table></figure>
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p><code>vim /etc/profile</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/home/ubuntu/cloud/hadoop-2.7.2</span><br><span class="line">export PATH=$PATH:$&#123;JAVA_HOME&#125;/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure></p>
-<h3 id="启动hadoop"><a href="#启动hadoop" class="headerlink" title="启动hadoop"></a>启动hadoop</h3><ul>
-<li>格式化namenode <code>hadoop namenode –format</code></li>
-<li>启动hdfs <code>start-dfs.sh</code></li>
-<li>启动yarn <code>start-yarn.sh</code></li>
-<li>web端查看 <code>http://master:8088 http://master:50070</code></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/15/ubuntu相关设置/" itemprop="url">
-                  ubuntu相关设置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-15T00:39:26+08:00" content="2016-08-15">
-              2016-08-15
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/15/ubuntu相关设置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/ubuntu相关设置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h3><p><code>sudo dpkg-reconfigure tzdata</code></p>
-<p>出现时区列表，按照提示选择“Asia/Shanghai”</p>
-<p>结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Package configuration</span><br><span class="line"></span><br><span class="line">     ┌───────────────────────┤ Configuring tzdata ├───────────────────────┐</span><br><span class="line">     │ Please select the city or region corresponding to your time zone.  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │ Time zone:                                                         │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                          Qyzylorda        ↑                        │</span><br><span class="line">     │                          Rangoon          ▒                        │</span><br><span class="line">     │                          Riyadh           ▒                        │</span><br><span class="line">     │                          Sakhalin         ▒                        │</span><br><span class="line">     │                          Samarkand        ▒                        │</span><br><span class="line">     │                          Seoul            ▒                        │</span><br><span class="line">     │                          Shanghai         ▮                        │</span><br><span class="line">     │                          Singapore        ▒                        │</span><br><span class="line">     │                          Srednekolymsk    ▒                        │</span><br><span class="line">     │                          Taipei           ↓                        │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                 &lt;Ok&gt;                     &lt;Cancel&gt;                  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     └────────────────────────────────────────────────────────────────────┘</span><br><span class="line"></span><br><span class="line">                                                                               </span><br><span class="line">Current default time zone: &apos;Asia/Shanghai&apos;</span><br><span class="line">Local time is now:      Mon Aug 15 00:11:59 CST 2016.</span><br><span class="line">Universal Time is now:  Sun Aug 14 16:11:59 UTC 2016.</span><br><span class="line"></span><br><span class="line">ubuntu@master:~$ date</span><br><span class="line">Mon Aug 15 00:12:13 CST 2016</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/14/ubuntu设置静态ip/" itemprop="url">
-                  ubuntu设置静态ip
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-14T23:58:26+08:00" content="2016-08-14">
-              2016-08-14
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/14/ubuntu设置静态ip/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/14/ubuntu设置静态ip/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="找到文件并作如下修改"><a href="#找到文件并作如下修改" class="headerlink" title="找到文件并作如下修改"></a>找到文件并作如下修改</h3><p><code>sudo vim /etc/network/interfaces</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># The primary network interface</span><br><span class="line">auto eno1</span><br><span class="line">iface eno1 inet static</span><br><span class="line">        address 192.168.1.111</span><br><span class="line">        netmask 255.255.255.0</span><br><span class="line">        network 192.168.1.0</span><br><span class="line">        broadcast 192.168.1.255</span><br><span class="line">        gateway 192.168.1.1</span><br><span class="line">        # dns-* options are implemented by the resolvconf package, if installed</span><br><span class="line">        dns-nameservers 202.101.172.35 202.101.172.46</span><br></pre></td></tr></table></figure>
-<h3 id="修改dns解析"><a href="#修改dns解析" class="headerlink" title="修改dns解析"></a>修改dns解析</h3><p>因为以前是dhcp解析，所以会自动分配dns服务器地址</p>
-<p>而一旦设置为静态ip后就没有自动获取到的dns服务器了</p>
-<p>要自己设置一个</p>
-<p><code>sudo vim /etc/resolv.conf</code></p>
-<p>写上一个公网的DNS,以下为浙江杭州电信DNS</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)</span><br><span class="line">#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN</span><br><span class="line">nameserver 202.101.172.35</span><br><span class="line">nameserver 202.101.172.46</span><br></pre></td></tr></table></figure>
-<p>（注意：8.8.8.8是谷歌的DNS服务器，但是解析速度慢，还是找到一个国内的dns来用）</p>
-<h3 id="重启网卡"><a href="#重启网卡" class="headerlink" title="重启网卡"></a>重启网卡</h3><p><code>sudo /etc/init.d/networking restart</code></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/26/JVM内存配置/" itemprop="url">
-                  JVM内存配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
-              2016-07-26
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
-<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
-<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
-<p>非堆内存分配</p>
-<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
-<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
-<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
-<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
-<ul>
-<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
-<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
-<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
-<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
-<li>年轻带堆内存    对象刚创建出来时放在这里</li>
-<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
-<li>持久带堆内存    class文件，元数据等放在这里</li>
-<li>-XX:PermSize=128m    持久带堆的初始大小</li>
-<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
-</ul>
-<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
-<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
-<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1761,7 +1749,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -260,6 +260,548 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/15/Hadoop2.7.2集群搭建/" itemprop="url">
+                  Hadoop2.7.2集群搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-15T17:26:16+08:00" content="2016-08-15">
+              2016-08-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/15/Hadoop2.7.2集群搭建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/Hadoop2.7.2集群搭建/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="四台电脑集群"><a href="#四台电脑集群" class="headerlink" title="四台电脑集群"></a>四台电脑集群</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.111   master</span><br><span class="line">192.168.1.112   slave1</span><br><span class="line">192.168.1.113   slave2</span><br><span class="line">192.168.1.114   slave3</span><br></pre></td></tr></table></figure>
+<h3 id="修改hosts"><a href="#修改hosts" class="headerlink" title="修改hosts"></a>修改hosts</h3><p><code>vim /etc/hosts</code></p>
+<h3 id="配置master到其它三台slave的免密码登陆"><a href="#配置master到其它三台slave的免密码登陆" class="headerlink" title="配置master到其它三台slave的免密码登陆"></a>配置master到其它三台slave的免密码登陆</h3><p>各服务器上使用   ssh-keygen -t rsa    一路按回车就行了。<br>刚才都作甚了呢？主要是设置ssh的密钥和密钥的存放路径。 路径为~/.ssh下。<br>打开~/.ssh 下面有三个文件<br>authorized_keys，已认证的keys<br>id_rsa，私钥<br>id_rsa.pub，公钥   三个文件。<br>下面就是关键的地方了，（我们要做ssh认证。进行下面操作前，可以先搜关于认证和加密区别以及各自的过程。）<br>①在master上将公钥放到authorized_keys里。命令：<br><code>sudo cat id_rsa.pub &gt;&gt; authorized_keys</code><br>②将master上的authorized_keys放到其他linux的~/.ssh目录下。命令：<br><code>sudo scp authorized_keys ubuntu@192.168.1.112:~/.ssh</code><br>sudo scp authorized_keys 远程主机用户名@远程主机名或ip:存放路径。<br>③修改authorized_keys权限，命令：chmod 644 authorized_keys<br>④测试是否成功<br>ssh slave1 输入用户名密码，然后退出，再次ssh slave1不用密码，直接进入系统。这就表示成功了。</p>
+<h3 id="安装jdk1-7"><a href="#安装jdk1-7" class="headerlink" title="安装jdk1.7"></a>安装jdk1.7</h3><ol>
+<li><code>mkdir /usr/java</code></li>
+<li><code>sudo tar -zxvf jdk-7u79-linux-x64.tar.gz -C /usr/java</code></li>
+<li><p><code>vim /etc/profile</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.7.0_79</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>刷新配置<br><code>source /etc/profile</code></p>
+</li>
+<li>测试<br><code>java -version</code></li>
+</ol>
+<h3 id="关闭每台机器的防火墙"><a href="#关闭每台机器的防火墙" class="headerlink" title="关闭每台机器的防火墙"></a>关闭每台机器的防火墙</h3><p><code>sudo ufw disable</code> (重启生效)</p>
+<h3 id="创建-home-cloud目录"><a href="#创建-home-cloud目录" class="headerlink" title="创建/home/cloud目录"></a>创建/home/cloud目录</h3><p><code>mkdir ~/cloud</code></p>
+<h3 id="解压hadoop"><a href="#解压hadoop" class="headerlink" title="解压hadoop"></a>解压hadoop</h3><p><code>tar -zxvf hadoop-2.7.2.tar.gz -C ./cloud</code></p>
+<h3 id="配置hadoop-env-sh-yarn-env-sh"><a href="#配置hadoop-env-sh-yarn-env-sh" class="headerlink" title="配置hadoop-env.sh yarn-env.sh"></a>配置hadoop-env.sh yarn-env.sh</h3><p>修改JAVA_HOME值<code>export JAVA_HOME=/usr/java/jdk1.7.0_79</code></p>
+<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/tmp</span><br><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/dfs/data</span><br><span class="line">mkdir /home/ubuntu/cloud/hadoop-2.7.2/dfs/name</span><br></pre></td></tr></table></figure>
+<h3 id="配置slaves"><a href="#配置slaves" class="headerlink" title="配置slaves"></a>配置slaves</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slave1</span><br><span class="line">slave2</span><br><span class="line">slave3</span><br></pre></td></tr></table></figure>
+<h3 id="配置core-site-xml"><a href="#配置core-site-xml" class="headerlink" title="配置core-site.xml"></a>配置core-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">                &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://master:9000&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">                &lt;name&gt;io.file.buffer.size&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;131072&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/tmp&lt;/value&gt;</span><br><span class="line">               &lt;description&gt;Abase for other temporary   directories.&lt;/description&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.proxyuser.ubuntu.hosts&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.proxyuser.ubuntu.groups&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="配置hdfs-site-xml"><a href="#配置hdfs-site-xml" class="headerlink" title="配置hdfs-site.xml"></a>配置hdfs-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;master:9001&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;4&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.permissions.enabled&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;false&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/dfs/name&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;file:/home/ubuntu/cloud/hadoop-2.7.2/dfs/data&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="配置mapred-site-xml"><a href="#配置mapred-site-xml" class="headerlink" title="配置mapred-site.xml"></a>配置mapred-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">          &lt;property&gt;                                                                  &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">           &lt;/property&gt;</span><br><span class="line">          &lt;property&gt;</span><br><span class="line">                  &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">                  &lt;value&gt;master:10020&lt;/value&gt;</span><br><span class="line">          &lt;/property&gt;</span><br><span class="line">          &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;master:19888&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="配置yarn-site-xml"><a href="#配置yarn-site-xml" class="headerlink" title="配置yarn-site.xml"></a>配置yarn-site.xml</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;                                                                </span><br><span class="line">            &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8032&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8030&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</span><br><span class="line">             &lt;value&gt;master:8031&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">      &lt;property&gt;</span><br><span class="line">              &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8033&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8088&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="复制到其它节点"><a href="#复制到其它节点" class="headerlink" title="复制到其它节点"></a>复制到其它节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave1:~/</span><br><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave2:~/</span><br><span class="line">sudo scp -r /home/ubuntu/cloud ubuntu@slave3:~/</span><br></pre></td></tr></table></figure>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p><code>vim /etc/profile</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/home/ubuntu/cloud/hadoop-2.7.2</span><br><span class="line">export PATH=$PATH:$&#123;JAVA_HOME&#125;/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure></p>
+<h3 id="启动hadoop"><a href="#启动hadoop" class="headerlink" title="启动hadoop"></a>启动hadoop</h3><ul>
+<li>格式化namenode <code>hadoop namenode –format</code></li>
+<li>启动hdfs <code>start-dfs.sh</code></li>
+<li>启动yarn <code>start-yarn.sh</code></li>
+<li>web端查看 <code>http://master:8088 http://master:50070</code></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/15/ubuntu相关设置/" itemprop="url">
+                  ubuntu相关设置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-15T00:39:26+08:00" content="2016-08-15">
+              2016-08-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/15/ubuntu相关设置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/ubuntu相关设置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h3><p><code>sudo dpkg-reconfigure tzdata</code></p>
+<p>出现时区列表，按照提示选择“Asia/Shanghai”</p>
+<p>结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Package configuration</span><br><span class="line"></span><br><span class="line">     ┌───────────────────────┤ Configuring tzdata ├───────────────────────┐</span><br><span class="line">     │ Please select the city or region corresponding to your time zone.  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │ Time zone:                                                         │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                          Qyzylorda        ↑                        │</span><br><span class="line">     │                          Rangoon          ▒                        │</span><br><span class="line">     │                          Riyadh           ▒                        │</span><br><span class="line">     │                          Sakhalin         ▒                        │</span><br><span class="line">     │                          Samarkand        ▒                        │</span><br><span class="line">     │                          Seoul            ▒                        │</span><br><span class="line">     │                          Shanghai         ▮                        │</span><br><span class="line">     │                          Singapore        ▒                        │</span><br><span class="line">     │                          Srednekolymsk    ▒                        │</span><br><span class="line">     │                          Taipei           ↓                        │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     │                 &lt;Ok&gt;                     &lt;Cancel&gt;                  │</span><br><span class="line">     │                                                                    │</span><br><span class="line">     └────────────────────────────────────────────────────────────────────┘</span><br><span class="line"></span><br><span class="line">                                                                               </span><br><span class="line">Current default time zone: &apos;Asia/Shanghai&apos;</span><br><span class="line">Local time is now:      Mon Aug 15 00:11:59 CST 2016.</span><br><span class="line">Universal Time is now:  Sun Aug 14 16:11:59 UTC 2016.</span><br><span class="line"></span><br><span class="line">ubuntu@master:~$ date</span><br><span class="line">Mon Aug 15 00:12:13 CST 2016</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/14/ubuntu设置静态ip/" itemprop="url">
+                  ubuntu设置静态ip
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-14T23:58:26+08:00" content="2016-08-14">
+              2016-08-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/14/ubuntu设置静态ip/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/14/ubuntu设置静态ip/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="找到文件并作如下修改"><a href="#找到文件并作如下修改" class="headerlink" title="找到文件并作如下修改"></a>找到文件并作如下修改</h3><p><code>sudo vim /etc/network/interfaces</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># The primary network interface</span><br><span class="line">auto eno1</span><br><span class="line">iface eno1 inet static</span><br><span class="line">        address 192.168.1.111</span><br><span class="line">        netmask 255.255.255.0</span><br><span class="line">        network 192.168.1.0</span><br><span class="line">        broadcast 192.168.1.255</span><br><span class="line">        gateway 192.168.1.1</span><br><span class="line">        # dns-* options are implemented by the resolvconf package, if installed</span><br><span class="line">        dns-nameservers 202.101.172.35 202.101.172.46</span><br></pre></td></tr></table></figure>
+<h3 id="修改dns解析"><a href="#修改dns解析" class="headerlink" title="修改dns解析"></a>修改dns解析</h3><p>因为以前是dhcp解析，所以会自动分配dns服务器地址</p>
+<p>而一旦设置为静态ip后就没有自动获取到的dns服务器了</p>
+<p>要自己设置一个</p>
+<p><code>sudo vim /etc/resolv.conf</code></p>
+<p>写上一个公网的DNS,以下为浙江杭州电信DNS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)</span><br><span class="line">#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN</span><br><span class="line">nameserver 202.101.172.35</span><br><span class="line">nameserver 202.101.172.46</span><br></pre></td></tr></table></figure>
+<p>（注意：8.8.8.8是谷歌的DNS服务器，但是解析速度慢，还是找到一个国内的dns来用）</p>
+<h3 id="重启网卡"><a href="#重启网卡" class="headerlink" title="重启网卡"></a>重启网卡</h3><p><code>sudo /etc/init.d/networking restart</code></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/26/JVM内存配置/" itemprop="url">
+                  JVM内存配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
+              2016-07-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
+<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
+<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
+<p>非堆内存分配</p>
+<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
+<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
+<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
+<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
+<ul>
+<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
+<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
+<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
+<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
+<li>年轻带堆内存    对象刚创建出来时放在这里</li>
+<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
+<li>持久带堆内存    class文件，元数据等放在这里</li>
+<li>-XX:PermSize=128m    持久带堆的初始大小</li>
+<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
+</ul>
+<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
+<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
+<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/25/Mahout Item-based推荐分布式实现/" itemprop="url">
                   Mahout Item-based推荐的分布式实现
                 </a>
@@ -1170,225 +1712,11 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/16/MapReduce 多文件输入/" itemprop="url">
-                  MapReduce 多文件输入
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-16T16:26:16+08:00" content="2016-06-16">
-              2016-06-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/06/16/MapReduce 多文件输入/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/16/MapReduce 多文件输入/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="多路径输入"><a href="#多路径输入" class="headerlink" title="多路径输入"></a>多路径输入</h2><ol>
-<li><p>FileInputFormat.addInputPath 多次调用加载不同路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, new Path(args[0]));</span><br><span class="line">FileInputFormat.addInputPath(job, new Path(args[1]));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗号隔开</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPaths(job, &quot;hdfs://master:9000/cs/path1,hdfs://RS5-112:9000/cs/path2&quot;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>多种输入**MultipleInputs可以加载不同路径的输入文件，并且每个路径可用不同的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maperMultipleInputs.addInputPath(job, new Path(&quot;hdfs://master:9000/cs/path1&quot;), TextInputFormat.class,MultiTypeFileInput1Mapper.class);</span><br><span class="line">MultipleInputs.addInputPath(job, new Path(&quot;hdfs://master:9000/cs/path3&quot;), TextInputFormat.class,MultiTypeFileInput3Mapper.class);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="网上例子："><a href="#网上例子：" class="headerlink" title="网上例子："></a>网上例子：</h2><pre><code>package example;
-
-import java.io.IOException;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-/**
-* 多类型文件输入
-* @author lijl
-*
-*/
-
-public class MultiTypeFileInputMR {
-static class MultiTypeFileInput1Mapper extends Mapper&lt;LongWritable, Text, Text, Text&gt;{
-public void map(LongWritable key,Text value,Context context){
-try {
-String[] str = value.toString().split(&quot;\\|&quot;);
-context.write(new Text(str[0]), new Text(str[1]));
-} catch (IOException e) {
-e.printStackTrace();
-} catch (InterruptedException e) {
-e.printStackTrace();
-}
-}
-}
-static class MultiTypeFileInput3Mapper extends Mapper&lt;LongWritable, Text, Text, Text&gt;{
-public void map(LongWritable key,Text value,Context context){
-try {
-String[] str = value.toString().split(&quot;&quot;);
-context.write(new Text(str[0]), new Text(str[1]));
-} catch (IOException e) {
-e.printStackTrace();
-} catch (InterruptedException e) {
-e.printStackTrace();
-}
-}
-}
-static class MultiTypeFileInputReducer extends Reducer&lt;Text, Text, Text, Text&gt;{
-public void reduce(Text key,Iterable&lt;Text&gt; values,Context context){
-try {
-for(Text value:values){
-context.write(key,value);
-}
-
-} catch (IOException e) {
-e.printStackTrace();
-} catch (InterruptedException e) {
-e.printStackTrace();
-}
-}
-}
-
-public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
-Configuration conf = new Configuration();
-conf.set(&quot;mapred.textoutputformat.separator&quot;, &quot;,&quot;);
-Job job = new Job(conf,&quot;MultiPathFileInput&quot;);
-job.setJarByClass(MultiTypeFileInputMR.class);
-FileOutputFormat.setOutputPath(job, new Path(&quot;hdfs://RS5-112:9000/cs/path6&quot;));
-
-job.setMapOutputKeyClass(Text.class);
-job.setMapOutputValueClass(Text.class);
-job.setOutputKeyClass(Text.class);
-job.setOutputValueClass(Text.class);
-
-job.setReducerClass(MultiTypeFileInputReducer.class);
-job.setNumReduceTasks(1);
-MultipleInputs.addInputPath(job, new Path(&quot;hdfs://RS5-112:9000/cs/path1&quot;), TextInputFormat.class,MultiTypeFileInput1Mapper.class);
-MultipleInputs.addInputPath(job, new Path(&quot;hdfs://RS5-112:9000/cs/path3&quot;), TextInputFormat.class,MultiTypeFileInput3Mapper.class);
-System.exit(job.waitForCompletion(true)?0:1);
-}
-
-}
-</code></pre><h2 id="自己例子"><a href="#自己例子" class="headerlink" title="自己例子"></a>自己例子</h2><p>QLMapper.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.mr;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"></span><br><span class="line">public class QLMapper extends Mapper&lt;LongWritable, Text, Text, LongWritable&gt; &#123;</span><br><span class="line">	String[] mbUnlike = &#123; &quot;盒子&quot;, &quot;助手&quot;, &quot;输入法&quot;, &quot;平台&quot; &#125;;</span><br><span class="line">	String mbdylxLike = &quot;游戏&quot;;</span><br><span class="line">	String mbdylxUnlike = &quot;网页游戏&quot;;</span><br><span class="line">	String delWeb = &quot;访问网站&quot;;</span><br><span class="line">	Text outputValue = new Text();</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	protected void map(LongWritable key, Text value, Mapper&lt;LongWritable, Text, Text, LongWritable&gt;.Context context)</span><br><span class="line">			throws IOException, InterruptedException &#123;</span><br><span class="line">		// 接收数据v1</span><br><span class="line">		String line = value.toString();</span><br><span class="line">		// 切分数据</span><br><span class="line">		String[] words = line.split(&quot;&quot;);</span><br><span class="line">		// String[] words = line.split(&quot;\t&quot;);</span><br><span class="line"></span><br><span class="line">		boolean flag = true;</span><br><span class="line"></span><br><span class="line">		for (int i = 0; i &lt; 4; i++) &#123;</span><br><span class="line">			if (words.length &lt; 5) &#123; // 过滤 长度小于4的信息 即访问网站等</span><br><span class="line">				flag = false;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			if (words[3].indexOf(mbUnlike[i]) != -1) &#123; // 有其中一个则为false</span><br><span class="line">				flag = false;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if (flag == true) &#123;</span><br><span class="line">			if (words[4].indexOf(mbdylxUnlike) != -1) &#123; // 有网页游戏则为false</span><br><span class="line">				flag = false;</span><br><span class="line">			&#125; else if (words[4].indexOf(mbdylxLike) == -1) &#123; // 没有游戏则为false</span><br><span class="line">				flag = false;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if (flag == true) &#123;</span><br><span class="line">			outputValue.set(line);</span><br><span class="line">			context.write(outputValue, new LongWritable(1L));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>QLReducer.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.mr;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.NullWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"></span><br><span class="line">public class QLReducer extends Reducer&lt;Text, LongWritable, Text, NullWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	protected void reduce(Text key, Iterable&lt;LongWritable&gt; values,</span><br><span class="line">			Reducer&lt;Text, LongWritable, Text, NullWritable&gt;.Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">		// 接收数据</span><br><span class="line"></span><br><span class="line">		// 输出</span><br><span class="line">		context.write(key, NullWritable.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>DataClean.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.mr;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.NullWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"></span><br><span class="line">public class QLReducer extends Reducer&lt;Text, LongWritable, Text, NullWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	protected void reduce(Text key, Iterable&lt;LongWritable&gt; values,</span><br><span class="line">			Reducer&lt;Text, LongWritable, Text, NullWritable&gt;.Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">		// 接收数据</span><br><span class="line"></span><br><span class="line">		// 输出</span><br><span class="line">		context.write(key, NullWritable.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1429,7 +1757,7 @@ System.exit(job.waitForCompletion(true)?0:1);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
