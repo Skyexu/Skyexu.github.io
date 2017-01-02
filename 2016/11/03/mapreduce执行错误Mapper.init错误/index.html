@@ -106,7 +106,7 @@
 <meta property="og:description" content="参考http://blog.itpub.net/30066956/viewspace-2107549/
 
 错误详情：12345678910111213141516/11/02 21:37:26 INFO mapreduce.Job: Task Id : attempt_1476760655616_0574_m_000027_2, Status : FAILEDError: java.lang.R">
-<meta property="og:updated_time" content="2016-11-03T12:08:50.616Z">
+<meta property="og:updated_time" content="2017-01-02T07:39:16.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mapreduce执行错误Mapper.<init>错误">
 <meta name="twitter:description" content="参考http://blog.itpub.net/30066956/viewspace-2107549/
@@ -334,6 +334,7 @@
 <p>参考<br><a href="http://blog.itpub.net/30066956/viewspace-2107549/" target="_blank" rel="external">http://blog.itpub.net/30066956/viewspace-2107549/</a></p>
 </blockquote>
 <p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:37:26 INFO mapreduce.Job: Task Id : attempt_1476760655616_0574_m_000027_2, Status : FAILED</span><br><span class="line">Error: java.lang.RuntimeException: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:131)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:742)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:168)</span><br><span class="line">	at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">	at javax.security.auth.Subject.doAs(Subject.java:415)</span><br><span class="line">	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1614)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:163)</span><br><span class="line">Caused by: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at java.lang.Class.getConstructor0(Class.java:2849)</span><br><span class="line">	at java.lang.Class.getDeclaredConstructor(Class.java:2053)</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:125)</span><br><span class="line">	... 7 more</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <p>解决：<br>注意Mapper 与 Reducer 类写成内部类，一定要加static ！！！！</p>
 
       

@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/index.html">
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="错误：123java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTaskJob Submission failed with exception &amp;apos;org.ap">
-<meta property="og:updated_time" content="2016-11-03T12:06:49.912Z">
+<meta property="og:updated_time" content="2017-01-02T07:39:26.996Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="eclipse中操作hive错误org.apache.hadoop.security.AccessControlException">
 <meta name="twitter:description" content="错误：123java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTaskJob Submission failed with exception &amp;apos;org.ap">
@@ -326,7 +326,7 @@
       
         <p>错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask</span><br><span class="line"></span><br><span class="line">Job Submission failed with exception &apos;org.apache.hadoop.security.AccessControlException(Permission denied: user=anonymous, access=WRITE, inode=&quot;/user&quot;:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
 <p>解决：<br>权限问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -chmod -R 777  /</span><br></pre></td></tr></table></figure></p>
-
+<a id="more"></a>
       
     </div>
 

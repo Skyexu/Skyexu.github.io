@@ -110,7 +110,7 @@ HDFS本身被设计来存储大文件，但是有时难免会有小文件出现�
 MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的m">
 <meta property="og:image" content="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png">
 <meta property="og:image" content="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png">
-<meta property="og:updated_time" content="2016-12-12T14:28:51.580Z">
+<meta property="og:updated_time" content="2017-01-02T07:35:15.335Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MapReduce应用中CombineFileInputFormat原理与用法">
 <meta name="twitter:description" content="转载自：http://ju.outofmemory.cn/entry/72024
@@ -342,6 +342,7 @@ MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一�
 <p>HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。</p>
 <p>MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的map任务，导致资源过度消耗，且效率低下。Hadoop自身包含了CombineFileInputFormat，其功能是将多个小文件合并如一个分片，由一个map任务处理，这样就减少了不必要的map数量。</p>
 <p>在了解CombineFileInputFormat之前，我们应了解其父类FileInputFormat的基本处理逻辑。注意这里的FileInputFormat的路径是<strong>org.apache.hadoop.mapreduce.lib.input.FileInputFormat</strong>，是新的MapReduce API。 mapred包下的FileInputFormat对应老的API，不再推荐使用。</p>
+<a id="more"></a>
 <p><a href="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" target="_blank" rel="external"><img src="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" alt="CombineFileInputFormat_type"></a></p>
 <h2 id="FileInputFormat的基本处理逻辑"><a href="#FileInputFormat的基本处理逻辑" class="headerlink" title="FileInputFormat的基本处理逻辑"></a>FileInputFormat的基本处理逻辑</h2><p>FileInputFormat是基于文件的InputFormat的抽象基类，如上图所示，基于文件的衍生类有很多，如文本文件TextInputFormat，序列文件SequenceFileInputFormat等。</p>
 <p>FileInputFormat提供了分片的基本实现getSplits(JobContext)，其子类可以重写isSplitable(JobContext, Path)方法，来使得输入的一个或多个文件是否不做分片，完整由被一个Map任务进行处理。</p>

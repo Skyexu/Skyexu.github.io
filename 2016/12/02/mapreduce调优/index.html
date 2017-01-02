@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="对应用程序进行调优
 避免输入大量小文件。大量的小文件(不足一个block大小)作为输入数据会产生很多的Map任务(默认一个分片对应一个Map任务)，而每个Map任务实际工作量又非常小，系统要花更多的时间来将这些Map任务的输出进行整合。如果将大量的小文件进行预处理合并成一个或几个大文件，任务执行的效率可能会提升几十倍。可手动将小文件合并成大文件，或通过Hadoop的SequenceFile、Com">
-<meta property="og:updated_time" content="2016-12-02T14:23:40.918Z">
+<meta property="og:updated_time" content="2017-01-02T07:36:02.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mapreduce调优">
 <meta name="twitter:description" content="对应用程序进行调优
@@ -331,7 +331,7 @@
 <li><p>避免输入大量小文件。大量的小文件(不足一个block大小)作为输入数据会产生很多的Map任务(默认一个分片对应一个Map任务)，而每个Map任务实际工作量又非常小，系统要花更多的时间来将这些Map任务的输出进行整合。如果将大量的小文件进行预处理合并成一个或几个大文件，任务执行的效率可能会提升几十倍。可手动将小文件合并成大文件，或通过Hadoop的SequenceFile、CombineFileInputFormat将多个文件打包到一个输入单元中，使得每个Map处理更多的数据，从而提高性能。</p>
 </li>
 <li><p>输入文件size巨大，但不是小文件。这种情况可以通过增大每个mapper的input size，即增大minSize或者增大blockSize来减少所需的mapper的数量。增大blockSize通常不可行，因为当HDFS被hadoop namenode -format之后，blockSize就已经确定了（由格式化时dfs.block.size决定），如果要更改blockSize，需要重新格式化HDFS，这样当然会丢失已有的数据。所以通常情况下只能通过增大minSize，即增大mapred.min.split.size的值。</p>
-</li>
+<a id="more"></a></li>
 <li><p>预判并过滤无用数据。可以使用一些过滤工具，在作业执行之前将数据中无用的数据进行过滤，可极大提高MapReduce执行效率。Bloom Filter是一种功能强大的过滤器，执行效率高，时间复杂度为O(1)，缺点是存在一定的误判可能，详细参考《Bloom Filter概念和原理》。当将一个非常大的表和一个非常小的表进行表连接操作时，可以使用Bloom Filter将小表数据作为Bloom Filter的输入数据，将大表的原始数据进行过滤(过滤不通过的数据一定是不可用的，过滤通过的数据可能有用可能无用)，可提高程序执行的效率。</p>
 </li>
 <li><p>合理使用分布式缓存DistributedCache。DistributedCache可以将一些字典、jar包、配置文件等缓存到需要执行map任务的节点中，避免map任务多次重复读取这些资源，尤其在join操作时，使用DistributedCache缓存小表数据在map端进行join操作，可避免shuffle、reduce等操作，提高程序运行效率。</p>

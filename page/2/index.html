@@ -329,10 +329,12 @@
 
       
         
-          
-            <p>hadoop命令行 与job相关的：<br>命令行工具 •<br>1.查看 Job 信息：<br>hadoop job -list<br>2.杀掉 Job：<br>hadoop  job -kill  job_id<br>3.指定路径下查看历史日志汇总：<br>hadoop job -history output-dir<br>4.作业的更多细节：<br>hadoop job -history all output-dir<br>5.打印map和reduce完成百分比和所有计数器：<br>hadoop job -status job_id<br>6.杀死任务。被杀死的任务不会不利于失败尝试：<br>hadoop jab -kill-task <task-id><br>7.使任务失败。被失败的任务会对失败尝试不利：<br>hadoop job  -fail-task <task-id></task-id></task-id></p>
-
-          
+          <p>hadoop命令行 与job相关的：<br>命令行工具 •<br>1.查看 Job 信息：<br>hadoop job -list<br>2.杀掉 Job：<br>hadoop  job -kill  job_id<br>3.指定路径下查看历史日志汇总：<br>hadoop job -history output-dir<br>4.作业的更多细节：<br>hadoop job -history all output-dir<br>5.打印map和reduce完成百分比和所有计数器：<br>hadoop job -status job_id<br>6.杀死任务。被杀死的任务不会不利于失败尝试：<br>hadoop jab -kill-task <task-id><br>7.使任务失败。被失败的任务会对失败尝试不利：<br>hadoop job  -fail-task <task-id></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/05/hadoop Job命令/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -449,39 +451,12 @@
 
       
         
-          
-            <h3 id="错误描述："><a href="#错误描述：" class="headerlink" title="错误描述："></a>错误描述：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILED</span><br><span class="line">Container [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyond physical memory limits. Current usage: 4.0 GB of 3 GB physical memory used; 6.9 GB of 6.3 GB virtual memory used. Killing container.</span><br><span class="line">Dump of the process-tree for container_1476760655616_0575_01_000052 :</span><br><span class="line">	|- PID PPID PGRPID SESSID CMD_NAME USER_MODE_TIME(MILLIS) SYSTEM_TIME(MILLIS) VMEM_USAGE(BYTES) RSSMEM_USAGE(PAGES) FULL_CMD_LINE</span><br></pre></td></tr></table></figure>
-<h3 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h3><p>查看hadoop配置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">      &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">          &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;-Xmx3072m&lt;/value&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property&gt;</span><br><span class="line">              &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;-Xmx6144m&lt;/value&gt;</span><br><span class="line">                &lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>mapreduce.reduce.java.opts</code>参数大于<code>mapreduce.reduce.memory.mb</code>,需小于才行</p>
-<p>在mapreduce执行函数中设置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf.setInt(&quot;mapreduce.reduce.memory.mb&quot;, 6144);</span><br></pre></td></tr></table></figure></p>
-<p>1.</p>
-<p>参考 </p>
-<blockquote>
-<p><a href="http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits" target="_blank" rel="external">http://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits</a></p>
-</blockquote>
-<p>我们集群中的每台机器都有48 GB的RAM。此RAM的一些应保留为操作系统使用。在每个节点上，我们将为YARN分配40 GB RAM以使用操作系统并保留8 GB</p>
-<p>对于我们的示例集群，我们有一个容器的最小RAM（yarn.scheduler.minimum-allocation-mb）= 2 GB。因此，我们将为Map任务容器分配4 GB，为Reduce任务容器分配8 GB。</p>
-<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb：4096</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.memory.mb：8192</span><br></pre></td></tr></table></figure></p>
-<p>每个容器将运行Map和Reduce任务的JVM。 JVM堆大小应设置为低于上面定义的Map和Reduce内存，以使它们在YARN分配的Container内存的边界内。</p>
-<p>在mapred-site.xml中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.java.opts：-Xmx3072m</span><br><span class="line"></span><br><span class="line">mapreduce.reduce.java.opts：-Xmx6144m</span><br></pre></td></tr></table></figure></p>
-<p>以上设置配置Map和Reduce任务将使用的物理RAM的上限。<br>。</p>
-<p>2.</p>
-<blockquote>
-<p><a href="http://blog.chinaunix.net/uid-25691489-id-5587957.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-25691489-id-5587957.html</a></p>
-</blockquote>
-<p>大概是job运行超过了map和reduce设置的内存大小，导致任务失败，调整增加了map和reduce的内容，问题排除，一些参数介绍如下：</p>
-<p>RM的内存资源配置，主要是通过下面的两个参数进行的（这两个值是Yarn平台特性，应在yarn-site.xml中配置好）：<br>yarn.scheduler.minimum-allocation-mb<br>yarn.scheduler.maximum-allocation-mb<br>说明：单个容器可申请的最小与最大内存，应用在运行申请内存时不能超过最大值，小于最小值则分配最小值，从这个角度看，最小值有点想操作系统中的页。最小值还有另外一种用途，计算一个节点的最大container数目注：这两个值一经设定不能动态改变(此处所说的动态改变是指应用运行时)。</p>
-<p>NM的内存资源配置，主要是通过下面两个参数进行的（这两个值是Yarn平台特性，应在yarn-sit.xml中配置） ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn.nodemanager.resource.memory-mb</span><br><span class="line">yarn.nodemanager.vmem-pmem-ratio</span><br></pre></td></tr></table></figure></p>
-<p>说明：每个节点可用的最大内存，RM中的两个值不应该超过此值。此数值可以用于计算container最大数目，即：用此值除以RM中的最小容器内存。虚拟内存率，是占task所用内存的百分比，默认值为2.1倍;注意：第一个参数是不可修改的，一旦设置，整个运行过程中不可动态修改，且该值的默认大小是8G，即使计算机内存不足8G也会按着8G内存来使用。</p>
-<p>AM内存配置相关参数，此处以MapReduce为例进行说明（这两个值是AM特性，应在mapred-site.xml中配置），如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mapreduce.map.memory.mb</span><br><span class="line">mapreduce.reduce.memory.mb</span><br></pre></td></tr></table></figure></p>
-<p>说明：这两个参数指定用于MapReduce的两个任务（Map and Reduce task）的内存大小，其值应该在RM中的最大最小container之间。如果没有配置则通过如下简单公式获得：<br>max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))<br>一般的reduce应该是map的2倍。注：这两个值可以在应用启动时通过参数改变；</p>
-<p>AM中其它与内存相关的参数，还有JVM相关的参数，这些参数可以通过，如下选项配置：<br>mapreduce.map.java.opts<br>mapreduce.reduce.java.opts<br>说明：这两个参主要是为需要运行JVM程序（java、scala等）准备的，通过这两个设置可以向JVM中传递参数的，与内存有关的是，-Xmx，-Xms等选项。此数值大小，应该在AM中的map.mb和reduce.mb之间。</p>
-<p>我们对上面的内容进行下总结，当配置Yarn内存的时候主要是配置如下三个方面：每个Map和Reduce可用物理内存限制；对于每个任务的JVM对大小的限制；虚拟内存的限制；</p>
-<p>下面通过一个具体错误实例，进行内存相关说明，错误如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Container[pid=41884,containerID=container_1405950053048_0016_01_000284] is running beyond virtual memory limits. Current usage: 314.6 MB of 2.9 GB physical memory used; 8.7 GB of 6.2 GB virtual memory used. Killing container.</span><br></pre></td></tr></table></figure></p>
-<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;100000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.maximum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;10000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.scheduler.minimum-allocation-mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;3000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;2000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
-<p>通过配置我们看到，容器的最小内存和最大内存分别为：3000m和10000m，而reduce设置的默认值小于2000m，map没有设置，所以两个值均为3000m，也就是log中的“2.9 GB physical<br>memory used”。而由于使用了默认虚拟内存率(也就是2.1倍)，所以对于Map Task和Reduce Task总的虚拟内存为都为3000*2.1=6.2G。而应用的虚拟内存超过了这个数值，故报错 。解决办<br>法：在启动Yarn是调节虚拟内存率或者应用运行时调节内存大小。</p>
-
-          
+          <h3 id="错误描述："><a href="#错误描述：" class="headerlink" title="错误描述："></a>错误描述：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:52:58 INFO mapreduce.Job: Task Id : attempt_1476760655616_0575_r_000000_2, Status : FAILED</span><br><span class="line">Container [pid=24537,containerID=container_1476760655616_0575_01_000052] is running beyond physical memory limits. Current usage: 4.0 GB of 3 GB physical memory used; 6.9 GB of 6.3 GB virtual memory used. Killing container.</span><br><span class="line">Dump of the process-tree for container_1476760655616_0575_01_000052 :</span><br><span class="line">	|- PID PPID PGRPID SESSID CMD_NAME USER_MODE_TIME(MILLIS) SYSTEM_TIME(MILLIS) VMEM_USAGE(BYTES) RSSMEM_USAGE(PAGES) FULL_CMD_LINE</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/mapreduce运行内存及JVM配置错误running beyond physical /#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -598,14 +573,15 @@
 
       
         
-          
-            <blockquote>
-<p>参考<br><a href="http://blog.itpub.net/30066956/viewspace-2107549/" target="_blank" rel="external">http://blog.itpub.net/30066956/viewspace-2107549/</a></p>
+          <blockquote>
+<p>参考<br><a href="http://blog.itpub.net/30066956/viewspace-2107549/">http://blog.itpub.net/30066956/viewspace-2107549/</a></p>
 </blockquote>
 <p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">16/11/02 21:37:26 INFO mapreduce.Job: Task Id : attempt_1476760655616_0574_m_000027_2, Status : FAILED</span><br><span class="line">Error: java.lang.RuntimeException: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:131)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:742)</span><br><span class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:168)</span><br><span class="line">	at java.security.AccessController.doPrivileged(Native Method)</span><br><span class="line">	at javax.security.auth.Subject.doAs(Subject.java:415)</span><br><span class="line">	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1614)</span><br><span class="line">	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:163)</span><br><span class="line">Caused by: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</span><br><span class="line">	at java.lang.Class.getConstructor0(Class.java:2849)</span><br><span class="line">	at java.lang.Class.getDeclaredConstructor(Class.java:2053)</span><br><span class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:125)</span><br><span class="line">	... 7 more</span><br></pre></td></tr></table></figure></p>
-<p>解决：<br>注意Mapper 与 Reducer 类写成内部类，一定要加static ！！！！</p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/mapreduce执行错误Mapper.init错误/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -722,11 +698,13 @@
 
       
         
-          
-            <p>错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask</span><br><span class="line"></span><br><span class="line">Job Submission failed with exception &apos;org.apache.hadoop.security.AccessControlException(Permission denied: user=anonymous, access=WRITE, inode=&quot;/user&quot;:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
+          <p>错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask</span><br><span class="line"></span><br><span class="line">Job Submission failed with exception &apos;org.apache.hadoop.security.AccessControlException(Permission denied: user=anonymous, access=WRITE, inode=&quot;/user&quot;:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
 <p>解决：<br>权限问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -chmod -R 777  /</span><br></pre></td></tr></table></figure></p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -843,18 +821,15 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>Coding.net配置</p>
 </blockquote>
-<h3 id="账户-SSH-公钥"><a href="#账户-SSH-公钥" class="headerlink" title="账户 SSH 公钥"></a>账户 SSH 公钥</h3><p>账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，SSH 就拥有账户下所有项目仓库的读写权限。 设置“账户 SSH 公钥”是开发者使用 SSH 方式访问/修改代码仓库的“前置工作”，分为“获取 SSH 协议地址”、“生成公钥”、“在 Coding.net 添加公钥”三个步骤。</p>
-<h3 id="获取-SSH-协议地址"><a href="#获取-SSH-协议地址" class="headerlink" title="获取 SSH 协议地址"></a>获取 SSH 协议地址</h3><p>在项目的代码页面点击 SSH 切换到 SSH 协议， 获得 clone 地址，形如<code>git@git.coding.net:wzw/leave-a-message.git</code>。 请使用这个地址来访问您的代码仓库。</p>
-<h3 id="生成公钥"><a href="#生成公钥" class="headerlink" title="生成公钥"></a>生成公钥</h3><p>Mac/Linux 打开命令行终端, Windows 打开 Git Bash 。 输入<code>ssh-keygen -t rsa -C &quot;username@example.com&quot;</code>,( 注册的邮箱)，接下来点击enter键即可（也可以输入密码）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</span><br><span class="line"># Creates a new ssh key, using the provided email as a label</span><br><span class="line"># Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/Users/you/.ssh/id_rsa): [Press enter]  // 推荐使用默认地址,如果使用非默认地址可能需要配置 .ssh/config</span><br><span class="line">成功之后</span><br><span class="line"></span><br><span class="line">Your identification has been saved in /Users/you/.ssh/id_rsa.</span><br><span class="line"># Your public key has been saved in /Users/you/.ssh/id_rsa.pub.</span><br><span class="line"># The key fingerprint is:</span><br><span class="line"># 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</span><br></pre></td></tr></table></figure></p>
-<h3 id="在-Coding-net-添加公钥"><a href="#在-Coding-net-添加公钥" class="headerlink" title="在 Coding.net 添加公钥"></a>在 Coding.net 添加公钥</h3><p>本地打开 id_rsa.pub 文件（或执行 $cat id_rsa.pub ），复制其中全部内容，添加到账户“SSH 公钥”页面 中，公钥名称可以随意起名字。<br>完成后点击“添加”，然后输入密码或动态码即可添加完成。</p>
-<h3 id="完成后在命令行测试，首次建立链接会要求信任主机"><a href="#完成后在命令行测试，首次建立链接会要求信任主机" class="headerlink" title="完成后在命令行测试，首次建立链接会要求信任主机"></a>完成后在命令行测试，首次建立链接会要求信任主机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@git.coding.net // 注意 git.coding.net 接入到 CDN 上所以会解析多个不同的 host ip The authenticity of host ‘git.coding.net (61.146.73.68)’ can not be established. RSA key fingerprint is 98:ab:2b:30:60:00:82:86:bb:85:db:87:22:c4:4f:b1. Are you sure you want to continue connecting (yes/no)? yes Warning: Permanently added ‘git.coding.net,61.146.73.68’ (RSA) to the list of kn own hosts.</span><br><span class="line"></span><br><span class="line">Enter passphrase for key ‘/c/Users/Yuankai/.ssh/id_rsa’: Coding.net Tips : [ Hello Kyle_lyk! You have connected to Coding.net by SSH successfully! ]</span><br></pre></td></tr></table></figure>
-<p>接下来就可以用git操作仓库了，是使用SourceTree非常方便</p>
-
-          
+<h3 id="账户-SSH-公钥"><a href="#账户-SSH-公钥" class="headerlink" title="账户 SSH 公钥"></a>账户 SSH 公钥</h3><p>账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，SSH 就拥有账户下所有项目仓库的读写权限。 设置“账户 SSH 公钥”是开发者使用 SSH 方式访问/修改代码仓库的“前置工作”，分为“获取 SSH 协议地址”、“生成公钥”、“在 Coding.net 添加公钥”三个步骤。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/28/Git SSH公钥配置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -971,8 +946,7 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>已安装Hadoop2.7.2的三节点集群</p>
 </blockquote>
 <h3 id="安装Scala"><a href="#安装Scala" class="headerlink" title="安装Scala"></a>安装Scala</h3><ol>
@@ -987,14 +961,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala -version</span><br><span class="line">Scala code runner version 2.11.7 -- Copyright 2002-2013, LAMP/EPFL</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置到每台节点</p>
-</li>
-</ol>
-<h3 id="安装Spark"><a href="#安装Spark" class="headerlink" title="安装Spark"></a>安装Spark</h3><p>#Spark<br>export SPARK_HOME=/home/ubuntu/cloud/spark-1.6.0<br>export PATH=$PATH:$SPARK_HOME/bin</p>
-<p>export JAVA_HOME=/usr/java/jdk1.8.0_91<br>export SPARK_MASTER_IP=10.0.0.7</p>
-<p>#export SPARK_WORKER_MEMORY=2g<br>export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop</p>
-<p>slave1<br>slave2</p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/27/spark-1.6.0安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
