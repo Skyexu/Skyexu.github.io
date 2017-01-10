@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -96,16 +96,15 @@
 
 
 
-<meta name="description" content="LinkedHashMap和TreeMap的区别首先2个都是map，所以用key取值肯定是没区别的，区别在于用Iterator遍历的时候LinkedHashMap保存了记录的插入顺序，先插入的先遍历到TreeMap默认是按升序排，也可以指定排序的比较器。遍历的时候按升序遍历。例如：a是LinkedHashMap，b是TreeMap。a.put(“2”,”ab”);a.put(“1”,”bc”);b">
-<meta property="og:type" content="article">
-<meta property="og:title" content="LinkedHashMap和TreeMap的区别">
-<meta property="og:url" content="http://yoursite.com/2016/10/18/LinkedHashMap和TreeMap的区别/index.html">
+<meta name="description" content="学习总结 思想感悟">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skye's Blog">
+<meta property="og:url" content="http://yoursite.com/tags/Linux技巧/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="LinkedHashMap和TreeMap的区别首先2个都是map，所以用key取值肯定是没区别的，区别在于用Iterator遍历的时候LinkedHashMap保存了记录的插入顺序，先插入的先遍历到TreeMap默认是按升序排，也可以指定排序的比较器。遍历的时候按升序遍历。例如：a是LinkedHashMap，b是TreeMap。a.put(“2”,”ab”);a.put(“1”,”bc”);b">
-<meta property="og:updated_time" content="2016-10-18T13:55:12.045Z">
+<meta property="og:description" content="学习总结 思想感悟">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LinkedHashMap和TreeMap的区别">
-<meta name="twitter:description" content="LinkedHashMap和TreeMap的区别首先2个都是map，所以用key取值肯定是没区别的，区别在于用Iterator遍历的时候LinkedHashMap保存了记录的插入顺序，先插入的先遍历到TreeMap默认是按升序排，也可以指定排序的比较器。遍历的时候按升序遍历。例如：a是LinkedHashMap，b是TreeMap。a.put(“2”,”ab”);a.put(“1”,”bc”);b">
+<meta name="twitter:title" content="Skye's Blog">
+<meta name="twitter:description" content="学习总结 思想感悟">
 
 
 
@@ -126,9 +125,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/18/LinkedHashMap和TreeMap的区别/"/>
+  <link rel="canonical" href="http://yoursite.com/tags/Linux技巧/"/>
 
-  <title> LinkedHashMap和TreeMap的区别 | Skye's Blog </title>
+  <title> 标签: Linux技巧 | Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -149,7 +148,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -237,152 +236,74 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                LinkedHashMap和TreeMap的区别
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-18T21:53:44+08:00" content="2016-10-18">
-              2016-10-18
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/18/LinkedHashMap和TreeMap的区别/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/LinkedHashMap和TreeMap的区别/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h3 id="LinkedHashMap和TreeMap的区别"><a href="#LinkedHashMap和TreeMap的区别" class="headerlink" title="LinkedHashMap和TreeMap的区别"></a>LinkedHashMap和TreeMap的区别</h3><p>首先2个都是map，所以用key取值肯定是没区别的，区别在于用Iterator遍历的时候<br>LinkedHashMap保存了记录的插入顺序，先插入的先遍历到<br>TreeMap默认是按升序排，也可以指定排序的比较器。遍历的时候按升序遍历。<br>例如：a是LinkedHashMap，b是TreeMap。<br>a.put(“2”,”ab”);<br>a.put(“1”,”bc”);<br>b.put(“2”,”ab”);<br>b.put(“1”,”bc”);</p>
-<p>那么遍历a的时候，先遍历到key是2的，因为2先放进去。<br>遍历b的时候，先遍历到“1”，因为按顺序是先1后2</p>
-
-      
+  <div id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h2 >
+        Linux技巧
+        <small>标签</small>
+      </h2>
     </div>
 
-    <div>
+    
       
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h1 class="post-title">
         
-      
-    </div>
-
-    <div>
-      
+            <a class="post-title-link" href="/2016/08/19/Linux日常操作笔记/" itemprop="url">
+              
+                <span itemprop="name">Linux日常操作笔记</span>
+              
+            </a>
         
+      </h1>
 
-      
-    </div>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-08-19T09:30:00+08:00"
+              content="2016-08-19" >
+          08-19
+        </time>
+      </div>
 
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag">#Java</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/09/21/HDUACM1200/" rel="next" title="HDUACM1200">
-                <i class="fa fa-chevron-left"></i> HDUACM1200
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/18/name node is in safe mode/" rel="prev" title="name node is in safe mode问题">
-                name node is in safe mode问题 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
+    
       
-    </div>
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h1 class="post-title">
+        
+            <a class="post-title-link" href="/2016/08/15/ubuntu相关设置/" itemprop="url">
+              
+                <span itemprop="name">ubuntu相关设置</span>
+              
+            </a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-08-15T00:39:26+08:00"
+              content="2016-08-15" >
+          08-15
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+    
   </div>
+
+  
 
 
           </div>
@@ -390,14 +311,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2016/10/18/LinkedHashMap和TreeMap的区别/"
-           data-title="LinkedHashMap和TreeMap的区别" data-url="http://yoursite.com/2016/10/18/LinkedHashMap和TreeMap的区别/">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -417,17 +330,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -497,17 +401,6 @@
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedHashMap和TreeMap的区别"><span class="nav-number">1.</span> <span class="nav-text">LinkedHashMap和TreeMap的区别</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -611,10 +504,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
 
   
 
