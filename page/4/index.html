@@ -260,6 +260,320 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/" itemprop="url">
+                  Mahout 如何进行 Precision 和 Recall 的计算
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-18T17:30:00+08:00" content="2016-08-18">
+              2016-08-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Precision 和 Recall 值。然后，Precision 和 Recall 的平均值作为模型的 Precision 和 Recall 值。</p>
+</blockquote>
+<p>RecommenderIRStatsEvaluator是一个接口，用于得到推荐系统的准确率，召回率等统计指标。<br>它定义的函数如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public IRStatistics evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, IDRescorer rescorer, int at, double relevanceThreshold, doubleevaluationPercentage) </span><br><span class="line">/**</span><br><span class="line">   * @param recommenderBuilder</span><br><span class="line">   * 它通过public Recommender buildRecommender(DataModel model)定义推荐系统创建的方式；       </span><br><span class="line"></span><br><span class="line">   * @param dataModelBuilder</span><br><span class="line">   * 数据模型创建的方式，如果已经创建好了数据模型，一般这个参数可以为null</span><br><span class="line"></span><br><span class="line">   * @param dataModel</span><br><span class="line">   * 推荐系统使用的数据模型</span><br><span class="line">   * </span><br><span class="line">   * @param rescorer</span><br><span class="line">   * 推荐排序的方式，一般情况下可以为null</span><br><span class="line">   * </span><br><span class="line">   * @param at</span><br><span class="line">   * 推荐几个物品（TOPN),，它用来定义计算准确率的时候，一个user可以拥有的相关项items的最大个数，相关项item定义为user对这个item的评价超过了relevanceThreshold的项</span><br><span class="line"></span><br><span class="line">   * @param relevanceThreshold</span><br><span class="line">   * 相关临界值 ,和at一起使用定义一个user的相关项</span><br></pre></td></tr></table></figure></p>
+<h3 id="计算临界值"><a href="#计算临界值" class="headerlink" title="计算临界值"></a>计算临界值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//computeThreshold(prefs)这个方法主要是计算得到当前用户对物品 打分的平均值加上标准差的值</span><br><span class="line">double theRelevanceThreshold = Double.isNaN(relevanceThreshold) ? computeThreshold(prefs)</span><br><span class="line">					: relevanceThreshold;</span><br></pre></td></tr></table></figure>
+<h3 id="getRelevantItemsIDs"><a href="#getRelevantItemsIDs" class="headerlink" title="getRelevantItemsIDs"></a>getRelevantItemsIDs</h3><p>按照用户对物品的打分从大到小排序，将大于设定的的relevanceTheshold的值存入relevantItemIDs中，relevantItemIDs最大值为at<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * getRelevantItemsIDs的实现，</span><br><span class="line"> *1.首先得到userID的Preferences </span><br><span class="line"> *2.创建一个FastIDSet用来保存相关项的id，大小为at </span><br><span class="line"> *3.prefs根据值大小排序 </span><br><span class="line"> *4.遍历pref，如果user对这个item的评价prefs.getValue(i)不小于相关阈值，则将这个item的加入相关项，最多取at个满足条件的item</span><br><span class="line"> */</span><br><span class="line">FastIDSet relevantItemIDs = dataSplitter.getRelevantItemsIDs(userID, at, theRelevanceThreshold, dataModel);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public FastIDSet getRelevantItemsIDs(long userID,</span><br><span class="line">                                       int at,</span><br><span class="line">                                       double relevanceThreshold,</span><br><span class="line">                                       DataModel dataModel) throws TasteException &#123;</span><br><span class="line">    PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);</span><br><span class="line">	//定义最大理论击中物品集合 </span><br><span class="line">    FastIDSet relevantItemIDs = new FastIDSet(at);</span><br><span class="line">	//将用户的打分排序 </span><br><span class="line">    prefs.sortByValueReversed();</span><br><span class="line">    for (int i = 0; i &lt; prefs.length() &amp;&amp; relevantItemIDs.size() &lt; at; i++) &#123;</span><br><span class="line">      if (prefs.getValue(i) &gt;= relevanceThreshold) &#123;</span><br><span class="line">        relevantItemIDs.add(prefs.getItemID(i));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return relevantItemIDs;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="获取训练集"><a href="#获取训练集" class="headerlink" title="获取训练集"></a>获取训练集</h3><p>这个训练集的构造规则是： </p>
+<ol>
+<li>对于其它的用户，将他们所有的（item，preference）都加入训练集； </li>
+<li>对于这个用户user，将它的除了相关项之外的其它项的喜好加入训练集；</li>
+</ol>
+<p>然后，我们使用推荐算法进行推荐。推荐的时候，我们就可能给UserID 推荐移除的物品或者其他的物品。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FastByIDMap&lt;PreferenceArray&gt; trainingUsers = new FastByIDMap&lt;PreferenceArray&gt;(dataModel.getNumUsers());</span><br><span class="line">			//对所有用户进行处理</span><br><span class="line">			//processOtherUser :Adds a single user and all their preferences to the training model.</span><br><span class="line">			LongPrimitiveIterator it2 = dataModel.getUserIDs();</span><br><span class="line">			while (it2.hasNext()) &#123;</span><br><span class="line">				dataSplitter.processOtherUser(userID, relevantItemIDs, trainingUsers, it2.nextLong(), dataModel);</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="构造训练模型"><a href="#构造训练模型" class="headerlink" title="构造训练模型"></a>构造训练模型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataModel trainingModel = dataModelBuilder == null ? new GenericDataModel(trainingUsers): dataModelBuilder.buildDataModel(trainingUsers);</span><br></pre></td></tr></table></figure>
+<h3 id="进行推荐"><a href="#进行推荐" class="headerlink" title="进行推荐"></a>进行推荐</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);</span><br><span class="line"></span><br><span class="line">int intersectionSize = 0;</span><br><span class="line"></span><br><span class="line">List&lt;RecommendedItem&gt; recommendedItems = recommender.recommend(userID, at, rescorer);</span><br></pre></td></tr></table></figure>
+<h3 id="计算推荐结果包含在相关项中的个数"><a href="#计算推荐结果包含在相关项中的个数" class="headerlink" title="计算推荐结果包含在相关项中的个数"></a>计算推荐结果包含在相关项中的个数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;RecommendedItem&gt; recommendedItems = recommender.recommend(userID, at, rescorer);</span><br><span class="line"></span><br><span class="line">			for (RecommendedItem recommendedItem : recommendedItems) &#123;</span><br><span class="line"></span><br><span class="line">				if (relevantItemIDs.contains(recommendedItem.getItemID())) &#123;</span><br><span class="line">					intersectionSize++;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="计算查全率、查准率"><a href="#计算查全率、查准率" class="headerlink" title="计算查全率、查准率"></a>计算查全率、查准率</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int numRecommendedItems = recommendedItems.size();</span><br><span class="line"></span><br><span class="line">			// Precision</span><br><span class="line">			if (numRecommendedItems &gt; 0) &#123;</span><br><span class="line">				precision.addDatum((double) intersectionSize / (double) numRecommendedItems);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			// Recall</span><br><span class="line">			recall.addDatum((double) intersectionSize / (double) numRelevantItems);</span><br></pre></td></tr></table></figure>
+<p>参考</p>
+<blockquote>
+<p><a href="http://pan.baidu.com/s/1pKE97wJ" target="_blank" rel="external">http://pan.baidu.com/s/1pKE97wJ</a><br><a href="http://www.myexception.cn/cloud/1983215.html" target="_blank" rel="external">http://www.myexception.cn/cloud/1983215.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/17/Ubuntu16.04安装Oracle11g/" itemprop="url">
+                  Ubuntu16.04安装Oracle11g
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T23:36:50+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/17/Ubuntu16.04安装Oracle11g/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/17/Ubuntu16.04安装Oracle11g/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Oracle用户创建"><a href="#Oracle用户创建" class="headerlink" title="Oracle用户创建"></a>Oracle用户创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd oinstall</span><br><span class="line">sudo groupadd dba</span><br><span class="line">sudo adduser -g oinstall -G dba -s  oracle</span><br><span class="line">sudo passwd oracle</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-sysctl-conf增加以下内容"><a href="#修改-etc-sysctl-conf增加以下内容" class="headerlink" title="修改/etc/sysctl.conf增加以下内容"></a>修改/etc/sysctl.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kernel.sem = 250 32000 100 128</span><br><span class="line">kernel.shmall = 2097152</span><br><span class="line">kernel.shmmni = 4096</span><br><span class="line">kernel.shmmax=1073741824</span><br><span class="line">net.ipv4.ip_local_port_range = 9000  65500</span><br><span class="line">net.core.rmem_default = 262144</span><br><span class="line">net.core.rmem_max = 4194304</span><br><span class="line">net.core.wmem_default = 262144</span><br><span class="line">net.core.wmem_max = 1048576</span><br><span class="line">fs.aio-max-nr = 1048576</span><br><span class="line">fs.file-max = 6815744</span><br><span class="line">vm.hugetlb_shm_group = 1002</span><br></pre></td></tr></table></figure>
+<h3 id="运行一下命令更新内核参数"><a href="#运行一下命令更新内核参数" class="headerlink" title="运行一下命令更新内核参数"></a>运行一下命令更新内核参数</h3><p><code>sudo sysctl -p</code></p>
+<h3 id="修改-etc-security-limits-conf增加以下内容"><a href="#修改-etc-security-limits-conf增加以下内容" class="headerlink" title="修改/etc/security/limits.conf增加以下内容"></a>修改/etc/security/limits.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">oracle soft nproc  2047</span><br><span class="line">oracle hard nproc  16384</span><br><span class="line">oracle soft nofile 1024</span><br><span class="line">oracle hard nofile 65536</span><br><span class="line">oracle soft stack  10240</span><br></pre></td></tr></table></figure>
+<h3 id="修改-etc-pam-d-login增加以下内容"><a href="#修改-etc-pam-d-login增加以下内容" class="headerlink" title="修改/etc/pam.d/login增加以下内容"></a>修改/etc/pam.d/login增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session required /lib/security/pam_limits.so</span><br><span class="line">session required pam_limits.so</span><br></pre></td></tr></table></figure>
+<h3 id="欺骗oracle的安装程序"><a href="#欺骗oracle的安装程序" class="headerlink" title="欺骗oracle的安装程序"></a>欺骗oracle的安装程序</h3><p>oracle本身并不支持ubuntu来安装，所以要进行欺骗oracle的安装程序（sudo执行）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/lib64</span><br><span class="line">ln -s /etc /etc/rc.d</span><br><span class="line">ln -s /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib64/</span><br><span class="line">ln -s /usr/bin/awk /bin/awk</span><br><span class="line">ln -s /usr/bin/basename /bin/basename</span><br><span class="line">ln -s /usr/bin/rpm /bin/rpm</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libc_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread_nonshared.a /usr/lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib64/</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib64/</span><br><span class="line">vim /etc/redhat-release</span><br><span class="line">echo &apos;Red Hat Linux release 5&apos; &gt; /etc/redhat-release</span><br></pre></td></tr></table></figure></p>
+<h3 id="为Oracle配置环境变量"><a href="#为Oracle配置环境变量" class="headerlink" title="为Oracle配置环境变量"></a>为Oracle配置环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#oracle安装目录，第6步创建的文件夹</span><br><span class="line">export ORACLE_BASE=/home/oracle/oracle11g</span><br><span class="line">#网上说可以随便写</span><br><span class="line">export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1</span><br><span class="line">#数据库的sid</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export ORACLE_UNQNAME=orcl</span><br><span class="line">#默认字符集</span><br><span class="line">export NLS_LANG=.AL32UTF8</span><br><span class="line">#环境变量</span><br><span class="line">export PATH=$&#123;PATH&#125;:$&#123;ORACLE_HOME&#125;/bin/:$ORACLE_HOME/lib64;</span><br></pre></td></tr></table></figure>
+<h3 id="安装oracle"><a href="#安装oracle" class="headerlink" title="安装oracle"></a>安装oracle</h3><p>上面的系统配置完成之后，最好重启一下服务器，<strong>使用oracle用户登陆系统</strong>。</p>
+<ol>
+<li>上传下载好的oracle压缩文件到/home/oracle目录下。</li>
+<li>进入/home/oracle目录，执行# unzip linux.x64_11gR2_database_1of2.zip和# unzip linux.x64_11gR2_database_2of2.zip，解压的文件在/home/oracle/database目录中。</li>
+<li><p>设置/home/oracle/database目录的权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chown oracle:oinstall /home/oracle/database -R</span><br><span class="line"># chmod 775 /home/oracle/database -R</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入/home/oracle/database目录，执行$ ./runInstaller，当检查均通过，会出现oracle安装界面,一路next，有一步可以选择字符，选utf8</p>
+</li>
+</ol>
+<h3 id="安装过程可能遇到的问题"><a href="#安装过程可能遇到的问题" class="headerlink" title="安装过程可能遇到的问题"></a>安装过程可能遇到的问题</h3><ul>
+<li><p>Oracle安装界面乱码解决方法<br>执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exportNLS_LANG=AMERICAN_AMERICA.UTF8</span><br><span class="line">export LC_ALL=C</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Error in invoking target ‘install’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/ctx/lib/ins_ctx.mk’. See ‘/home/dong/tools/oraInventory/logs/installActions2015-01-22_09-39-03AM.log’ for details.</p>
+<p>解决方法：</p>
+<p>从<a href="http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，" target="_blank" rel="external">http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，</a> 然后点击retry ，接着往下执行<br>注:这是网上提供的解决方案，我的系统安装失败，我直接跳过了 </p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘agent nmhs’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk’</p>
+<p>解决方法：</p>
+<p>打开新的终端窗口<br>使用vi命令，打开<code>/home/oracle/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk</code>文件，将$(MK_EMAGENT_NMECTL)修改成$(MK_EMAGENT_NMECTL)-lnnz11 即可，然后点击retry ，接着往下执行</p>
+</li>
+</ul>
+<ul>
+<li><p>Error in invoking target ‘all_no_orcl’ of makefile ‘/home/oracle/oracle11g/product/11.2.0/dbhome_1/rdbms/lib/ins_rdbms.mk’. See ‘/home/dong/tools/Inventory/logs/installActions2016-03-19_02-37-44PM.log’ for details.</p>
+<p>解决办法：</p>
+<p>打开一个新的终端，输入如下四个命令：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/^\(TNSLSNR_LINKLINE.*\$(TNSLSNR_OFILES)\) \(\$(LINKTTLIBS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/network/lib/env_network.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(ORACLE_LINKLINE.*\$(ORACLE_LINKER)\) \(\$(PL_FLAGS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/rdbms/lib/env_rdbms.mk</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\$LD \$LD_RUNTIME\) \(\$LD_OPT\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/bin/genorasdksh</span><br><span class="line"></span><br><span class="line">sed -i &apos;s/^\(\s*\)\(\$(OCRLIBS_DEFAULT)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/srvm/lib/ins_srvm.mk</span><br></pre></td></tr></table></figure>
+<p>然后在图形界面点击‘Retry’就能继续安装了。</p>
+<h3 id="然后按照安装程序提示最后执行两个脚本"><a href="#然后按照安装程序提示最后执行两个脚本" class="headerlink" title="然后按照安装程序提示最后执行两个脚本"></a>然后按照安装程序提示最后执行两个脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo  /home/oracle/Inventory/orainstRoot.sh </span><br><span class="line">sudo /home/oracle/oracle11g/product/11.2.0/dbhome_1/root.sh</span><br></pre></td></tr></table></figure>
+<h3 id="创建监听，执行-netca启动配置界面"><a href="#创建监听，执行-netca启动配置界面" class="headerlink" title="创建监听，执行$ netca启动配置界面"></a>创建监听，执行<code>$ netca</code>启动配置界面</h3><p>参考</p>
+<blockquote>
+<p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">http://www.jianshu.com/p/9b2f601c275d</a></p>
+</blockquote>
+<p>完成之后，执行命令$ lsnrctl start启动监听服务。</p>
+<h3 id="创建数据库实例，执行-dbca启动配置界面"><a href="#创建数据库实例，执行-dbca启动配置界面" class="headerlink" title="创建数据库实例，执行$ dbca启动配置界面"></a>创建数据库实例，执行$ dbca启动配置界面</h3><h3 id="最后验证是否安装成功，浏览器访问"><a href="#最后验证是否安装成功，浏览器访问" class="headerlink" title="最后验证是否安装成功，浏览器访问"></a>最后验证是否安装成功，浏览器访问</h3><p><a href="https://192.168.1.114:1158/em" target="_blank" rel="external">https://192.168.1.114:1158/em</a></p>
+<h3 id="创建开机自动启动数据库的脚本"><a href="#创建开机自动启动数据库的脚本" class="headerlink" title="创建开机自动启动数据库的脚本"></a>创建开机自动启动数据库的脚本</h3><p>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># vi /etc/init.d/Oracledb</span><br><span class="line">文件内容如下：</span><br><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># /etc/init.d/oracledb</span><br><span class="line">#</span><br><span class="line"># Run-level Startup script for the Oracle Instance, Listener, and</span><br><span class="line"># Web Interface</span><br><span class="line"></span><br><span class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">ORA_OWNR=&quot;oracle&quot;</span><br><span class="line"># if the executables do not exist -- display error</span><br><span class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</span><br><span class="line">then</span><br><span class="line">echo &quot;Oracle startup: cannot start&quot;</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line"># depending on parameter -- startup, shutdown, restart</span><br><span class="line"># of the instance and listener or usage display</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">start)</span><br><span class="line"># Oracle listener and instance startup</span><br><span class="line">echo -n &quot;Starting Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</span><br><span class="line">touch /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line"># Oracle listener and instance shutdown</span><br><span class="line">echo -n &quot;Shutdown Oracle: &quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</span><br><span class="line">rm -f /var/lock/oracle</span><br><span class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</span><br><span class="line">echo &quot;OK&quot;</span><br><span class="line">;;</span><br><span class="line">reload|restart)</span><br><span class="line">$0 stop</span><br><span class="line">$0 start</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</span><br><span class="line">exit 1</span><br><span class="line">esac</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 /etc/init.d/oracledb</span><br><span class="line"># update-rc.d oracledb defaults 99</span><br></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ ps -ef|grep ora_|grep -v grep  --&gt;查看oracle进程</span><br><span class="line">$ ps -ef|grep tnslsnr|grep -v grep  --&gt;查看oracle的监听进程</span><br><span class="line">$ lsnrctl start --&gt;启动监听</span><br><span class="line">$ dbstart --&gt;启动数据库</span><br><span class="line">$ dbstop --&gt;停止数据库</span><br><span class="line">$ emctl start dbconsole --&gt;启动em控制台</span><br><span class="line">$ isqlplusctl start --&gt;启动pl/sql</span><br><span class="line">$ sqlplus &apos;/as sysdba&apos; --&gt;登录sqlplus</span><br><span class="line"></span><br><span class="line">$ env  --&gt;输出当前用户的环境变量</span><br><span class="line"></span><br><span class="line">$ netca --&gt;启用监听配置程序</span><br></pre></td></tr></table></figure>
+<p>参考文章</p>
+<blockquote>
+<p><a href="CentOS6.7安装Oracle 11g2R傻瓜图文教程">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/17/推荐系统评测指标/" itemprop="url">
                   推荐系统评测指标—准确率(Precision)、召回率(Recall)、F值(F-Measure)
                 </a>
@@ -1126,8 +1440,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/JAVA/" itemprop="url" rel="index">
-                    <span itemprop="name">JAVA</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1459,268 +1773,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/" itemprop="url">
-                  VMWare虚拟机：“锁定文件失败”的解决方法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-19T14:38:06+08:00" content="2016-07-19">
-              2016-07-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机技巧</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>如果使用VMWare虚拟机的时候突然系统崩溃蓝屏或者强行关机，有一定几率会导致无法启动，会提示：锁定文件失败，打不开磁盘或快照所依赖的磁盘。</p>
-<blockquote>
-<p>虚拟磁盘(.vmdk)本身有一个磁盘保护机制，为了防止多台虚拟机同时访问同一个虚拟磁盘(.vmdk)带来的数据丢失和性能削减方面的隐患，每次启动虚拟机的时候虚拟机会使用扩展名为.lck（磁盘锁）文件对虚拟磁盘(.vmdk)进行锁定保护。当虚拟机关闭时.lck（磁盘锁）文件自动删除。但是可能由于您非正常关闭虚拟机，这时虚拟机还没来得及删除您系统上的.lck（磁盘锁）文件，所以当下次您启动虚拟机的时候出现了上述错误。</p>
-</blockquote>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>打开你存放虚拟机系统文件的文件夹，注意，是系统文件，不是虚拟机的安装目录。搜索关键字<code>*.lck</code>，删除搜索到的文件即可。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="url">
-                  亚马逊EC2搭建Shadowsocks
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-19T11:26:26+08:00" content="2016-07-19">
-              2016-07-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机技巧</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/19/亚马逊EC2搭建Shadowsocks/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在网上寻找优秀的科学上网方式中发现，自己搭建Shadowscoks是非常不错的方式，并且AWS有一年的免费使用期限，到期后再买别的VPS就行了。<br><a href="https://segmentfault.com/a/1190000003101075" target="_blank" rel="external">https://segmentfault.com/a/1190000003101075</a><br>上面连接的教程从注册申请AWS到搭建服务已经非常详细，自己再做一些补充。</p>
-<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><p>在EC2上创建好Linux服务器后（本人为Ubuntu）需要对其安装环境<br>参考官方文档<a href="http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/putty.html" target="_blank" rel="external">使用 PuTTY 从 Windows 连接到 Linux 实例</a>连接服务器</p>
-<h3 id="安装shadowsocks依赖"><a href="#安装shadowsocks依赖" class="headerlink" title="安装shadowsocks依赖"></a>安装shadowsocks依赖</h3><ol>
-<li><code>sudo -s // 获取超级管理员权限</code></li>
-<li><code>apt-get update // 更新apt-get</code></li>
-<li><code>apt-get install python-pip // 安装python包管理工具pip</code></li>
-<li><code>pip install shadowsocks // 安装shadowsocks</code></li>
-</ol>
-<h3 id="配置shadowsocks"><a href="#配置shadowsocks" class="headerlink" title="配置shadowsocks"></a>配置shadowsocks</h3><p><code>vim /etc/shadowsocks.json</code></p>
-<p>单一端口配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0  填0.0.0.0即可</span><br><span class="line">&quot;server_port&quot;:8388, #server端监听的端口，需要在EC2实例中开放此端口</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;password&quot;:&quot;password&quot;, #密码</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果想要把VPN分享给其它人而不泄露自己的密码，也可以在配置文件中设置多端口+多密码的模式，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;server_ip&quot;, #EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;port_password&quot;:</span><br><span class="line">&#123;</span><br><span class="line">&quot;8088”: “password8088”,</span><br><span class="line">&quot;8089”: &quot;password8089”</span><br><span class="line">&#125;</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;, #加密方式</span><br><span class="line">&quot;fast_open&quot;: false #是否开启fast open</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="配置完成后启动Shawdowsocks"><a href="#配置完成后启动Shawdowsocks" class="headerlink" title="配置完成后启动Shawdowsocks"></a>配置完成后启动Shawdowsocks</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">启动：ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line">停止：ssserver -c /etc/shadowsocks.json -d stop</span><br><span class="line">重启：ssserver -c /etc/shadowsocks.json -d restart</span><br><span class="line">查看状态：ssserver -c /etc/shadowsocks.json -d status</span><br></pre></td></tr></table></figure>
-<h3 id="关闭服务器防火墙"><a href="#关闭服务器防火墙" class="headerlink" title="关闭服务器防火墙"></a>关闭服务器防火墙</h3><p><code>sudo ufw disable</code></p>
-<h3 id="开启AWS入站端口"><a href="#开启AWS入站端口" class="headerlink" title="开启AWS入站端口"></a>开启AWS入站端口</h3><p>配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务。<br>在EC2网页中编辑入站规则将配置文件中的端口号（如8388）加入入站规则。<br>服务器端配置完毕。</p>
-<h2 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h2><p><a href="https://www.gaotizi.com/knowledgebase/2/shadowsocks.html" target="_blank" rel="external">shadowsocks下载地址1</a><br><a href="https://shadowsocks.com/client.html" target="_blank" rel="external">shadowsocks下载地址2</a><br>windows10尽量使用2.3版本，否则可能出现500或者502错误<br><a href="http://pan.baidu.com/s/1hqIk4mS" target="_blank" rel="external">http://pan.baidu.com/s/1hqIk4mS</a></p>
-<h3 id="500或者502错误"><a href="#500或者502错误" class="headerlink" title="500或者502错误"></a>500或者502错误</h3><ul>
-<li>使用2.3版本</li>
-<li>或者尝试以下命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4  reset</span><br><span class="line">netsh interface ipv6  reset</span><br><span class="line">netsh winsock reset</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1766,7 +1818,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1783,7 +1835,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
