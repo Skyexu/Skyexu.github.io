@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="查看当前所在的工作目录的全路径 pwd12[root@localhost ~]# pwd/root
 查看当前系统的时间 date12345678[root@localhost ~]# date +%Y-%m-%d2016-07-26date +%Y-%m-%d  --date=&amp;quot;-1 day&amp;quot; #加减也可以 month | year2016-07-25[root@localho">
-<meta property="og:updated_time" content="2016-08-19T16:14:32.144Z">
+<meta property="og:updated_time" content="2017-02-11T01:12:20.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux日常操作笔记">
 <meta name="twitter:description" content="查看当前所在的工作目录的全路径 pwd12[root@localhost ~]# pwd/root
@@ -393,7 +393,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mount -t iso9660 -o loop  /home/hadoop/Centos-6.7.DVD.iso /mnt/centos</span><br><span class="line">注：挂载的资源在重启后即失效，需要重新挂载。要想自动挂载，可以将挂载信息设置到/etc/fstab配置文件中，如下：</span><br><span class="line">/dev/cdrom              /mnt/cdrom              iso9660 defaults        0 0</span><br></pre></td></tr></table></figure>
 <h4 id="卸载-umount"><a href="#卸载-umount" class="headerlink" title="卸载 umount"></a>卸载 umount</h4><p><code>umount /mnt/cdrom</code></p>
 <h4 id="存储空间查看"><a href="#存储空间查看" class="headerlink" title="存储空间查看"></a>存储空间查看</h4><p><code>df -h</code></p>
-<h4 id="统计文件或文件夹的大小"><a href="#统计文件或文件夹的大小" class="headerlink" title="统计文件或文件夹的大小"></a>统计文件或文件夹的大小</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -sh  /mnt/cdrom/packages</span><br><span class="line">df -h    查看磁盘的空间</span><br></pre></td></tr></table></figure>
+<h4 id="统计文件或文件夹的大小"><a href="#统计文件或文件夹的大小" class="headerlink" title="统计文件或文件夹的大小"></a>统计文件或文件夹的大小</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">du -sh  /mnt/cdrom/packages</span><br><span class="line">df -h    查看磁盘的空间</span><br><span class="line">wc -lwc 统计文件行数、字数、字节数</span><br></pre></td></tr></table></figure>
 <h4 id="系统服务管理"><a href="#系统服务管理" class="headerlink" title="系统服务管理"></a>系统服务管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service sshd status</span><br><span class="line">service sshd stop </span><br><span class="line">service sshd start</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
 <h4 id="系统启动级别管理"><a href="#系统启动级别管理" class="headerlink" title="系统启动级别管理"></a>系统启动级别管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vi  /etc/inittab</span><br><span class="line"></span><br><span class="line">       # Default runlevel. The runlevels used are:</span><br><span class="line">       #   0 - halt (Do NOT set initdefault to this)</span><br><span class="line">       #   1 - Single user mode</span><br><span class="line">       #   2 - Multiuser, without NFS (The same as 3, if you do not have networking)</span><br><span class="line">       #   3 - Full multiuser mode</span><br><span class="line">       #   4 - unused</span><br><span class="line">       #   5 - X11</span><br><span class="line">       #   6 - reboot (Do NOT set initdefault to this)</span><br><span class="line">       #</span><br><span class="line">       id:3:initdefault:</span><br><span class="line">       ## 通常将默认启动级别设置为：3</span><br></pre></td></tr></table></figure>
 <h4 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line">free</span><br><span class="line">ps -ef | grep ssh</span><br><span class="line">kill -9</span><br></pre></td></tr></table></figure>
@@ -523,7 +523,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -540,7 +540,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
