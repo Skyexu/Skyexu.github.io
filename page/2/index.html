@@ -270,6 +270,142 @@
             
               
                 
+                <a class="post-title-link" href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="url">
+                  MapReduce应用中CombineFileInputFormat原理与用法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-12T21:26:41+08:00" content="2016-12-12">
+              2016-12-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" class="leancloud_visitors" data-flag-title="MapReduce应用中CombineFileInputFormat原理与用法">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>转载自：<a href="http://ju.outofmemory.cn/entry/72024">http://ju.outofmemory.cn/entry/72024</a></p>
+</blockquote>
+<p>HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。</p>
+<p>MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的map任务，导致资源过度消耗，且效率低下。Hadoop自身包含了CombineFileInputFormat，其功能是将多个小文件合并如一个分片，由一个map任务处理，这样就减少了不必要的map数量。</p>
+<p>在了解CombineFileInputFormat之前，我们应了解其父类FileInputFormat的基本处理逻辑。注意这里的FileInputFormat的路径是<strong>org.apache.hadoop.mapreduce.lib.input.FileInputFormat</strong>，是新的MapReduce API。 mapred包下的FileInputFormat对应老的API，不再推荐使用。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/12/12/MapReduce 递归子目录和合并小文件/" itemprop="url">
                   MapReduce 递归子目录和合并小文件
                 </a>
@@ -1447,142 +1583,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/05/hadoop Job命令/" itemprop="url">
-                  Hadoop Job相关命令
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-05T10:54:40+08:00" content="2016-11-05">
-              2016-11-05
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/05/hadoop Job命令/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/hadoop Job命令/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/11/05/hadoop Job命令/" class="leancloud_visitors" data-flag-title="Hadoop Job相关命令">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>hadoop命令行 与job相关的：<br>命令行工具 •<br>1.查看 Job 信息：<br>hadoop job -list<br>2.杀掉 Job：<br>hadoop  job -kill  job_id<br>3.指定路径下查看历史日志汇总：<br>hadoop job -history output-dir<br>4.作业的更多细节：<br>hadoop job -history all output-dir<br>5.打印map和reduce完成百分比和所有计数器：<br>hadoop job -status job_id<br>6.杀死任务。被杀死的任务不会不利于失败尝试：<br>hadoop jab -kill-task <task-id><br>7.使任务失败。被失败的任务会对失败尝试不利：<br>hadoop job  -fail-task <task-id></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/05/hadoop Job命令/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1623,7 +1628,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

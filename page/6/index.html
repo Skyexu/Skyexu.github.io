@@ -80,7 +80,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MapReduce," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -96,28 +96,15 @@
 
 
 
-<meta name="description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径
-12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
-
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MapReduce 多文件输入">
-<meta property="og:url" content="http://yoursite.com/2016/06/16/MapReduce 多文件输入/index.html">
+<meta name="description" content="学习总结 思想感悟">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skye's Blog">
+<meta property="og:url" content="http://yoursite.com/page/6/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径
-12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
-
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
-<meta property="og:updated_time" content="2016-08-17T08:20:15.877Z">
+<meta property="og:description" content="学习总结 思想感悟">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MapReduce 多文件输入">
-<meta name="twitter:description" content="多路径输入
-FileInputFormat.addInputPath 多次调用加载不同路径
-12FileInputFormat.addInputPath(job, new Path(args[0]));FileInputFormat.addInputPath(job, new Path(args[1]));
-
-FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
+<meta name="twitter:title" content="Skye's Blog">
+<meta name="twitter:description" content="学习总结 思想感悟">
 
 
 
@@ -138,9 +125,9 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/16/MapReduce 多文件输入/"/>
+  <link rel="canonical" href="http://yoursite.com/page/6/"/>
 
-  <title> MapReduce 多文件输入 | Skye's Blog </title>
+  <title> Skye's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -171,7 +158,9 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -258,9 +247,9 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
   
@@ -280,7 +269,10 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
             
             
               
-                MapReduce 多文件输入
+                
+                <a class="post-title-link" href="/2016/06/16/MapReduce 多文件输入/" itemprop="url">
+                  MapReduce 多文件输入
+                </a>
               
             
           </h1>
@@ -355,7 +347,9 @@ FileInputFormat.addInputPaths一次调用加载 多路径字符串用逗">
       
 
       
-        <h2 id="多路径输入"><a href="#多路径输入" class="headerlink" title="多路径输入"></a>多路径输入</h2><ol>
+        
+          
+            <h2 id="多路径输入"><a href="#多路径输入" class="headerlink" title="多路径输入"></a>多路径输入</h2><ol>
 <li><p>FileInputFormat.addInputPath 多次调用加载不同路径</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, new Path(args[0]));</span><br><span class="line">FileInputFormat.addInputPath(job, new Path(args[1]));</span><br></pre></td></tr></table></figure>
 </li>
@@ -451,58 +445,40 @@ System.exit(job.waitForCompletion(true)?0:1);
 <p>QLReducer.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.mr;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.NullWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"></span><br><span class="line">public class QLReducer extends Reducer&lt;Text, LongWritable, Text, NullWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	protected void reduce(Text key, Iterable&lt;LongWritable&gt; values,</span><br><span class="line">			Reducer&lt;Text, LongWritable, Text, NullWritable&gt;.Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">		// 接收数据</span><br><span class="line"></span><br><span class="line">		// 输出</span><br><span class="line">		context.write(key, NullWritable.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>DataClean.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package com.hdu.mr;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.NullWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"></span><br><span class="line">public class QLReducer extends Reducer&lt;Text, LongWritable, Text, NullWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	protected void reduce(Text key, Iterable&lt;LongWritable&gt; values,</span><br><span class="line">			Reducer&lt;Text, LongWritable, Text, NullWritable&gt;.Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">		// 接收数据</span><br><span class="line"></span><br><span class="line">		// 输出</span><br><span class="line">		context.write(key, NullWritable.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
-      
-    </div>
-
-    <div>
-      
+          
         
       
     </div>
 
     <div>
       
-        
+    </div>
 
+    <div>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/MapReduce/" rel="tag">#MapReduce</a>
-          
-        </div>
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/06/16/HBase集群搭建/" rel="prev" title="HBase集群搭建">
-                HBase集群搭建 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+  </nav>
+
 
 
           </div>
@@ -510,14 +486,6 @@ System.exit(job.waitForCompletion(true)?0:1);
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2016/06/16/MapReduce 多文件输入/"
-           data-title="MapReduce 多文件输入" data-url="http://yoursite.com/2016/06/16/MapReduce 多文件输入/">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -537,17 +505,8 @@ System.exit(job.waitForCompletion(true)?0:1);
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -617,17 +576,6 @@ System.exit(job.waitForCompletion(true)?0:1);
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多路径输入"><span class="nav-number">1.</span> <span class="nav-text">多路径输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网上例子："><span class="nav-number">2.</span> <span class="nav-text">网上例子：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己例子"><span class="nav-number">3.</span> <span class="nav-text">自己例子</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -731,10 +679,6 @@ System.exit(job.waitForCompletion(true)?0:1);
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
 
   
 

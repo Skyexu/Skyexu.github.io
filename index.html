@@ -270,6 +270,165 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/09/朴素贝叶斯 naive bayes/" itemprop="url">
+                  朴素贝叶斯 naive bayes
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-09T16:31:37+08:00" content="2017-03-09">
+              2017-03-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/09/朴素贝叶斯 naive bayes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/09/朴素贝叶斯 naive bayes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/09/朴素贝叶斯 naive bayes/" class="leancloud_visitors" data-flag-title="朴素贝叶斯 naive bayes">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。<br>这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。</p>
+<p>条件概率：<br><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/85793005-file_1489047935966_6fe5.gif" alt=""></p>
+<p>贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯定理就为我们打通从P(A|B)获得P(B|A)的道路。</p>
+<p>贝叶斯定理：</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/62455373-file_1489047937711_f0f1.gif" alt=""></p>
+<h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>朴素贝叶斯之所以朴素，是因为其思想很朴素，英文 naive …..（不禁想到某位长者）。在文本分类上，其忽略了词序，记录词频。朴素贝叶斯的思想基础是这样的：对于给出的待分类项，求解在此项出现的条件下各个类别出现的概率，哪个最大，就认为此待分类项属于哪个类别。</p>
+<p>优点：</p>
+<ul>
+<li>易执行</li>
+<li>特征空间大</li>
+<li>有效</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>无语义分析</li>
+</ul>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/57644114-file_1489048162753_127b5.png" alt=""></p>
+<p>第一阶段——准备工作阶段，这个阶段的任务是为朴素贝叶斯分类做必要的准备，主要工作是根据具体情况确定特征属性，并对每个特征属性进行适当划分，然后由人工对一部分待分类项进行分类，形成训练样本集合。这一阶段的输入是所有待分类数据，输出是特征属性和训练样本。这一阶段是整个朴素贝叶斯分类中唯一需要人工完成的阶段，其质量对整个过程将有重要影响，分类器的质量很大程度上由特征属性、特征属性划分及训练样本质量决定。</p>
+<p>第二阶段——分类器训练阶段，这个阶段的任务就是生成分类器，主要工作是计算每个类别在训练样本中的出现频率及每个特征属性划分对每个类别的条件概率估计，并将结果记录。其输入是特征属性和训练样本，输出是分类器。这一阶段是机械性阶段，根据前面讨论的公式可以由程序自动计算完成。</p>
+<p>第三阶段——应用阶段。这个阶段的任务是使用分类器对待分类项进行分类，其输入是分类器和待分类项，输出是待分类项与类别的映射关系。这一阶段也是机械性阶段，由程序完成。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><em>From intro to machine learning</em></p>
+<p>几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其他几名作者的书进行了比较。分析结果强有力地指出罗琳就是作者，《泰晤士报》直接询问出版商情况是否属实，而出版商也证实了这一说法，该书在此后一夜成名。</p>
+<p>我们也将在此项目中做类似的事。我们有一组邮件，分别由同一家公司的两个人撰写其中半数的邮件。我们的目标是仅根据邮件正文区分每个人写的邮件。在这个迷你项目一开始，我们将使用朴素贝叶斯，并在之后的项目中扩展至其他算法。</p>
+<p>我们会先给你一个字符串列表。每个字符串代表一封经过预处理的邮件的正文；然后，我们会提供代码，用来将数据集分解为训练集和测试集（在下节课中，你将学习如何进行预处理和分解，但是现在请使用我们提供的代码）。</p>
+<p>朴素贝叶斯特殊的一点在于，这种算法非常适合文本分类。在处理文本时，常见的做法是将每个单词看作一个特征，这样就会有大量的特征。此算法的相对简单性和朴素贝叶斯独立特征的这一假设，使其能够出色完成文本的分类。在这个迷你项目中，你将在计算机中下载并安装 sklearn，然后使用朴素贝叶斯根据作者对邮件进行分类。</p>
+<p>在 naive_bayes/nb_author_id.py 中创建和训练朴素贝叶斯分类器，用其为测试集进行预测。准确率是多少？</p>
+<p>在训练期间，你可能会看到以下错误：“用户警告：分数重复。结果可能取决于特征排序，或者你对回归任务使用了分类分数。” 警告（“分数重复。结果可能取决于特征排序。”）</p>
+<p>邮件中两个以上的单词恰巧具有相同的使用模式时，会出现这一警告—对算法而言，这表示两个特征是相同的。当重复特征出现时，一些算法实际上会中断（数学上无法运行），或给出多个不同的答案（取决于特征排序），然后 sklearn 发出警告。这种信息能起到帮助作用，所以我们无需担心。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; </span><br><span class="line">    This is the code to accompany the Lesson 1 (Naive Bayes) mini-project. </span><br><span class="line"></span><br><span class="line">    Use a Naive Bayes Classifier to identify emails by their authors</span><br><span class="line">    </span><br><span class="line">    authors and labels:</span><br><span class="line">    Sara has label 0</span><br><span class="line">    Chris has label 1</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    </span><br><span class="line">import sys</span><br><span class="line">from time import time</span><br><span class="line">sys.path.append(&quot;../tools/&quot;)</span><br><span class="line">from email_preprocess import preprocess</span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line"></span><br><span class="line">### features_train and features_test are the features for the training</span><br><span class="line">### and testing datasets, respectively</span><br><span class="line">### labels_train and labels_test are the corresponding item labels</span><br><span class="line">features_train, features_test, labels_train, labels_test = preprocess()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#########################################################</span><br><span class="line">### your code goes here ###</span><br><span class="line">from sklearn.naive_bayes import GaussianNB</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clf = GaussianNB()</span><br><span class="line">t0 = time()</span><br><span class="line">clf.fit(features_train, labels_train)</span><br><span class="line">print &quot;training time:&quot;, round(time()-t0, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line">t1 = time()</span><br><span class="line">pred = clf.predict(features_test)</span><br><span class="line">print &quot;predicting time:&quot;, round(time()-t1, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line">print accuracy_score(pred,labels_test)</span><br><span class="line"></span><br><span class="line">#########################################################</span><br></pre></td></tr></table></figure>
+<p>no. of Chris training emails: 7936<br>no. of Sara training emails: 7884<br>training time: 2.396 s<br>predicting time: 0.464 s</p>
+<p>accuracy: 0.973265073948</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/06/有监督学习和无监督学习/" itemprop="url">
                   有监督学习和无监督学习
                 </a>
@@ -483,9 +642,8 @@
 
       
         
-          
-            <blockquote>
-<p><a href="http://www.chinadaily.com.cn/culture/2017-02/17/content_28244549.htm#Content" target="_blank" rel="external">http://www.chinadaily.com.cn/culture/2017-02/17/content_28244549.htm#Content</a></p>
+          <blockquote>
+<p><a href="http://www.chinadaily.com.cn/culture/2017-02/17/content_28244549.htm#Content">http://www.chinadaily.com.cn/culture/2017-02/17/content_28244549.htm#Content</a></p>
 </blockquote>
 <p><img src="http://ojpgmz933.bkt.clouddn.com/17-2-24/19994832-file_1487900110056_47c9.png" alt=""><br><em>A Ten Miles of Peach Blossom poster [Photo provided to chinadaily.com.cn]</em></p>
 <h1 id="News-text"><a href="#News-text" class="headerlink" title="News text"></a>News text</h1><p>Adapted from a popular online novel of the same name, a TV series called Ten Miles of Peach Blossom has hit the small screen during the Spring Festival.</p>
@@ -495,20 +653,11 @@
 <p>The novel was published by Shenyang Press in 2009 and has sold 1.1 million copies.</p>
 <p>According to an industry insider, the online popularity and potential for market earnings from the online novels could propel the TV series or film to be the next blockbuster.</p>
 <p>Here are some beautiful scenes from the TV series.</p>
-<h1 id="Words"><a href="#Words" class="headerlink" title="Words:"></a>Words:</h1><ul>
-<li>hit the small screen : 在电视上热映， hit the screen 在这里指“搬上荧幕”，big screen为电影</li>
-<li>TV series：电视剧</li>
-<li>propel: 推进；驱使；激励；驱策</li>
-<li>blockbuster：轰动；巨型炸弹；一鸣惊人者</li>
-</ul>
-<h1 id="Translation"><a href="#Translation" class="headerlink" title="Translation"></a>Translation</h1><p>根据同名流行的网络小说改编的电视连续剧十里桃花，在春节期间火热播出。</p>
-<p>怪兽，神和人类共存在一个虚幻的世界中，其讲述了一个关于14万岁的狐狸公主和5万岁的龙王子的爱情故事。</p>
-<p>美丽的场景，诗意的对话和明星给故事赢得了很多粉丝。</p>
-<p>把网络小说拍成电视剧的主要原因是粉丝的强烈要求。</p>
-<p>小说于2009年在沈阳出版社出版，并且已经售出110万本。</p>
-<p>据业内人士透露，在线小说的在线流行度和市场收益的潜力可能推动电视剧或电影成为下一个大片。</p>
-<h1 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h1>
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/24/Online fantasy novel hits the small screen/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -634,8 +783,7 @@
 
       
         
-          
-            <p>读取.properties配置文件在实际的开发中使用的很多，总结了一下，有以下几种方法（仅仅是我知道的）：</p>
+          <p>读取.properties配置文件在实际的开发中使用的很多，总结了一下，有以下几种方法（仅仅是我知道的）：</p>
 <h3 id="通过jdk提供的java-util-Properties类"><a href="#通过jdk提供的java-util-Properties类" class="headerlink" title="通过jdk提供的java.util.Properties类"></a>通过jdk提供的java.util.Properties类</h3><p>此类继承自java.util.HashTable，即实现了Map接口，所以，可使用相应的方法来操作属性文件，但不建议使用像put、putAll这两个方法，因为put方法不仅允许存入String类型的value，还可以存入Object类型的。因此java.util.Properties类提供了getProperty()和setProperty()方法来操作属性文件，同时使用store或save(已过时)来保存属性值（把属性值写入.properties配置文件）。在使用之前，还需要加载属性文件，它提供了两个方法：load和loadFromXML。load有两个方法的重载：load(InputStream inStream)、load(Reader reader)，所以，可根据不同的方式来加载属性文件。可根据不同的方式来获取InputStream，如：</p>
 <ol>
 <li><p>通过当前类加载器的getResourceAsStream方法获取</p>
@@ -644,33 +792,12 @@
 <li><p>从文件获取</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream inStream = new FileInputStream(new File(&quot;filePath&quot;));</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>也是通过类加载器来获取，和第一种一样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream in = ClassLoader.getSystemResourceAsStream(&quot;filePath&quot;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在servlet中，还可以通过context来获取InputStream</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream in = context.getResourceAsStream(&quot;filePath&quot;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>通过URL来获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL url = new URL(&quot;path&quot;);  </span><br><span class="line">InputStream inStream = url.openStream();</span><br></pre></td></tr></table></figure>
-</li>
 </ol>
-<p>读取方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Properties prop = new Properties();  </span><br><span class="line">prop.load(inStream);  </span><br><span class="line">String key = prop.getProperty(&quot;username&quot;);  </span><br><span class="line">//String key = (String) prop.get(&quot;username&quot;);</span><br></pre></td></tr></table></figure></p>
-<h3 id="通过java-util-ResourceBundle类来读取"><a href="#通过java-util-ResourceBundle类来读取" class="headerlink" title="通过java.util.ResourceBundle类来读取"></a>通过java.util.ResourceBundle类来读取</h3><p>这种方式比使用Properties要方便一些。</p>
-<ol>
-<li>通过ResourceBundle.getBundle()静态方法来获取（ResourceBundle是一个抽象类），这种方式来获取properties属性文件不需要加.properties后缀名，只需要文件名即可。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ResourceBundle resource = ResourceBundle.getBundle(&quot;com/mmq/test&quot;);</span><br><span class="line">// test为属性文件名，放在包com.mmq下，如果是放在src下，直接用test即可</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>String key = resource.getString(“username”);  </p>
-<ol>
-<li>从InputStream中读取，获取InputStream的方法和上面一样，不再赘述。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ResourceBundle resource = new PropertyResourceBundle(inStream);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>注意：在使用中遇到的最大的问题可能是配置文件的路径问题，如果配置文件入在当前类所在的包下，那么需要使用包名限定，如：test.properties入在com.mmq包下，则要使用com/mmq/test.properties（通过Properties来获取）或com/mmq/test（通过ResourceBundle来获取）；属性文件在src根目录下，则直接使用test.properties或test即可。</p>
-<blockquote>
-<p>本文转载自 <a href="http://blog.csdn.net/mhmyqn/article/details/7683909" target="_blank" rel="external">http://blog.csdn.net/mhmyqn/article/details/7683909</a></p>
-</blockquote>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/20/java读取properties配置文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1493,147 +1620,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="url">
-                  MapReduce应用中CombineFileInputFormat原理与用法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-12T21:26:41+08:00" content="2016-12-12">
-              2016-12-12
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" class="leancloud_visitors" data-flag-title="MapReduce应用中CombineFileInputFormat原理与用法">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>转载自：<a href="http://ju.outofmemory.cn/entry/72024">http://ju.outofmemory.cn/entry/72024</a></p>
-</blockquote>
-<p>HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。</p>
-<p>MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的map任务，导致资源过度消耗，且效率低下。Hadoop自身包含了CombineFileInputFormat，其功能是将多个小文件合并如一个分片，由一个map任务处理，这样就减少了不必要的map数量。</p>
-<p>在了解CombineFileInputFormat之前，我们应了解其父类FileInputFormat的基本处理逻辑。注意这里的FileInputFormat的路径是<strong>org.apache.hadoop.mapreduce.lib.input.FileInputFormat</strong>，是新的MapReduce API。 mapred包下的FileInputFormat对应老的API，不再推荐使用。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1674,7 +1665,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

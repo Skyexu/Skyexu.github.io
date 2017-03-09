@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Skye's Blog">
 <meta property="og:description" content="读取.properties配置文件在实际的开发中使用的很多，总结了一下，有以下几种方法（仅仅是我知道的）：
 通过jdk提供的java.util.Properties类此类继承自java.util.HashTable，即实现了Map接口，所以，可使用相应的方法来操作属性文件，但不建议使用像put、putAll这两个方法，因为put方法不仅允许存入String类型的value，还可以存入Object类">
-<meta property="og:updated_time" content="2017-02-20T04:37:53.114Z">
+<meta property="og:updated_time" content="2017-03-06T10:21:59.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java读取properties配置文件">
 <meta name="twitter:description" content="读取.properties配置文件在实际的开发中使用的很多，总结了一下，有以下几种方法（仅仅是我知道的）：
@@ -355,6 +355,9 @@
 <li><p>从文件获取</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream inStream = new FileInputStream(new File(&quot;filePath&quot;));</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<a id="more"></a>
+<ol>
 <li><p>也是通过类加载器来获取，和第一种一样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream in = ClassLoader.getSystemResourceAsStream(&quot;filePath&quot;);</span><br></pre></td></tr></table></figure>
 </li>
@@ -492,7 +495,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
