@@ -96,25 +96,27 @@
 
 
 
-<meta name="description" content="贝叶斯定理贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。
-条件概率：
-贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯">
+<meta name="description" content="背景案例几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其">
 <meta property="og:type" content="article">
 <meta property="og:title" content="朴素贝叶斯 naive bayes">
 <meta property="og:url" content="http://yoursite.com/2017/03/09/朴素贝叶斯 naive bayes/index.html">
 <meta property="og:site_name" content="Skye's Blog">
-<meta property="og:description" content="贝叶斯定理贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。
-条件概率：
-贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯">
+<meta property="og:description" content="背景案例几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-9/85793005-file_1489047935966_6fe5.gif">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-9/62455373-file_1489047937711_f0f1.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/31414174-file_1489567475281_12d1f.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/27703555-file_1489567478908_1817.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/13289446-file_1489567481109_181b3.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/67126205-file_1489567483162_46bf.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/3446927-file_1489567529279_178.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/20543956-file_1489567485051_1536c.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/41049611-file_1489567487061_feda.gif">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-15/95532572-file_1489567489141_14f3e.gif">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-9/57644114-file_1489048162753_127b5.png">
-<meta property="og:updated_time" content="2017-03-09T08:32:19.786Z">
+<meta property="og:updated_time" content="2017-03-15T09:13:12.871Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="朴素贝叶斯 naive bayes">
-<meta name="twitter:description" content="贝叶斯定理贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。
-条件概率：
-贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯">
+<meta name="twitter:description" content="背景案例几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其">
 <meta name="twitter:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-9/85793005-file_1489047935966_6fe5.gif">
 
 
@@ -353,11 +355,14 @@
       
 
       
-        <h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。<br>这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。</p>
+        <h2 id="背景案例"><a href="#背景案例" class="headerlink" title="背景案例"></a>背景案例</h2><p>几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其他几名作者的书进行了比较。分析结果强有力地指出罗琳就是作者，《泰晤士报》直接询问出版商情况是否属实，而出版商也证实了这一说法，该书在此后一夜成名。</p>
+<p>这就是一个文本分类预测的例子，接下来我们看看朴素贝叶斯是怎么做的。</p>
+<h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。<br>这个定理解决了现实生活里经常遇到的问题：已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。</p>
 <p>条件概率：<br><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/85793005-file_1489047935966_6fe5.gif" alt=""></p>
 <p>贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯定理就为我们打通从P(A|B)获得P(B|A)的道路。</p>
 <p>贝叶斯定理：</p>
 <p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/62455373-file_1489047937711_f0f1.gif" alt=""></p>
+<a id="more"></a>
 <h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>朴素贝叶斯之所以朴素，是因为其思想很朴素，英文 naive …..（不禁想到某位长者）。在文本分类上，其忽略了词序，记录词频。朴素贝叶斯的思想基础是这样的：对于给出的待分类项，求解在此项出现的条件下各个类别出现的概率，哪个最大，就认为此待分类项属于哪个类别。</p>
 <p>优点：</p>
 <ul>
@@ -369,21 +374,53 @@
 <ul>
 <li>无语义分析</li>
 </ul>
+<p><strong>朴素贝叶斯分类的正式定义如下</strong>：</p>
+<ol>
+<li><p>设 <img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/31414174-file_1489567475281_12d1f.gif" alt=""> 为一个待分类项，而每个a为x的一个特征属性。</p>
+</li>
+<li><p>有类别集合 <img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/27703555-file_1489567478908_1817.gif" alt="">。</p>
+</li>
+<li><p>计算 <img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/13289446-file_1489567481109_181b3.gif" alt="">。</p>
+</li>
+<li><p>如果 <img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/67126205-file_1489567483162_46bf.gif" alt="">，则 <img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/3446927-file_1489567529279_178.gif" alt="">。</p>
+</li>
+</ol>
+<p>那么现在的关键就是如何计算第3步中的各个条件概率。我们可以这么做：</p>
+<ul>
+<li><p>找到一个已知分类的待分类项集合，这个集合叫做训练样本集。</p>
+</li>
+<li><p>统计得到在各类别下各个特征属性的条件概率估计。即</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/20543956-file_1489567485051_1536c.gif" alt=""></p>
+</li>
+<li><p>如果各个特征属性是条件独立的，则根据贝叶斯定理有如下推导：</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/41049611-file_1489567487061_feda.gif" alt=""></p>
+</li>
+<li><p>因为分母对于所有类别为常数，因为我们只要将分子最大化皆可。又因为各特征属性是条件独立的，所以有：<br><img src="http://ojpgmz933.bkt.clouddn.com/17-3-15/95532572-file_1489567489141_14f3e.gif" alt=""></p>
+</li>
+</ul>
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-9/57644114-file_1489048162753_127b5.png" alt=""></p>
 <p>第一阶段——准备工作阶段，这个阶段的任务是为朴素贝叶斯分类做必要的准备，主要工作是根据具体情况确定特征属性，并对每个特征属性进行适当划分，然后由人工对一部分待分类项进行分类，形成训练样本集合。这一阶段的输入是所有待分类数据，输出是特征属性和训练样本。这一阶段是整个朴素贝叶斯分类中唯一需要人工完成的阶段，其质量对整个过程将有重要影响，分类器的质量很大程度上由特征属性、特征属性划分及训练样本质量决定。</p>
 <p>第二阶段——分类器训练阶段，这个阶段的任务就是生成分类器，主要工作是计算每个类别在训练样本中的出现频率及每个特征属性划分对每个类别的条件概率估计，并将结果记录。其输入是特征属性和训练样本，输出是分类器。这一阶段是机械性阶段，根据前面讨论的公式可以由程序自动计算完成。</p>
 <p>第三阶段——应用阶段。这个阶段的任务是使用分类器对待分类项进行分类，其输入是分类器和待分类项，输出是待分类项与类别的映射关系。这一阶段也是机械性阶段，由程序完成。</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><em>From intro to machine learning</em></p>
-<p>几年前，J.K. 罗琳（凭借《哈利波特》出名）试着做了件有趣的事。她以 Robert Galbraith 的化名写了本名叫《The Cuckoo’s Calling》的书。尽管该书得到一些不错的评论，但是大家都不太重视它，直到 Twitter 上一个匿名的知情人士说那是 J.K. Rowling 写的。《伦敦周日泰晤士报》找来两名专家对《杜鹃在呼唤》和 Rowling 的《偶发空缺》以及其他几名作者的书进行了比较。分析结果强有力地指出罗琳就是作者，《泰晤士报》直接询问出版商情况是否属实，而出版商也证实了这一说法，该书在此后一夜成名。</p>
-<p>我们也将在此项目中做类似的事。我们有一组邮件，分别由同一家公司的两个人撰写其中半数的邮件。我们的目标是仅根据邮件正文区分每个人写的邮件。在这个迷你项目一开始，我们将使用朴素贝叶斯，并在之后的项目中扩展至其他算法。</p>
-<p>我们会先给你一个字符串列表。每个字符串代表一封经过预处理的邮件的正文；然后，我们会提供代码，用来将数据集分解为训练集和测试集（在下节课中，你将学习如何进行预处理和分解，但是现在请使用我们提供的代码）。</p>
-<p>朴素贝叶斯特殊的一点在于，这种算法非常适合文本分类。在处理文本时，常见的做法是将每个单词看作一个特征，这样就会有大量的特征。此算法的相对简单性和朴素贝叶斯独立特征的这一假设，使其能够出色完成文本的分类。在这个迷你项目中，你将在计算机中下载并安装 sklearn，然后使用朴素贝叶斯根据作者对邮件进行分类。</p>
-<p>在 naive_bayes/nb_author_id.py 中创建和训练朴素贝叶斯分类器，用其为测试集进行预测。准确率是多少？</p>
-<p>在训练期间，你可能会看到以下错误：“用户警告：分数重复。结果可能取决于特征排序，或者你对回归任务使用了分类分数。” 警告（“分数重复。结果可能取决于特征排序。”）</p>
-<p>邮件中两个以上的单词恰巧具有相同的使用模式时，会出现这一警告—对算法而言，这表示两个特征是相同的。当重复特征出现时，一些算法实际上会中断（数学上无法运行），或给出多个不同的答案（取决于特征排序），然后 sklearn 发出警告。这种信息能起到帮助作用，所以我们无需担心。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; </span><br><span class="line">    This is the code to accompany the Lesson 1 (Naive Bayes) mini-project. </span><br><span class="line"></span><br><span class="line">    Use a Naive Bayes Classifier to identify emails by their authors</span><br><span class="line">    </span><br><span class="line">    authors and labels:</span><br><span class="line">    Sara has label 0</span><br><span class="line">    Chris has label 1</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    </span><br><span class="line">import sys</span><br><span class="line">from time import time</span><br><span class="line">sys.path.append(&quot;../tools/&quot;)</span><br><span class="line">from email_preprocess import preprocess</span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line"></span><br><span class="line">### features_train and features_test are the features for the training</span><br><span class="line">### and testing datasets, respectively</span><br><span class="line">### labels_train and labels_test are the corresponding item labels</span><br><span class="line">features_train, features_test, labels_train, labels_test = preprocess()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#########################################################</span><br><span class="line">### your code goes here ###</span><br><span class="line">from sklearn.naive_bayes import GaussianNB</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clf = GaussianNB()</span><br><span class="line">t0 = time()</span><br><span class="line">clf.fit(features_train, labels_train)</span><br><span class="line">print &quot;training time:&quot;, round(time()-t0, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line">t1 = time()</span><br><span class="line">pred = clf.predict(features_test)</span><br><span class="line">print &quot;predicting time:&quot;, round(time()-t1, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line">print accuracy_score(pred,labels_test)</span><br><span class="line"></span><br><span class="line">#########################################################</span><br></pre></td></tr></table></figure>
-<p>no. of Chris training emails: 7936<br>no. of Sara training emails: 7884<br>training time: 2.396 s<br>predicting time: 0.464 s</p>
-<p>accuracy: 0.973265073948</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><h3 id="病人分类的例子"><a href="#病人分类的例子" class="headerlink" title="病人分类的例子"></a>病人分类的例子</h3><p>让我从一个例子开始讲起，你会看到贝叶斯分类器很好懂，一点都不难。<br>某个医院早上收了六个门诊病人，如下表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">症状　　职业　　　疾病</span><br><span class="line">　　打喷嚏　护士　　　感冒 </span><br><span class="line">　　打喷嚏　农夫　　　过敏 </span><br><span class="line">　　头痛　　建筑工人　脑震荡 </span><br><span class="line">　　头痛　　建筑工人　感冒 </span><br><span class="line">　　打喷嚏　教师　　　感冒 </span><br><span class="line">　　头痛　　教师　　　脑震荡</span><br></pre></td></tr></table></figure>
+<p>现在又来了第七个病人，是一个打喷嚏的建筑工人。请问他患上感冒的概率有多大？</p>
+<p>根据贝叶斯定理：<br><code>P(A|B) = P(B|A) P(A) / P(B)</code></p>
+<p>可得<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P(感冒|打喷嚏x建筑工人) </span><br><span class="line">　　　　= P(打喷嚏x建筑工人|感冒) x P(感冒) </span><br><span class="line">　　　　/ P(打喷嚏x建筑工人)</span><br></pre></td></tr></table></figure></p>
+<p>假定”打喷嚏”和”建筑工人”这两个特征是独立的，因此，上面的等式就变成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P(感冒|打喷嚏x建筑工人) </span><br><span class="line">　　　　= P(打喷嚏|感冒) x P(建筑工人|感冒) x P(感冒) </span><br><span class="line">　　　　/ P(打喷嚏) x P(建筑工人)</span><br></pre></td></tr></table></figure>
+<p>这是可以计算的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P(感冒|打喷嚏x建筑工人) </span><br><span class="line">　　　　= 0.66 x 0.33 x 0.5 / 0.5 x 0.33 </span><br><span class="line">　　　　= 0.66</span><br></pre></td></tr></table></figure>
+<p>因此，这个打喷嚏的建筑工人，有66%的概率是得了感冒。同理，可以计算这个病人患上过敏或脑震荡的概率。比较这几个概率，就可以知道他最可能得什么病。<br>这就是贝叶斯分类器的基本方法：在统计资料的基础上，依据某些特征，计算各个类别的概率，从而实现分类。</p>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>我们有一组邮件，分别由同一家公司的两个人撰写其中半数的邮件。我们的目标是仅根据邮件正文区分每个人写的邮件。</p>
+<p>先给你一个字符串列表。每个字符串代表一封经过预处理的邮件的正文；提供代码，用来将数据集分解为训练集和测试集。</p>
+<p>朴素贝叶斯特殊的一点在于，这种算法非常适合文本分类。在处理文本时，常见的做法是将每个单词看作一个特征，这样就会有大量的特征。此算法的相对简单性和朴素贝叶斯独立特征的这一假设，使其能够出色完成文本的分类。此项目使用 python 的 sklearn包，然后使用朴素贝叶斯根据作者对邮件进行分类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">import sys</span><br><span class="line">from time import time</span><br><span class="line">sys.path.append(&quot;../tools/&quot;)</span><br><span class="line">from email_preprocess import preprocess</span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line"></span><br><span class="line">### features_train and features_test are the features for the training</span><br><span class="line">### and testing datasets, respectively</span><br><span class="line">### labels_train and labels_test are the corresponding item labels</span><br><span class="line">features_train, features_test, labels_train, labels_test = preprocess()</span><br><span class="line"></span><br><span class="line">#########################################################</span><br><span class="line">### main code ###</span><br><span class="line">from sklearn.naive_bayes import GaussianNB</span><br><span class="line"></span><br><span class="line"># 创建分类器</span><br><span class="line">clf = GaussianNB()</span><br><span class="line">t0 = time()</span><br><span class="line">clf.fit(features_train, labels_train)</span><br><span class="line">print &quot;training time:&quot;, round(time()-t0, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line">t1 = time()</span><br><span class="line"># 进行预测</span><br><span class="line">pred = clf.predict(features_test)</span><br><span class="line">print &quot;predicting time:&quot;, round(time()-t1, 3), &quot;s&quot;</span><br><span class="line"></span><br><span class="line"># 输出预测准确率</span><br><span class="line">print accuracy_score(pred,labels_test)</span><br><span class="line"></span><br><span class="line">#########################################################</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">no. of Chris training emails: 7936</span><br><span class="line">no. of Sara training emails: 7884</span><br><span class="line">training time: 2.396 s</span><br><span class="line">predicting time: 0.464 s</span><br><span class="line"></span><br><span class="line">accuracy: 0.973265073948</span><br></pre></td></tr></table></figure>
+<p><strong>参考文章</strong></p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/leoo2sk/archive/2010/09/17/naive-bayesian-classifier.html" target="_blank" rel="external">算法杂货铺——分类算法之朴素贝叶斯分类(Naive Bayesian classification)</a>)<br><a href="http://www.ruanyifeng.com/blog/2013/12/naive_bayes_classifier.html" target="_blank" rel="external">朴素贝叶斯分类器的应用</a><br><a href="https://classroom.udacity.com/courses/ud120" target="_blank" rel="external">Intro to machine learning</a></p>
+</blockquote>
 
       
     </div>
@@ -421,6 +458,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/13/Support Vector Machine/" rel="prev" title="支持向量机 Support Vector Machine">
+                支持向量机 Support Vector Machine <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -492,7 +533,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-count">52</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -558,7 +599,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯定理"><span class="nav-number">1.</span> <span class="nav-text">贝叶斯定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯"><span class="nav-number">2.</span> <span class="nav-text">朴素贝叶斯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程"><span class="nav-number">3.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">4.</span> <span class="nav-text">Example</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景案例"><span class="nav-number">1.</span> <span class="nav-text">背景案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯定理"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯"><span class="nav-number">3.</span> <span class="nav-text">朴素贝叶斯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程"><span class="nav-number">4.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">5.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#病人分类的例子"><span class="nav-number">5.1.</span> <span class="nav-text">病人分类的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战"><span class="nav-number">5.2.</span> <span class="nav-text">实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果"><span class="nav-number">5.3.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
