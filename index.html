@@ -270,6 +270,140 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/16/KNN/" itemprop="url">
+                  KNN (k-nearest neighbor classification)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-16T20:43:26+08:00" content="2017-03-16">
+              2017-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/16/KNN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/KNN/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/16/KNN/" class="leancloud_visitors" data-flag-title="KNN (k-nearest neighbor classification)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="K-近邻算法（KNN）概述"><a href="#K-近邻算法（KNN）概述" class="headerlink" title="K-近邻算法（KNN）概述"></a>K-近邻算法（KNN）概述</h2><p>最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。</p>
+<p>KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一个样本在特征空间中的k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别，则该样本也属于这个类别。K通常是不大于20的整数。KNN算法中，所选择的邻居都是已经正确分类的对象。该方法在定类决策上只依据最邻近的一个或者几个样本的类别来决定待分样本所属的类别。</p>
+<p>下面通过一个简单的例子说明一下：如下图，绿色圆要被决定赋予哪个类，是红色三角形还是蓝色四方形？如果K=3，由于红色三角形所占比例为2/3，绿色圆将被赋予红色三角形那个类，如果K=5，由于蓝色四方形比例为3/5，因此绿色圆被赋予蓝色四方形类。</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/16/KNN/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/13/Support Vector Machine/" itemprop="url">
                   支持向量机 Support Vector Machine
                 </a>
@@ -348,24 +482,19 @@
 
       
         
-          
-            <p>支持向量机（SVM）是90年代中期发展起来的基于统计学习理论的一种机器学习方法，通过寻求结构化风险最小来提高学习机泛化能力，实现经验风险和置信范围的最小化，从而达到在统计样本量较少的情况下，亦能获得良好统计规律的目的。</p>
+          <p>支持向量机（SVM）是90年代中期发展起来的基于统计学习理论的一种机器学习方法，通过寻求结构化风险最小来提高学习机泛化能力，实现经验风险和置信范围的最小化，从而达到在统计样本量较少的情况下，亦能获得良好统计规律的目的。</p>
 <p>通俗来讲，它是一种二类分类模型，其基本模型定义为特征空间上的间隔最大的线性分类器，即支持向量机的学习策略便是间隔最大化，最终可转化为一个凸二次规划问题的求解。</p>
 <ul>
 <li>线性分割</li>
 <li>kernel trick 核技巧，多特征，将x,y映射到多维空间进行特征分割，之后再返回二维空间形成非线性分割线</li>
 </ul>
 <p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-13/56429398-file_1489401775120_16d40.png" alt=""></p>
-<h2 id="使用-sklearn-实战"><a href="#使用-sklearn-实战" class="headerlink" title="使用 sklearn 实战"></a>使用 sklearn 实战</h2><p>###调参</p>
-<p>在 rbf 核下，分别使用10、100、1000、10000的C参数进行调整输出准确率。<br>使用1%的数据集。</p>
-<p><strong>C参数</strong>： 低C使决策表面平滑，而高C旨在通过给予模型自由选择更多样本作为支持向量来正确地分类所有训练样本。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">features_train = features_train[:len(features_train)/100]</span><br><span class="line">labels_train = labels_train[:len(labels_train)/100]</span><br></pre></td></tr></table></figure>
-<p>结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C=10.0 accuracy=0.616040955631</span><br><span class="line">C=100.0 accuracy=0.616040955631</span><br><span class="line">C=1000. accuracy=0.821387940842</span><br><span class="line">C=10000. accuracy=0.892491467577</span><br></pre></td></tr></table></figure></p>
-<h3 id="结果计算"><a href="#结果计算" class="headerlink" title="结果计算"></a>结果计算</h3><p>在全数据集下，进行准确度计算，并计算预测为Chris邮件的个数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; </span><br><span class="line">    This is the code to accompany the Lesson 2 (SVM) mini-project.</span><br><span class="line"></span><br><span class="line">    Use a SVM to identify emails from the Enron corpus by their authors:    </span><br><span class="line">    Sara has label 0</span><br><span class="line">    Chris has label 1</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    </span><br><span class="line">import sys</span><br><span class="line">from time import time</span><br><span class="line">sys.path.append(&quot;../tools/&quot;)</span><br><span class="line">from email_preprocess import preprocess</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### features_train and features_test are the features for the training</span><br><span class="line">### and testing datasets, respectively</span><br><span class="line">### labels_train and labels_test are the corresponding item labels</span><br><span class="line">features_train, features_test, labels_train, labels_test = preprocess()</span><br><span class="line"></span><br><span class="line"># reduce training data</span><br><span class="line">#features_train = features_train[:len(features_train)/100]</span><br><span class="line">#labels_train = labels_train[:len(labels_train)/100]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#########################################################</span><br><span class="line">### your code goes here ###</span><br><span class="line">from sklearn.svm import SVC</span><br><span class="line">clf = SVC(kernel=&apos;rbf&apos;,C=10000.)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### now your job is to fit the classifier</span><br><span class="line">#### using the training features/labels, and to</span><br><span class="line">#### make a set of predictions on the test data</span><br><span class="line">t0 = time()</span><br><span class="line">clf.fit(features_train,labels_train)</span><br><span class="line">print &quot;training time : &quot; ,round(time()-t0,3),&quot;s&quot;</span><br><span class="line"></span><br><span class="line">#### store your predictions in a list named pred</span><br><span class="line">t1 = time()</span><br><span class="line">pred = clf.predict(features_test)</span><br><span class="line">print &quot;predicting time : &quot; ,round(time()-t1,3),&quot;s&quot;</span><br><span class="line"></span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line">acc = accuracy_score(pred, labels_test)</span><br><span class="line">print &quot;accuracy: &quot;, acc</span><br><span class="line"></span><br><span class="line"># answer1=pred[10]</span><br><span class="line"># answer2=pred[26]</span><br><span class="line"># answer3=pred[50]</span><br><span class="line"></span><br><span class="line">num = 0</span><br><span class="line">for n in pred:</span><br><span class="line">    if n == 1:</span><br><span class="line">        num = num + 1</span><br><span class="line"></span><br><span class="line">print &quot;total Chris(1): &quot;, num</span><br><span class="line">#########################################################</span><br></pre></td></tr></table></figure>
-<p>结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">no. of Chris training emails: 7936</span><br><span class="line">no. of Sara training emails: 7884</span><br><span class="line">training time :  159.096 s</span><br><span class="line">predicting time :  19.393 s</span><br><span class="line">accuracy:  0.990898748578</span><br><span class="line">total Chris(1):  877</span><br></pre></td></tr></table></figure></p>
-
-          
+<h2 id="使用-sklearn-实战"><a href="#使用-sklearn-实战" class="headerlink" title="使用 sklearn 实战"></a>使用 sklearn 实战</h2>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/13/Support Vector Machine/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1479,139 +1608,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/02/2016 Summary/" itemprop="url">
-                  2016 Summary
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-02T16:21:02+08:00" content="2017-01-02">
-              2017-01-02
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/生活感悟/" itemprop="url" rel="index">
-                    <span itemprop="name">生活感悟</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/01/02/2016 Summary/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/02/2016 Summary/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/01/02/2016 Summary/" class="leancloud_visitors" data-flag-title="2016 Summary">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=3&id=798411813&auto=0&height=66"></iframe>
-
-<p>转眼已经过了一年，前些日子累的不行，元旦昏睡了两日养足精神。来到实验室发现几天前买的风信子意外地开花了，淡紫色。那就写一篇简短的年终总结吧。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/01/02/2016 Summary/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1657,7 +1653,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-count">53</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -1,0 +1,847 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Machine learning," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="K-近邻算法（KNN）概述最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。
+KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KNN (k-nearest neighbor classification)">
+<meta property="og:url" content="http://yoursite.com/2017/03/16/KNN/index.html">
+<meta property="og:site_name" content="Skye's Blog">
+<meta property="og:description" content="K-近邻算法（KNN）概述最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。
+KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/14903128-file_1489668010375_10ae2.jpg">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/20809293-file_1489669205458_1d8b.png">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/18850860-file_1489669208051_3a0f.png">
+<meta property="og:updated_time" content="2017-03-16T13:04:49.576Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KNN (k-nearest neighbor classification)">
+<meta name="twitter:description" content="K-近邻算法（KNN）概述最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。
+KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一">
+<meta name="twitter:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/16/KNN/"/>
+
+  <title> KNN (k-nearest neighbor classification) | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0ad3004c649d5e3dfe7d01df4a20ad3f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                KNN (k-nearest neighbor classification)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-16T20:43:26+08:00" content="2017-03-16">
+              2017-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/16/KNN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/KNN/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/16/KNN/" class="leancloud_visitors" data-flag-title="KNN (k-nearest neighbor classification)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="K-近邻算法（KNN）概述"><a href="#K-近邻算法（KNN）概述" class="headerlink" title="K-近邻算法（KNN）概述"></a>K-近邻算法（KNN）概述</h2><p>最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。</p>
+<p>KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一个样本在特征空间中的k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别，则该样本也属于这个类别。K通常是不大于20的整数。KNN算法中，所选择的邻居都是已经正确分类的对象。该方法在定类决策上只依据最邻近的一个或者几个样本的类别来决定待分样本所属的类别。</p>
+<p>下面通过一个简单的例子说明一下：如下图，绿色圆要被决定赋予哪个类，是红色三角形还是蓝色四方形？如果K=3，由于红色三角形所占比例为2/3，绿色圆将被赋予红色三角形那个类，如果K=5，由于蓝色四方形比例为3/5，因此绿色圆被赋予蓝色四方形类。</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg" alt=""></p>
+<a id="more"></a>
+<p>由此也说明了KNN算法的结果很大程度取决于K的选择。</p>
+<p>在KNN中，通过计算对象间距离来作为各个对象之间的非相似性指标，避免了对象之间的匹配问题，在这里距离一般使用欧氏距离或曼哈顿距离：</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/14903128-file_1489668010375_10ae2.jpg" alt="">                      </p>
+<p>同时，KNN通过依据k个对象中占优的类别进行决策，而不是单一的对象类别决策。这两点就是KNN算法的优势。</p>
+<p>接下来对KNN算法的思想总结一下：就是在训练集中数据和标签已知的情况下，输入测试数据，将测试数据的特征与训练集中对应的特征进行相互比较，找到训练集中与之最为相似的前K个数据，则该测试数据对应的类别就是K个数据中出现次数最多的那个分类，其算法的描述为：</p>
+<p>1）计算测试数据与各个训练数据之间的距离；</p>
+<p>2）按照距离的递增关系进行排序；</p>
+<p>3）选取距离最小的K个点；</p>
+<p>4）确定前K个点所在类别的出现频率；</p>
+<p>5）返回前K个点中出现频率最高的类别作为测试数据的预测分类。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>1、优点</p>
+<p>简单，易于理解，易于实现，无需估计参数，无需训练</p>
+<p>适合对稀有事件进行分类（例如当流失率很低时，比如低于0.5%，构造流失预测模型）</p>
+<p>特别适合于多分类问题(multi-modal,对象具有多个类别标签)，例如根据基因特征来判断其功能分类，kNN比SVM的表现要好</p>
+<p>2、缺点</p>
+<p>懒惰算法，对测试样本分类时的计算量大，内存开销大，评分慢</p>
+<p>可解释性较差，无法给出决策树那样的规则。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p>1、k值设定为多大？</p>
+<p>k太小，分类结果易受噪声点影响；k太大，近邻中又可能包含太多的其它类别的点。（对距离加权，可以降低k值设定的影响）</p>
+<p>k值通常是采用交叉检验来确定（以k=1为基准）</p>
+<p>经验规则：k一般低于训练样本数的平方根</p>
+<p>2、类别如何判定最合适？</p>
+<p>投票法没有考虑近邻的距离的远近，距离更近的近邻也许更应该决定最终的分类，所以加权投票法更恰当一些。</p>
+<p>3、如何选择合适的距离衡量？</p>
+<p>高维度对距离衡量的影响：众所周知当变量数越多，欧式距离的区分能力就越差。</p>
+<p>变量值域对距离的影响：值域越大的变量常常会在距离计算中占据主导作用，因此应先对变量进行标准化。</p>
+<p>4、训练样本是否要一视同仁？</p>
+<p>在训练集中，有些样本可能是更值得依赖的。</p>
+<p>可以给不同的样本施加不同的权重，加强依赖样本的权重，降低不可信赖样本的影响。</p>
+<p>5、性能问题？</p>
+<p>kNN是一种懒惰算法，平时不好好学习，考试（对测试样本分类）时才临阵磨枪（临时去找k个近邻）。</p>
+<p>懒惰的后果：构造模型很简单，但在对测试样本分类地的系统开销大，因为要扫描全部训练样本并计算距离。</p>
+<p>已经有一些方法提高计算的效率，例如压缩训练样本量等。</p>
+<p>6、能否大幅减少训练样本量，同时又保持分类精度？</p>
+<p>浓缩技术(condensing)</p>
+<p>编辑技术(editing)</p>
+<h2 id="使用-sklearn-进行算法使用"><a href="#使用-sklearn-进行算法使用" class="headerlink" title="使用 sklearn 进行算法使用"></a>使用 sklearn 进行算法使用</h2><p>对地形进行分类</p>
+<p><strong>knn.py</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from prep_terrain_data import makeTerrainData</span><br><span class="line">from class_vis import prettyPicture</span><br><span class="line">from time import time</span><br><span class="line"></span><br><span class="line">features_train, labels_train, features_test, labels_test = makeTerrainData()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### the training data (features_train, labels_train) have both &quot;fast&quot; and &quot;slow&quot;</span><br><span class="line">### points mixed together--separate them so we can give them different colors</span><br><span class="line">### in the scatterplot and identify them visually</span><br><span class="line">grade_fast = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==0]</span><br><span class="line">bumpy_fast = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==0]</span><br><span class="line">grade_slow = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==1]</span><br><span class="line">bumpy_slow = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==1]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### initial visualization</span><br><span class="line">plt.xlim(0.0, 1.0)</span><br><span class="line">plt.ylim(0.0, 1.0)</span><br><span class="line">plt.scatter(bumpy_fast, grade_fast, color = &quot;b&quot;, label=&quot;fast&quot;)</span><br><span class="line">plt.scatter(grade_slow, bumpy_slow, color = &quot;r&quot;, label=&quot;slow&quot;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.xlabel(&quot;bumpiness&quot;)</span><br><span class="line">plt.ylabel(&quot;grade&quot;)</span><br><span class="line">plt.show()</span><br><span class="line">################################################################################</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### your code here!  name your classifier object clf if you want the </span><br><span class="line">### visualization code (prettyPicture) to show you the decision boundary</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">clf = KNeighborsClassifier(n_neighbors=10,weights=&apos;distance&apos;)</span><br><span class="line">t0 = time()</span><br><span class="line"></span><br><span class="line">clf.fit(features_train,labels_train)</span><br><span class="line">print &quot;training time : &quot; ,round(time()-t0,3),&quot;s&quot;</span><br><span class="line"></span><br><span class="line">t1 = time()</span><br><span class="line"></span><br><span class="line">pred = clf.predict(features_test)</span><br><span class="line"></span><br><span class="line">print &quot;predicting time : &quot; ,round(time()-t1,3),&quot;s&quot;</span><br><span class="line"></span><br><span class="line">from sklearn.metrics import accuracy_score</span><br><span class="line"></span><br><span class="line">acc = accuracy_score(pred,labels_test)</span><br><span class="line"></span><br><span class="line">print &apos;accuracy_score :&apos;,acc</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    prettyPicture(clf, features_test, labels_test)</span><br><span class="line">except NameError:</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<p><strong>prep_terrain_data.py</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def makeTerrainData(n_points=1000):</span><br><span class="line">###############################################################################</span><br><span class="line">### make the toy dataset</span><br><span class="line">    random.seed(42)</span><br><span class="line">    grade = [random.random() for ii in range(0,n_points)]</span><br><span class="line">    bumpy = [random.random() for ii in range(0,n_points)]</span><br><span class="line">    error = [random.random() for ii in range(0,n_points)]</span><br><span class="line">    y = [round(grade[ii]*bumpy[ii]+0.3+0.1*error[ii]) for ii in range(0,n_points)]</span><br><span class="line">    for ii in range(0, len(y)):</span><br><span class="line">        if grade[ii]&gt;0.8 or bumpy[ii]&gt;0.8:</span><br><span class="line">            y[ii] = 1.0</span><br><span class="line"></span><br><span class="line">### split into train/test sets</span><br><span class="line">    X = [[gg, ss] for gg, ss in zip(grade, bumpy)]</span><br><span class="line">    split = int(0.75*n_points)</span><br><span class="line">    X_train = X[0:split]</span><br><span class="line">    X_test  = X[split:]</span><br><span class="line">    y_train = y[0:split]</span><br><span class="line">    y_test  = y[split:]</span><br><span class="line"></span><br><span class="line">    grade_sig = [X_train[ii][0] for ii in range(0, len(X_train)) if y_train[ii]==0]</span><br><span class="line">    bumpy_sig = [X_train[ii][1] for ii in range(0, len(X_train)) if y_train[ii]==0]</span><br><span class="line">    grade_bkg = [X_train[ii][0] for ii in range(0, len(X_train)) if y_train[ii]==1]</span><br><span class="line">    bumpy_bkg = [X_train[ii][1] for ii in range(0, len(X_train)) if y_train[ii]==1]</span><br><span class="line"></span><br><span class="line">    training_data = &#123;&quot;fast&quot;:&#123;&quot;grade&quot;:grade_sig, &quot;bumpiness&quot;:bumpy_sig&#125;</span><br><span class="line">            , &quot;slow&quot;:&#123;&quot;grade&quot;:grade_bkg, &quot;bumpiness&quot;:bumpy_bkg&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    grade_sig = [X_test[ii][0] for ii in range(0, len(X_test)) if y_test[ii]==0]</span><br><span class="line">    bumpy_sig = [X_test[ii][1] for ii in range(0, len(X_test)) if y_test[ii]==0]</span><br><span class="line">    grade_bkg = [X_test[ii][0] for ii in range(0, len(X_test)) if y_test[ii]==1]</span><br><span class="line">    bumpy_bkg = [X_test[ii][1] for ii in range(0, len(X_test)) if y_test[ii]==1]</span><br><span class="line"></span><br><span class="line">    test_data = &#123;&quot;fast&quot;:&#123;&quot;grade&quot;:grade_sig, &quot;bumpiness&quot;:bumpy_sig&#125;</span><br><span class="line">            , &quot;slow&quot;:&#123;&quot;grade&quot;:grade_bkg, &quot;bumpiness&quot;:bumpy_bkg&#125;&#125;</span><br><span class="line"></span><br><span class="line">    return X_train, y_train, X_test, y_test</span><br></pre></td></tr></table></figure>
+<p>训练数据分布图</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/20809293-file_1489669205458_1d8b.png" alt=""></p>
+<p>测试数据分类结果及决策面</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/18850860-file_1489669208051_3a0f.png" alt=""></p>
+<p>计算结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">training time :  0.002 s</span><br><span class="line">predicting time :  0.005 s</span><br><span class="line">accuracy_score : 0.94</span><br></pre></td></tr></table></figure>
+<p><strong>参考转载</strong></p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/ybjourney/p/4702562.html" target="_blank" rel="external">http://www.cnblogs.com/ybjourney/p/4702562.html</a><br><a href="http://blog.csdn.net/lx85416281/article/details/40656877" target="_blank" rel="external">http://blog.csdn.net/lx85416281/article/details/40656877</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-learning/" rel="tag">#Machine learning</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/13/Support Vector Machine/" rel="next" title="支持向量机 Support Vector Machine">
+                <i class="fa fa-chevron-left"></i> 支持向量机 Support Vector Machine
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/16/KNN/"
+           data-title="KNN (k-nearest neighbor classification)" data-url="http://yoursite.com/2017/03/16/KNN/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-近邻算法（KNN）概述"><span class="nav-number">1.</span> <span class="nav-text">K-近邻算法（KNN）概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">2.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">3.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-sklearn-进行算法使用"><span class="nav-number">4.</span> <span class="nav-text">使用 sklearn 进行算法使用</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p2QERxuUt7diC0fdFhjqrKby-gzGzoHsz", "L1rxwRUiV2suWuAJN976CvgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

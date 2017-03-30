@@ -111,7 +111,7 @@ kern">
 线性分割
 kern">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-13/56429398-file_1489401775120_16d40.png">
-<meta property="og:updated_time" content="2017-03-15T08:55:23.421Z">
+<meta property="og:updated_time" content="2017-03-15T10:44:53.041Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支持向量机 Support Vector Machine">
 <meta name="twitter:description" content="支持向量机（SVM）是90年代中期发展起来的基于统计学习理论的一种机器学习方法，通过寻求结构化风险最小来提高学习机泛化能力，实现经验风险和置信范围的最小化，从而达到在统计样本量较少的情况下，亦能获得良好统计规律的目的。
@@ -364,7 +364,8 @@ kern">
 <li>kernel trick 核技巧，多特征，将x,y映射到多维空间进行特征分割，之后再返回二维空间形成非线性分割线</li>
 </ul>
 <p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-13/56429398-file_1489401775120_16d40.png" alt=""></p>
-<h2 id="使用-sklearn-实战"><a href="#使用-sklearn-实战" class="headerlink" title="使用 sklearn 实战"></a>使用 sklearn 实战</h2><p>###调参</p>
+<h2 id="使用-sklearn-实战"><a href="#使用-sklearn-实战" class="headerlink" title="使用 sklearn 实战"></a>使用 sklearn 实战</h2><a id="more"></a>
+<p>###调参</p>
 <p>在 rbf 核下，分别使用10、100、1000、10000的C参数进行调整输出准确率。<br>使用1%的数据集。</p>
 <p><strong>C参数</strong>： 低C使决策表面平滑，而高C旨在通过给予模型自由选择更多样本作为支持向量来正确地分类所有训练样本。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">features_train = features_train[:len(features_train)/100]</span><br><span class="line">labels_train = labels_train[:len(labels_train)/100]</span><br></pre></td></tr></table></figure>
@@ -409,6 +410,10 @@ kern">
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/16/KNN/" rel="prev" title="KNN (k-nearest neighbor classification)">
+                KNN (k-nearest neighbor classification) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -480,7 +485,7 @@ kern">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-count">53</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
