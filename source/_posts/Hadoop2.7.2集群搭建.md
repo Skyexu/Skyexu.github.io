@@ -1,6 +1,6 @@
 ---
 title: Hadoop2.7.2集群搭建
-date: 2016-08-15 15:26:16
+date: 2016-08-15 17:26:16
 tags: Hadoop
 categories: 大数据
 
@@ -50,7 +50,6 @@ export PATH=${JAVA_HOME}/bin:$PATH
 
 ### 关闭每台机器的防火墙
 `sudo ufw disable` (重启生效)
-
 
 ### 创建/home/cloud目录
 `mkdir ~/cloud`
@@ -158,7 +157,7 @@ slave3
                <value>mapreduce_shuffle</value>
         </property>
         <property>                                                                
-			<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+            <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
                <value>org.apache.hadoop.mapred.ShuffleHandler</value>
         </property>
         <property>
@@ -200,7 +199,7 @@ export PATH=$PATH:${JAVA_HOME}/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:
 ```
 
 ### 启动hadoop
-- 格式化namenode `hdfs namenode –format`
+- 格式化namenode `hadoop namenode –format`
 - 启动hdfs `start-dfs.sh`
 - 启动yarn `start-yarn.sh`
 - web端查看 `http://master:8088 http://master:50070`

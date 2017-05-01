@@ -74,3 +74,8 @@ deploy:
   type: git
   repository: https://github.com/Skyexu/Skyexu.github.io.git
   branch: master
+
+# 百度统计
+baidu_analytics: 0ad3004c649d5e3dfe7d01df4a20ad3f
+
+

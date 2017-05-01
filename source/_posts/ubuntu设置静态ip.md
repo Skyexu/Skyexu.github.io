@@ -2,7 +2,7 @@
 title: ubuntu设置静态ip
 date: 2016-08-14 23:58:26
 tags: linux网络
-categories: linux
+categories: Linux
 
 ---
 

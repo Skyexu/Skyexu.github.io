@@ -35,7 +35,7 @@ $source /etc/profile
 
 ```
 mysql>CREATE USER 'hive' IDENTIFIED BY 'hive';
-mysql>GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' IDENTIFIED BY '123' WITH GRANT OPTION;
+mysql>GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' IDENTIFIED BY 'hive' WITH GRANT OPTION;
 mysql>flush privileges;
 ```
 
@@ -46,7 +46,7 @@ mysql>create database hive;
 ```
 
 ### 配置Hive
-进入Hive的cong目录,找到`hive-default.xml.template`，cp份为`hive-default.xml`,另创建`hive-site.xml`并添加参数
+进入Hive的conf目录,找到`hive-default.xml.template`，cp份为`hive-site.xml`
 ```
 $ vim hive-site.xml
 # 删除configuration标签里的所有内容 添加如下内容
@@ -82,6 +82,26 @@ $ vim hive-site.xml
 #将连接jar包拷贝到Hive的lib目录
 $ cp mysql-connector-java-5.1.32-bin.jar /home/ubuntu/cloud/apache-hive-1.2.1-bin/lib/
 ```
+### 若要装hive客户端可在客户端节点设置
+`vim hive-site.xml`
+```
+<configuration>
+
+<!-- thrift://<host_name>:<port> 默认端口是9083 -->
+<property>
+<name>hive.metastore.uris</name>
+  <value>thrift://master:9083</value>
+  <description>Thrift uri for the remote metastore. Used by metastore client to connect to remote metastore.</description>
+</property>
+ 
+<!--  hive表的默认存储路径 -->
+<property>
+  <name>hive.metastore.warehouse.dir</name>
+  <value>/user/hive/warehouse</value>
+  <description>location of default database for the warehouse</description>
+</property>
+</configuration>
+```
 ### Hive启动
 
 要启动metastore服务
@@ -105,4 +125,22 @@ Logging initialized using configuration in jar:file:/home/ubuntu/cloud/apache-hi
 hive> show tables;
 OK
 Time taken: 0.705 seconds
+```
+
+启动hiveserver2
+```
+hive --service hiveserver2 start &
+```
+
+### 问题解决
+问题：创建表出先如下错误，删除表卡住
+
+```
+Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. MetaException(message:For direct MetaStore DB connections, we don't support retries at the client level.
+```
+初始化
+注意：初始化之前先删除hdfs上的metastore,否则会出错`/user/hive/warehouse`
+在hive服务端输入以下命令
+```
+schematool -dbType mysql -initSchema
 ```

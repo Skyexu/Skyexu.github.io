@@ -4,7 +4,7 @@ date: 2016/7/26 15:10:59
 tags: 
 - JVM 
 - eclipse
-categories: JAVA
+categories: Java
 
 ---
 

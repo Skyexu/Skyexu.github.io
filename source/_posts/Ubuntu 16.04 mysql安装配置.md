@@ -2,7 +2,7 @@
 title: Ubuntu 16.04 mysql安装配置
 date: 2016-08-16 12:00:26
 tags: mysql
-categories: linux
+categories: Linux
 
 ---
 
@@ -21,7 +21,7 @@ categories: linux
 ### 让MySQL服务器被远程访问
 - 打开mysql配置文件
 ```
-sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo vim /etc/mysql/my.cnf
 #找到将bind-address = 127.0.0.1注销​
 #bind-address            = 127.0.0.1
 ```
@@ -44,13 +44,22 @@ flush privileges;
 ### 将字符编码设置为UTF-8
 默认情况下，MySQL的字符集是latin1，因此在存储中文的时候，会出现乱码的情况，所以我们需要把字符集统一改成UTF-8。
 打开mysql配置文件
-`sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf`
+`sudo vim /etc/mysql/my.cnf`
 
 ```
-#在[mysqld]标签下，增加服务器端的字符编码
-[mysqld]
-character-set-server=utf8
-collation-server=utf8_general_ci
+
+a） 打开mysql配置文件：
+
+                vim/etc/mysql/my.cnf
+b） 在[client]下追加：
+
+                default-character-set=utf8
+c） 在[mysqld]下追加：
+
+                character-set-server=utf8
+d） 在[mysql]下追加：
+
+                default-character-set=utf8
 ```
 修改后，重启MySQL服务器,并登录
 ` mysql -uroot -p`

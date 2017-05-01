@@ -1,7 +1,7 @@
 ---
 title: ubuntu相关设置
 date: 2016-08-15 00:39:26
-tags: linux技巧
+tags: Linux技巧
 categories: Linux
 
 ---

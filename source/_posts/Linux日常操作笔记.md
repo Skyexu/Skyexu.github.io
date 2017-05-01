@@ -461,6 +461,7 @@ mount -t iso9660 -o loop  /home/hadoop/Centos-6.7.DVD.iso /mnt/centos
 ```
 du -sh  /mnt/cdrom/packages
 df -h    查看磁盘的空间
+wc -lwc 统计文件行数、字数、字节数
 ```
 
 #### 系统服务管理
