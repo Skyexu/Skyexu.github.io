@@ -1,0 +1,961 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mahout," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
+<meta name="keywords" content="Mahout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mahout 如何进行 Precision 和 Recall 的计算">
+<meta property="og:url" content="http://yoursite.com/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/index.html">
+<meta property="og:site_name" content="Skye&#39;s Blog">
+<meta property="og:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
+<meta property="og:updated_time" content="2016-08-18T09:49:15.571Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mahout 如何进行 Precision 和 Recall 的计算">
+<meta name="twitter:description" content="当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/"/>
+
+  <title> Mahout 如何进行 Precision 和 Recall 的计算 | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0ad3004c649d5e3dfe7d01df4a20ad3f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mahout 如何进行 Precision 和 Recall 的计算
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-18T17:30:00+08:00" content="2016-08-18">
+              2016-08-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/" class="leancloud_visitors" data-flag-title="Mahout 如何进行 Precision 和 Recall 的计算">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>当为某一个用户做推荐评估时，选择一个临界值，以该临界值为参照为该用户构造一个目标最大击中集（即相关项RelevantItemsIDs），然后将该用户数据中的包含在最大击中集中的物品去除，这样形成一个新的训练集。这个新的训练集中，只是去除了部分数据。然后，使用该训练集为该用户进行推荐。如果推荐的物品包含在最大击中集中，则说明击中。依照这个办法为该用户计算 Precision 和 Recall 值。依照这个办法为所有的用户计算 Precision 和 Recall 值。然后，Precision 和 Recall 的平均值作为模型的 Precision 和 Recall 值。</p>
+</blockquote>
+<p>RecommenderIRStatsEvaluator是一个接口，用于得到推荐系统的准确率，召回率等统计指标。<br>它定义的函数如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public IRStatistics evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, IDRescorer rescorer, int at, double relevanceThreshold, doubleevaluationPercentage) </div><div class="line">/**</div><div class="line">   * @param recommenderBuilder</div><div class="line">   * 它通过public Recommender buildRecommender(DataModel model)定义推荐系统创建的方式；       </div><div class="line"></div><div class="line">   * @param dataModelBuilder</div><div class="line">   * 数据模型创建的方式，如果已经创建好了数据模型，一般这个参数可以为null</div><div class="line"></div><div class="line">   * @param dataModel</div><div class="line">   * 推荐系统使用的数据模型</div><div class="line">   * </div><div class="line">   * @param rescorer</div><div class="line">   * 推荐排序的方式，一般情况下可以为null</div><div class="line">   * </div><div class="line">   * @param at</div><div class="line">   * 推荐几个物品（TOPN),，它用来定义计算准确率的时候，一个user可以拥有的相关项items的最大个数，相关项item定义为user对这个item的评价超过了relevanceThreshold的项</div><div class="line"></div><div class="line">   * @param relevanceThreshold</div><div class="line">   * 相关临界值 ,和at一起使用定义一个user的相关项</div></pre></td></tr></table></figure></p>
+<h3 id="计算临界值"><a href="#计算临界值" class="headerlink" title="计算临界值"></a>计算临界值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">//computeThreshold(prefs)这个方法主要是计算得到当前用户对物品 打分的平均值加上标准差的值</div><div class="line">double theRelevanceThreshold = Double.isNaN(relevanceThreshold) ? computeThreshold(prefs)</div><div class="line">					: relevanceThreshold;</div></pre></td></tr></table></figure>
+<h3 id="getRelevantItemsIDs"><a href="#getRelevantItemsIDs" class="headerlink" title="getRelevantItemsIDs"></a>getRelevantItemsIDs</h3><p>按照用户对物品的打分从大到小排序，将大于设定的的relevanceTheshold的值存入relevantItemIDs中，relevantItemIDs最大值为at<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * getRelevantItemsIDs的实现，</div><div class="line"> *1.首先得到userID的Preferences </div><div class="line"> *2.创建一个FastIDSet用来保存相关项的id，大小为at </div><div class="line"> *3.prefs根据值大小排序 </div><div class="line"> *4.遍历pref，如果user对这个item的评价prefs.getValue(i)不小于相关阈值，则将这个item的加入相关项，最多取at个满足条件的item</div><div class="line"> */</div><div class="line">FastIDSet relevantItemIDs = dataSplitter.getRelevantItemsIDs(userID, at, theRelevanceThreshold, dataModel);</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public FastIDSet getRelevantItemsIDs(long userID,</div><div class="line">                                       int at,</div><div class="line">                                       double relevanceThreshold,</div><div class="line">                                       DataModel dataModel) throws TasteException &#123;</div><div class="line">    PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);</div><div class="line">	//定义最大理论击中物品集合 </div><div class="line">    FastIDSet relevantItemIDs = new FastIDSet(at);</div><div class="line">	//将用户的打分排序 </div><div class="line">    prefs.sortByValueReversed();</div><div class="line">    for (int i = 0; i &lt; prefs.length() &amp;&amp; relevantItemIDs.size() &lt; at; i++) &#123;</div><div class="line">      if (prefs.getValue(i) &gt;= relevanceThreshold) &#123;</div><div class="line">        relevantItemIDs.add(prefs.getItemID(i));</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    return relevantItemIDs;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="获取训练集"><a href="#获取训练集" class="headerlink" title="获取训练集"></a>获取训练集</h3><p>这个训练集的构造规则是： </p>
+<ol>
+<li>对于其它的用户，将他们所有的（item，preference）都加入训练集； </li>
+<li>对于这个用户user，将它的除了相关项之外的其它项的喜好加入训练集；</li>
+</ol>
+<p>然后，我们使用推荐算法进行推荐。推荐的时候，我们就可能给UserID 推荐移除的物品或者其他的物品。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FastByIDMap&lt;PreferenceArray&gt; trainingUsers = new FastByIDMap&lt;PreferenceArray&gt;(dataModel.getNumUsers());</div><div class="line">			//对所有用户进行处理</div><div class="line">			//processOtherUser :Adds a single user and all their preferences to the training model.</div><div class="line">			LongPrimitiveIterator it2 = dataModel.getUserIDs();</div><div class="line">			while (it2.hasNext()) &#123;</div><div class="line">				dataSplitter.processOtherUser(userID, relevantItemIDs, trainingUsers, it2.nextLong(), dataModel);</div><div class="line">			&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="构造训练模型"><a href="#构造训练模型" class="headerlink" title="构造训练模型"></a>构造训练模型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DataModel trainingModel = dataModelBuilder == null ? new GenericDataModel(trainingUsers): dataModelBuilder.buildDataModel(trainingUsers);</div></pre></td></tr></table></figure>
+<h3 id="进行推荐"><a href="#进行推荐" class="headerlink" title="进行推荐"></a>进行推荐</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);</div><div class="line"></div><div class="line">int intersectionSize = 0;</div><div class="line"></div><div class="line">List&lt;RecommendedItem&gt; recommendedItems = recommender.recommend(userID, at, rescorer);</div></pre></td></tr></table></figure>
+<h3 id="计算推荐结果包含在相关项中的个数"><a href="#计算推荐结果包含在相关项中的个数" class="headerlink" title="计算推荐结果包含在相关项中的个数"></a>计算推荐结果包含在相关项中的个数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">List&lt;RecommendedItem&gt; recommendedItems = recommender.recommend(userID, at, rescorer);</div><div class="line"></div><div class="line">			for (RecommendedItem recommendedItem : recommendedItems) &#123;</div><div class="line"></div><div class="line">				if (relevantItemIDs.contains(recommendedItem.getItemID())) &#123;</div><div class="line">					intersectionSize++;</div><div class="line">				&#125;</div><div class="line">			&#125;</div></pre></td></tr></table></figure>
+<h3 id="计算查全率、查准率"><a href="#计算查全率、查准率" class="headerlink" title="计算查全率、查准率"></a>计算查全率、查准率</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">int numRecommendedItems = recommendedItems.size();</div><div class="line"></div><div class="line">			// Precision</div><div class="line">			if (numRecommendedItems &gt; 0) &#123;</div><div class="line">				precision.addDatum((double) intersectionSize / (double) numRecommendedItems);</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			// Recall</div><div class="line">			recall.addDatum((double) intersectionSize / (double) numRelevantItems);</div></pre></td></tr></table></figure>
+<p>参考</p>
+<blockquote>
+<p><a href="http://pan.baidu.com/s/1pKE97wJ" target="_blank" rel="external">http://pan.baidu.com/s/1pKE97wJ</a><br><a href="http://www.myexception.cn/cloud/1983215.html" target="_blank" rel="external">http://www.myexception.cn/cloud/1983215.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mahout/" rel="tag">#Mahout</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/17/Ubuntu16.04安装Oracle11g/" rel="next" title="Ubuntu16.04安装Oracle11g">
+                <i class="fa fa-chevron-left"></i> Ubuntu16.04安装Oracle11g
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/19/Linux日常操作笔记/" rel="prev" title="Linux日常操作笔记">
+                Linux日常操作笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/"
+           data-title="Mahout 如何进行 Precision 和 Recall 的计算" data-url="http://yoursite.com/2016/08/18/Mahout 如何进行 Precision 和 Recall 的计算/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算临界值"><span class="nav-number">1.</span> <span class="nav-text">计算临界值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getRelevantItemsIDs"><span class="nav-number">2.</span> <span class="nav-text">getRelevantItemsIDs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取训练集"><span class="nav-number">3.</span> <span class="nav-text">获取训练集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造训练模型"><span class="nav-number">4.</span> <span class="nav-text">构造训练模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进行推荐"><span class="nav-number">5.</span> <span class="nav-text">进行推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算推荐结果包含在相关项中的个数"><span class="nav-number">6.</span> <span class="nav-text">计算推荐结果包含在相关项中的个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算查全率、查准率"><span class="nav-number">7.</span> <span class="nav-text">计算查全率、查准率</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p2QERxuUt7diC0fdFhjqrKby-gzGzoHsz", "L1rxwRUiV2suWuAJN976CvgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

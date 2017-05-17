@@ -1,0 +1,1055 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MapReduce," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="转载自：http://ju.outofmemory.cn/entry/72024  HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。 MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的m">
+<meta name="keywords" content="MapReduce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce应用中CombineFileInputFormat原理与用法">
+<meta property="og:url" content="http://yoursite.com/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/index.html">
+<meta property="og:site_name" content="Skye&#39;s Blog">
+<meta property="og:description" content="转载自：http://ju.outofmemory.cn/entry/72024  HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。 MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的m">
+<meta property="og:image" content="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png">
+<meta property="og:image" content="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png">
+<meta property="og:updated_time" content="2017-01-02T07:35:15.335Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MapReduce应用中CombineFileInputFormat原理与用法">
+<meta name="twitter:description" content="转载自：http://ju.outofmemory.cn/entry/72024  HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。 MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的m">
+<meta name="twitter:image" content="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/"/>
+
+  <title> MapReduce应用中CombineFileInputFormat原理与用法 | Skye's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0ad3004c649d5e3dfe7d01df4a20ad3f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skye's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Forever youthful,forever weeping</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MapReduce应用中CombineFileInputFormat原理与用法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-12T21:26:41+08:00" content="2016-12-12">
+              2016-12-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" class="leancloud_visitors" data-flag-title="MapReduce应用中CombineFileInputFormat原理与用法">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>转载自：<a href="http://ju.outofmemory.cn/entry/72024" target="_blank" rel="external">http://ju.outofmemory.cn/entry/72024</a></p>
+</blockquote>
+<p>HDFS本身被设计来存储大文件，但是有时难免会有小文件出现，有时很可能时大量的小文件。通过MapReduce处理大量小文件时会遇到些问题。</p>
+<p>MapReduce程序会将输入的文件进行分片(Split)，每个分片对应一个map任务，而默认一个文件至少有一个分片，一个分片也只属于一个文件。这样大量的小文件会导致大量的map任务，导致资源过度消耗，且效率低下。Hadoop自身包含了CombineFileInputFormat，其功能是将多个小文件合并如一个分片，由一个map任务处理，这样就减少了不必要的map数量。</p>
+<p>在了解CombineFileInputFormat之前，我们应了解其父类FileInputFormat的基本处理逻辑。注意这里的FileInputFormat的路径是<strong>org.apache.hadoop.mapreduce.lib.input.FileInputFormat</strong>，是新的MapReduce API。 mapred包下的FileInputFormat对应老的API，不再推荐使用。</p>
+<a id="more"></a>
+<p><a href="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" target="_blank" rel="external"><img src="http://www.sqlparty.com/wp-content/uploads/2013/12/CombineFileInputFormat_type.png" alt="CombineFileInputFormat_type"></a></p>
+<h2 id="FileInputFormat的基本处理逻辑"><a href="#FileInputFormat的基本处理逻辑" class="headerlink" title="FileInputFormat的基本处理逻辑"></a>FileInputFormat的基本处理逻辑</h2><p>FileInputFormat是基于文件的InputFormat的抽象基类，如上图所示，基于文件的衍生类有很多，如文本文件TextInputFormat，序列文件SequenceFileInputFormat等。</p>
+<p>FileInputFormat提供了分片的基本实现getSplits(JobContext)，其子类可以重写isSplitable(JobContext, Path)方法，来使得输入的一个或多个文件是否不做分片，完整由被一个Map任务进行处理。</p>
+<p>FileInputFormat有如下特点：</p>
+<ol>
+<li>将以下划线&#8221;_&#8221;或点&#8221;.&#8221;开头的文件作为隐藏文件，不做为输入文件。</li>
+<li>所有文件isSplitable(JobContext, Path)都是true，但是针对如果输入文件时压缩的、流式的，那么子类中应重新该函数，判断是否真的可以分片。</li>
+<li><p>由于每个文件块大小可能不一样，所以每个文件分别计算分片大小，计算规则如下：</p>
+<ol>
+<li><p>取值A：</p>
+<ol>
+<li>FormatMinSplitSize，本Format设置的最小Split大小，通过GetFormatMinSplitSize()获取，此类中定义为1个字节。</li>
+<li>MinSplitSize，配置文件(配置键mapreduce.input.fileinputformat.split.minsize)或者直接设置，通过GetMinSplitSize()获取)，未设置则为0。</li>
+<li>取两者较大值。</li>
+</ol>
+</li>
+<li><p>取值B:</p>
+<ol>
+<li>MaxSplitSize，通过配置文件设置或者SetMaxSplitSize()设置，通过GetMaxSplitSize()获取，无设置则取LONG.MAXVALUE。</li>
+<li>文件块大小BLOCKSIZE</li>
+<li>取两者较小值</li>
+</ol>
+</li>
+<li><p>再取A、B的较大值。</p>
+</li>
+<li>例：常用的TextInputFormat类中，没有对分片算法进行重写，那么我们可以认为，使用TextInputFormat时，在未做其他设置的情况下，默认分片大小等于BLOCKSIZE，如果设置了mapreduce.input.fileinputformat.split.minsize，则取其与BLOCK的较大值。</li>
+</ol>
+</li>
+<li><p>分片大小确定后，就将文件进行依次划分。</p>
+</li>
+</ol>
+<h2 id="文本类型TextInputFormat的使用"><a href="#文本类型TextInputFormat的使用" class="headerlink" title="文本类型TextInputFormat的使用"></a>文本类型TextInputFormat的使用</h2><p>如上我们知道TextInputFormat是FileInputFormat的子类，其自定义内容很少，通过它可以大致知道扩展FileInputFormat大致需要做些什么。整个类如下：</p>
+<pre><code>public class TextInputFormat extends FileInputFormat&amp;lt;LongWritable, Text&amp;gt; {
+
+  @Override
+  public RecordReader&amp;lt;LongWritable, Text&amp;gt;
+    createRecordReader(InputSplit split,
+                       TaskAttemptContext context) {
+    String delimiter = context.getConfiguration().get(
+        &amp;quot;textinputformat.record.delimiter&amp;quot; );
+    byte[] recordDelimiterBytes = null;
+    if ( null != delimiter)
+      recordDelimiterBytes = delimiter.getBytes(Charsets. UTF_8);
+    return new LineRecordReader(recordDelimiterBytes);
+  }
+
+  @Override
+  protected boolean isSplitable(JobContext context, Path file) {
+    final CompressionCodec codec =
+      new CompressionCodecFactory(context.getConfiguration()).getCodec(file);
+    if ( null == codec) {
+      return true;
+    }
+    return codec instanceof SplittableCompressionCodec;
+  }
+}
+</code></pre><p>分片的方式采用的是父类FileInputFormat的逻辑，上文中已经说明。重写了isSplitable()，根据文本文件的压缩属性来判断是否可以进行分片。</p>
+<p>而createRecorderReader()是定义文本文件的读取方式，实际文件读取是通过它返回的RecordReader&lt;LongWritable, Text&gt;类实现的。</p>
+<p>这样，在整个输入文件读取过程，大致会涉及如下几个步骤：</p>
+<ol>
+<li>指定输入文件路径，如FileInputFormat.addInputPaths(job, args[0])</li>
+<li>指定文件的处理类型，如job.setInputFormatClass(MyInputFormat. class)</li>
+<li><p>在这个InputFormatClass内部，考虑:</p>
+<ol>
+<li>是否可以进行分片 isSplitable(JobContext context, Path file)</li>
+<li>如何分片 List&lt;InputSplit&gt; getSplits(JobContext job)</li>
+<li>如何读取分片中的记录 RecordReader&lt;LongWritable, Text&gt; createRecordReader(InputSplit split,TaskAttemptContext context)</li>
+<li>以上确定后，用户开发的Map任务中就可以直接处理每一条记录KeyValue。</li>
+</ol>
+</li>
+</ol>
+<p>这些步骤下，我们基本就可以理解TextInputFormat如何被使用了。其他类型的InputFormat子类，其流程步骤也基本与上相同，可以重写相关的类方法来实现不同处理方式。</p>
+<p>从TextInputFormat中的分片逻辑(FileInputFormat的getSplits)中可以确定，分片都是针对单个文件而言的，如果文件本身较小，没有达到一个分片大小，那么每个小文件都是一个分片。而一个分片就对应一个Map任务。如果有大量的小文件作为Map的输入，那么其会导致生成大量Map任务，造成处理的缓慢、资源的浪费，如何减少map任务的数量提高处理效率呢？CombineInputFormat就是为解决这样的问题。</p>
+<h2 id="3-CombineInputFormat原理与用法"><a href="#3-CombineInputFormat原理与用法" class="headerlink" title="3.CombineInputFormat原理与用法"></a>3.CombineInputFormat原理与用法</h2><p>CombineInputFormat的功能，是将一个<strong>目录</strong>（可能包括多个小文件，不包括子目录）作为一个map的输入，而不是通常使用一个<strong>文件</strong>作为输入。</p>
+<p>CombineInputFormat本身是个抽象类，要使用它，涉及：</p>
+<p><strong> 1)CombineFileSplit </strong></p>
+<p>我们的目标是使得一个split不是属于一个文件，而是可能包含多个文件，所以这里不再使用常用的FileSplit，而是CombineFileSplit，包括了各个文件的路径、长度、读的起始位置等信息。CombineFileSplit是CombineInputFormat中getSplits()的对象类型。</p>
+<p><strong>2)CombineInputFormat 核心处理类</strong></p>
+<p>2.1)其基本思想：</p>
+<p>分片从指定路径下的多个文件构建，不同文件可以放入不同的pool，一个分片只能包含一个pool中的文件，可以包括多个文件的Block。pool其实是针对文件进行了逻辑划分，不同的pool中的文件分别进行分片。分片的逻辑如下文所示。</p>
+<p>2.2)分片的逻辑：</p>
+<ol>
+<li>如果指定了maxSplitSize(&#8220;mapreduce.input.fileinputformat.split.maxsize&#8221;)，那么在同一个节点上的Blocks合并，一个超过maxSplitSize就生成新分片。如果没有指定，则只汇总本节点BLock，暂不分片。</li>
+<li>如果指定了minSizeNode(&#8220;mapreduce.input.fileinputformat.split.minsize.per.node&#8221;),那么会把1.中处理剩余的Block，进行合并，如果超过minSizeNode，那么全部作为一个分片。否则这些Block与同一机架Rack上的块进行合并。</li>
+<li>每个节点上如上同样的方式处理，然后针对整个Rack的所有Block，按照1.方式处理。剩余部分，如果指定了minSizeRack(&#8220;mapreduce.input.fileinputformat.split.minsize.per.rack&#8221;)，并且超过minSizeRack，则全部作为一个分片，否则这些Block保留，等待与所有机架上的剩余Block进行汇总处理。</li>
+<li>每个机架上都按照1，2，3方式处理，汇总所有处理剩下的部分，再按照1的逻辑处理。再剩余的，作为一个分片。</li>
+</ol>
+<p>以上逻辑我们可以知道：</p>
+<p>如果只设置maxSplitSize(如job.getConfiguration().set( &#8220;mapreduce.input.fileinputformat.split.maxsize&#8221; , &#8220;33554432&#8243;))，那么基本每个分片大小都需凑满maxSplitSize。</p>
+<p><strong>如果maxSplitSize，minSizeNode，minSizeRack三个都没有设置，那是所有输入整合成一个分片！</strong></p>
+<p><strong>3)CombineFileRecordReader </strong></p>
+<p>针对一个CombineFileSplit分片的通用RecordReader。CombineFileSplit中包含多个文件的块信息，CombineFileRecordReader是文件层面的处理，例如何时切换到分片中的下一个文件，而单个文件的处理，则需要自定义RecordReader的子类，读取文件的记录。</p>
+<p>hadoop自带的示例应用org.apache.hadoop.examples.MultiFileWordCount，用到了CombineInputFormat，其处理流程：</p>
+<p><a href="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png" target="_blank" rel="external"><img src="http://www.sqlparty.com/wp-content/uploads/2013/12/MultiFileWordCount.png" alt="MultiFileWordCount"></a></p>
+<p>要使用CombineInputFormat进行应用开发，可以参考org.apache.hadoop.examples.MultiFileWordCount中使用方式，需要自行实现CombineFileInputFormat的子类与实际读取逐条记录的RecordReader子类。</p>
+<p>而MultiFileWordCount的使用如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">shell&amp;gt; hadoop fs -ls -h /tmp/carl/2013-07-12/</div><div class="line"></div><div class="line"> Found 4 items</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    246.6 M 2013-12-03 13:07 /tmp/carl/2013-07-12/000059_0</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    244.9 M 2013-12-03 13:11 /tmp/carl/2013-07-12/000124_0</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop    244.9 M 2013-12-03 13:15 /tmp/carl/2013-07-12/000126_0</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211;   3 hdfs hadoop     85.2 M 2013-12-03 13:17 /tmp/carl/2013-07-12/000218_0</div><div class="line"></div><div class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar multifilewc /tmp/carl/2013-07-12/ /tmp/carl/c8/</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/24 19:31:23 INFO input.FileInputFormat: Total input paths to process : 4</div><div class="line"></div><div class="line"> 13/12/24 19:31:23 INFO mapreduce.JobSubmitter: number of splits:1</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> Job Counters</div><div class="line"></div><div class="line"> Killed reduce tasks=1</div><div class="line"></div><div class="line"> Launched map tasks=1</div><div class="line"></div><div class="line"> Launched reduce tasks=17</div><div class="line"></div><div class="line"> Other local map tasks=1</div><div class="line"></div><div class="line"> Total time spent by all maps in occupied slots (ms)=37923</div><div class="line"></div><div class="line"> Total time spent by all reduces in occupied slots (ms)=1392681</div><div class="line"></div><div class="line"> ...</div></pre></td></tr></table></figure></p>
+<p>因为MultiFileWordCount没有设置maxSplitSize，所以这里只有一个分片。</p>
+<h2 id="4-CombineInputFormat应用"><a href="#4-CombineInputFormat应用" class="headerlink" title="4.CombineInputFormat应用"></a>4.CombineInputFormat应用</h2><h3 id="4-1-使用场景"><a href="#4-1-使用场景" class="headerlink" title="4.1.使用场景"></a>4.1.使用场景</h3><p>CombineInputFormat处理少量，较大的文件没有优势，相反，如果没有合理的设置maxSplitSize，minSizeNode，minSizeRack，则可能会导致一个map任务需要大量访问非本地的Block造成网络开销，反而比正常的非合并方式更慢。</p>
+<p>而针对大量远小于块大小的小文件处理，CombineInputFormat的使用还是很有优势。</p>
+<h3 id="4-2-测试"><a href="#4-2-测试" class="headerlink" title="4.2.测试"></a>4.2.测试</h3><p>我们以hadoop的示例程序WordCount和MulitFileWordCount来处理1000个小文件为例进行对比。</p>
+<p>生成小文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">shell&amp;gt; cat file_gen.sh</div><div class="line"></div><div class="line"> #!/bin/sh</div><div class="line"></div><div class="line"> for i in $(seq 1000)</div><div class="line"></div><div class="line"> do</div><div class="line"></div><div class="line"> echo &amp;#8220;abc asdf as df asd f sadf  werweiro &amp;#8220;$i &amp;gt; file_$&#123;i&#125;</div><div class="line"></div><div class="line"> done</div><div class="line"></div><div class="line"> shell&amp;gt; ./file_gen.sh</div><div class="line"></div><div class="line"> shell&amp;gt; ls -lh</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_962</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_963</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_964</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_965</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_966</div><div class="line"></div><div class="line"> -rw-r&amp;#8211;r&amp;#8211; 1 root root 40 Dec 25 10:14 file_967</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line">上面生成大量小文件，上传这些小文件：</div><div class="line"></div><div class="line">shell&amp;gt; hadoop fs -put file* /tmp/carl2/</div><div class="line"></div><div class="line">**wordcount**使用TextInputFormat方式，小文件一个个处理：</div><div class="line"></div><div class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar wordcount /tmp/carl2/ /tmp/carl_result3/</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/25 10:34:25 INFO input.FileInputFormat: Total input paths to process : 1000</div><div class="line"></div><div class="line"> 13/12/25 10:34:27 INFO mapreduce.JobSubmitter: number of splits:1000</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/25 10:34:33 INFO mapreduce.Job:  map 0% reduce 0%</div><div class="line"></div><div class="line"> 13/12/25 10:34:40 INFO mapreduce.Job:  map 1% reduce 0%</div><div class="line"></div><div class="line"> 13/12/25 10:34:41 INFO mapreduce.Job:  map 2% reduce 0%</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/25 10:40:56 INFO mapreduce.Job:  map 100% reduce 94%</div><div class="line"></div><div class="line"> 13/12/25 10:40:57 INFO mapreduce.Job:  map 100% reduce 100%</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line">可以看到，生成了1000个map任务，总耗时超过6分钟!</div><div class="line"></div><div class="line">**multifilewc**使用CombineInputFormat方式，没有设置maxSplitSize的情况下，所有小文件会汇总成一个Split。</div><div class="line"></div><div class="line">shell&amp;gt; hadoop jar hadoop-mapreduce-examples-2.0.0-cdh4.4.0.jar multifilewc /tmp/carl2/ /tmp/carl_result4/</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/25 10:42:04 INFO input.FileInputFormat: Total input paths to process : 1000</div><div class="line"></div><div class="line"> 13/12/25 10:42:07 INFO mapreduce.JobSubmitter: number of splits:1</div><div class="line"></div><div class="line"> &amp;#8230;</div><div class="line"></div><div class="line"> 13/12/25 10:42:12 INFO mapreduce.Job:  map 0% reduce 0%</div><div class="line"></div><div class="line"> 13/12/25 10:42:19 INFO mapreduce.Job:  map 100% reduce 0%</div><div class="line"></div><div class="line"> 13/12/25 10:42:24 INFO mapreduce.Job:  map 100% reduce 25%</div><div class="line"></div><div class="line"> 13/12/25 10:42:25 INFO mapreduce.Job:  map 100% reduce 31%</div><div class="line"></div><div class="line"> 13/12/25 10:42:27 INFO mapreduce.Job:  map 100% reduce 38%</div><div class="line"></div><div class="line"> 13/12/25 10:42:28 INFO mapreduce.Job:  map 100% reduce 56%</div><div class="line"></div><div class="line"> 13/12/25 10:42:29 INFO mapreduce.Job:  map 100% reduce 63%</div><div class="line"></div><div class="line"> 13/12/25 10:42:30 INFO mapreduce.Job:  map 100% reduce 69%</div><div class="line"></div><div class="line"> 13/12/25 10:42:31 INFO mapreduce.Job:  map 100% reduce 81%</div><div class="line"></div><div class="line"> 13/12/25 10:42:32 INFO mapreduce.Job:  map 100% reduce 88%</div><div class="line"></div><div class="line"> 13/12/25 10:42:33 INFO mapreduce.Job:  map 100% reduce 100%</div></pre></td></tr></table></figure></p>
+<p>可以看到，只用一个map任务进行处理，大量小文件可以使用网络迅速的汇总，总耗时不到30秒！</p>
+<p>测试的结果可以大致看出，针对大量小文件，使用CombineInputFormat具有较大优势。</p>
+<p>参考：</p>
+<p><a href="http://stackoverflow.com/questions/14541759/how-can-i-work-with-large-number-of-small-files-in-hadoop" target="_blank" rel="external">http://stackoverflow.com/questions/14541759/how-can-i-work-with-large-number-of-small-files-in-hadoop</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MapReduce/" rel="tag">#MapReduce</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/12/MapReduce 递归子目录和合并小文件/" rel="next" title="MapReduce 递归子目录和合并小文件">
+                <i class="fa fa-chevron-left"></i> MapReduce 递归子目录和合并小文件
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/16/MapReduce程序异常捕获存储/" rel="prev" title="MapReduce程序异常捕获存储">
+                MapReduce程序异常捕获存储 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/"
+           data-title="MapReduce应用中CombineFileInputFormat原理与用法" data-url="http://yoursite.com/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+          <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileInputFormat的基本处理逻辑"><span class="nav-number">1.</span> <span class="nav-text">FileInputFormat的基本处理逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本类型TextInputFormat的使用"><span class="nav-number">2.</span> <span class="nav-text">文本类型TextInputFormat的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-CombineInputFormat原理与用法"><span class="nav-number">3.</span> <span class="nav-text">3.CombineInputFormat原理与用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-CombineInputFormat应用"><span class="nav-number">4.</span> <span class="nav-text">4.CombineInputFormat应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-使用场景"><span class="nav-number">4.1.</span> <span class="nav-text">4.1.使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-测试"><span class="nav-number">4.2.</span> <span class="nav-text">4.2.测试</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skyexu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p2QERxuUt7diC0fdFhjqrKby-gzGzoHsz", "L1rxwRUiV2suWuAJN976CvgG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
