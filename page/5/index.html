@@ -293,6 +293,143 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="url">
+                  oracle启动dbstart出错或无反应的解决办法及自启动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-20T09:51:07+08:00" content="2016-08-20">
+              2016-08-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" class="leancloud_visitors" data-flag-title="oracle启动dbstart出错或无反应的解决办法及自启动">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p>启动dbstart 报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME</div></pre></td></tr></table></figure></p>
+<p>linux成功安装Oracle后切换到Oracle用户后，直接使用<code>dbstart</code>($ORACLE_HOME/bin中)启动oracle数据库报错如上。原因是dbstart调用的tnslsnr脚本位置有错。解决办法：<br>打开该脚本：<code>vim $ORACLE_HOME/bin/dbstart</code><br>查找“ORACLE_HOME_LISTENER”变量的定义处，<br>修改<br><code>ORACLE_HOME_LISTENER＝$1</code><br>为<code>ORACLE_HOME_LISTENER＝$ORACLE_HOME</code></p>
+<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><p>启动<code>dbstart</code>没有反应，即不报错也不显示启动信息<br>原因是oracle的配置需要修改才能使用dbstart启动对应的数据实例。<br>解决办法：</p>
+<p><code>sudo vim /etc/oratab</code><br>将<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:N</code>改为<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:Y</code></p>
+<h3 id="问题三"><a href="#问题三" class="headerlink" title="问题三"></a>问题三</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;dbstart</div><div class="line">Can&apos;t find init file for Database &quot;orcl&quot;.</div><div class="line"></div><div class="line">Database &quot;orcl&quot; NOT started.</div></pre></td></tr></table></figure>
+<p>原因就是没有找到init文件 我的数据库实例是orcl<br>这个文件<code>在$ORACLE_HOME/dbs/</code>目录下<br><code>cd $ORACLE_HOME/dbs</code><br>解决办法就是建立一个initorcl.ora的软连接就可以了<br><code>ln -s spfileego.ora initorcl.ora</code></p>
+<h3 id="Oracle自启动"><a href="#Oracle自启动" class="headerlink" title="Oracle自启动"></a>Oracle自启动</h3><p>创建开机自动启动数据库的脚本<br>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"># vi /etc/init.d/Oracledb</div><div class="line">文件内容如下：</div><div class="line">#!/bin/bash</div><div class="line">#</div><div class="line"># /etc/init.d/oracledb</div><div class="line">#</div><div class="line"># Run-level Startup script for the Oracle Instance, Listener, and</div><div class="line"># Web Interface</div><div class="line"></div><div class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</div><div class="line">export ORACLE_SID=orcl</div><div class="line">export PATH=$ORACLE_HOME/bin:$PATH</div><div class="line"></div><div class="line">ORA_OWNR=&quot;oracle&quot;</div><div class="line"># if the executables do not exist -- display error</div><div class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</div><div class="line">then</div><div class="line">echo &quot;Oracle startup: cannot start&quot;</div><div class="line">exit 1</div><div class="line">fi</div><div class="line"># depending on parameter -- startup, shutdown, restart</div><div class="line"># of the instance and listener or usage display</div><div class="line">case &quot;$1&quot; in</div><div class="line">start)</div><div class="line"># Oracle listener and instance startup</div><div class="line">echo -n &quot;Starting Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</div><div class="line">touch /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">stop)</div><div class="line"># Oracle listener and instance shutdown</div><div class="line">echo -n &quot;Shutdown Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</div><div class="line">rm -f /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">reload|restart)</div><div class="line">$0 stop</div><div class="line">$0 start</div><div class="line">;;</div><div class="line">*)</div><div class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</div><div class="line">exit 1</div><div class="line">esac</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># chmod 755 /etc/init.d/Oracledb</div><div class="line"># update-rc.d Oracledb defaults 99</div></pre></td></tr></table></figure></p>
+<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/19/Linux日常操作笔记/" itemprop="url">
                   Linux日常操作笔记
                 </a>
@@ -715,7 +852,10 @@
         
           
             <h3 id="Oracle用户创建"><a href="#Oracle用户创建" class="headerlink" title="Oracle用户创建"></a>Oracle用户创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo groupadd oinstall</div><div class="line">sudo groupadd dba</div><div class="line">sudo adduser -g oinstall -G dba -s  oracle</div><div class="line">sudo passwd oracle</div></pre></td></tr></table></figure>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mkdir /tmp/libstdc++5</div><div class="line">cd /tmp/libstdc++5</div><div class="line">wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-3.3/libstdc++5_3.3.6-28ubuntu1_amd64.deb</div><div class="line">wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-3.3/libstdc++5_3.3.6-28ubuntu1_i386.deb</div><div class="line">sudo dpkg --force-architecture -i libstdc++5_3.3.6-28ubuntu1_i386.deb</div><div class="line">sudo mv /usr/lib/libstdc++.so.5* /usr/lib32/</div><div class="line">sudo dpkg -i libstdc++5_3.3.6-28ubuntu1_amd64.deb</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get dist-upgrade</div><div class="line">sudo apt-get install automake</div><div class="line">sudo apt-get install autotools-dev</div><div class="line">sudo apt-get install binutils</div><div class="line">sudo apt-get install bzip2</div><div class="line">sudo apt-get install elfutils</div><div class="line">sudo apt-get install expat</div><div class="line">sudo apt-get install gawk</div><div class="line">sudo apt-get install gcc</div><div class="line">sudo apt-get install gcc-multilib</div><div class="line">sudo apt-get install g++-multilib</div><div class="line">sudo apt-get install ia32-libs</div><div class="line">sudo apt-get install ksh</div><div class="line">sudo apt-get install less</div><div class="line">sudo apt-get install lesstif2</div><div class="line">sudo apt-get install lesstif2-dev</div><div class="line">sudo apt-get install lib32z1</div><div class="line">sudo apt-get install libaio1</div><div class="line">sudo apt-get install libaio-dev</div><div class="line">sudo apt-get install libc6-dev</div><div class="line">sudo apt-get install libc6-dev-i386</div><div class="line">sudo apt-get install libc6-i386</div><div class="line">sudo apt-get install libelf-dev</div><div class="line">sudo apt-get install libltdl-dev</div><div class="line">sudo apt-get install libmotif4</div><div class="line">sudo apt-get install libodbcinstq4-1 libodbcinstq4-1:i386</div><div class="line">sudo apt-get install libpth-dev</div><div class="line">sudo apt-get install libpthread-stubs0</div><div class="line">sudo apt-get install libpthread-stubs0-dev</div><div class="line">sudo apt-get install libstdc++5</div><div class="line">sudo apt-get install lsb-cxx</div><div class="line">sudo apt-get install make</div><div class="line">sudo apt-get install openssh-server</div><div class="line">sudo apt-get install pdksh</div><div class="line">sudo apt-get install rlwrap</div><div class="line">sudo apt-get install rpm</div><div class="line">sudo apt-get install sysstat</div><div class="line">sudo apt-get install unixodbc</div><div class="line">sudo apt-get install unixodbc-dev</div><div class="line">sudo apt-get install unzip</div><div class="line">sudo apt-get install x11-utils</div><div class="line">sudo apt-get install zlibc</div></pre></td></tr></table></figure>
 <h3 id="修改-etc-sysctl-conf增加以下内容"><a href="#修改-etc-sysctl-conf增加以下内容" class="headerlink" title="修改/etc/sysctl.conf增加以下内容"></a>修改/etc/sysctl.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">kernel.sem = 250 32000 100 128</div><div class="line">kernel.shmall = 2097152</div><div class="line">kernel.shmmni = 4096</div><div class="line">kernel.shmmax=1073741824</div><div class="line">net.ipv4.ip_local_port_range = 9000  65500</div><div class="line">net.core.rmem_default = 262144</div><div class="line">net.core.rmem_max = 4194304</div><div class="line">net.core.wmem_default = 262144</div><div class="line">net.core.wmem_max = 1048576</div><div class="line">fs.aio-max-nr = 1048576</div><div class="line">fs.file-max = 6815744</div><div class="line">vm.hugetlb_shm_group = 1002</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 以下包安装不成功，先略过</div><div class="line">sudo apt-get install lesstif2</div><div class="line">sudo apt-get install lesstif2-dev</div><div class="line">sudo apt-get install libpthread-stubs0</div><div class="line">sudo apt-get install lsb-cxx</div><div class="line">sudo apt-get install pdksh</div></pre></td></tr></table></figure>
 <h3 id="运行一下命令更新内核参数"><a href="#运行一下命令更新内核参数" class="headerlink" title="运行一下命令更新内核参数"></a>运行一下命令更新内核参数</h3><p><code>sudo sysctl -p</code></p>
 <h3 id="修改-etc-security-limits-conf增加以下内容"><a href="#修改-etc-security-limits-conf增加以下内容" class="headerlink" title="修改/etc/security/limits.conf增加以下内容"></a>修改/etc/security/limits.conf增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">oracle soft nproc  2047</div><div class="line">oracle hard nproc  16384</div><div class="line">oracle soft nofile 1024</div><div class="line">oracle hard nofile 65536</div><div class="line">oracle soft stack  10240</div></pre></td></tr></table></figure>
 <h3 id="修改-etc-pam-d-login增加以下内容"><a href="#修改-etc-pam-d-login增加以下内容" class="headerlink" title="修改/etc/pam.d/login增加以下内容"></a>修改/etc/pam.d/login增加以下内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">session required /lib/security/pam_limits.so</div><div class="line">session required pam_limits.so</div></pre></td></tr></table></figure>
@@ -739,35 +879,34 @@
 <p>解决方法：</p>
 <p>从<a href="http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，" target="_blank" rel="external">http://download.csdn.net/detail/adnerly/9467935下载，使用rpm安装这个glibc-static-2.17-55.el7.x86_64.rpm资源，安装即可，</a> 然后点击retry ，接着往下执行<br>注:这是网上提供的解决方案，我的系统安装失败，我直接跳过了 </p>
 </li>
-</ul>
-<ul>
 <li><p>Error in invoking target ‘agent nmhs’ of makefile ‘/home/dong/tools/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk’</p>
 <p>解决方法：</p>
 <p>打开新的终端窗口<br>使用vi命令，打开<code>/home/oracle/oracle11g/product/11.2.0/dbhome_1/sysman/lib/ins_emagent.mk</code>文件，将$(MK_EMAGENT_NMECTL)修改成$(MK_EMAGENT_NMECTL)-lnnz11 即可，然后点击retry ，接着往下执行</p>
 </li>
-</ul>
-<ul>
 <li><p>Error in invoking target ‘all_no_orcl’ of makefile ‘/home/oracle/oracle11g/product/11.2.0/dbhome_1/rdbms/lib/ins_rdbms.mk’. See ‘/home/dong/tools/Inventory/logs/installActions2016-03-19_02-37-44PM.log’ for details.</p>
 <p>解决办法：</p>
 <p>打开一个新的终端，输入如下四个命令：</p>
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;s/^\(TNSLSNR_LINKLINE.*\$(TNSLSNR_OFILES)\) \(\$(LINKTTLIBS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/network/lib/env_network.mk</div><div class="line"></div><div class="line">sed -i &apos;s/^\(ORACLE_LINKLINE.*\$(ORACLE_LINKER)\) \(\$(PL_FLAGS)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/rdbms/lib/env_rdbms.mk</div><div class="line"></div><div class="line">sed -i &apos;s/^\(\$LD \$LD_RUNTIME\) \(\$LD_OPT\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/bin/genorasdksh</div><div class="line"></div><div class="line">sed -i &apos;s/^\(\s*\)\(\$(OCRLIBS_DEFAULT)\)/\1 -Wl,--no-as-needed \2/g&apos; $ORACLE_HOME/srvm/lib/ins_srvm.mk</div></pre></td></tr></table></figure>
-<p>然后在图形界面点击‘Retry’就能继续安装了。</p>
-<h3 id="然后按照安装程序提示最后执行两个脚本"><a href="#然后按照安装程序提示最后执行两个脚本" class="headerlink" title="然后按照安装程序提示最后执行两个脚本"></a>然后按照安装程序提示最后执行两个脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo  /home/oracle/Inventory/orainstRoot.sh </div><div class="line">sudo /home/oracle/oracle11g/product/11.2.0/dbhome_1/root.sh</div></pre></td></tr></table></figure>
+<p>然后在图形界面点击‘Retry’就能继续安装了。<br>参考</p>
+<blockquote>
+<p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">http://www.jianshu.com/p/9b2f601c275d</a></p>
+</blockquote>
+<h3 id="然后按照安装程序提示最后执行两个脚本"><a href="#然后按照安装程序提示最后执行两个脚本" class="headerlink" title="然后按照安装程序提示最后执行两个脚本"></a>然后按照安装程序提示最后执行两个脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo  /home/oracle/oraInventory/orainstRoot.sh </div><div class="line">sudo /home/oracle/oracle11g/product/11.2.0/dbhome_1/root.sh</div></pre></td></tr></table></figure>
 <h3 id="创建监听，执行-netca启动配置界面"><a href="#创建监听，执行-netca启动配置界面" class="headerlink" title="创建监听，执行$ netca启动配置界面"></a>创建监听，执行<code>$ netca</code>启动配置界面</h3><p>参考</p>
 <blockquote>
 <p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">http://www.jianshu.com/p/9b2f601c275d</a></p>
 </blockquote>
 <p>完成之后，执行命令$ lsnrctl start启动监听服务。</p>
 <h3 id="创建数据库实例，执行-dbca启动配置界面"><a href="#创建数据库实例，执行-dbca启动配置界面" class="headerlink" title="创建数据库实例，执行$ dbca启动配置界面"></a>创建数据库实例，执行$ dbca启动配置界面</h3><h3 id="最后验证是否安装成功，浏览器访问"><a href="#最后验证是否安装成功，浏览器访问" class="headerlink" title="最后验证是否安装成功，浏览器访问"></a>最后验证是否安装成功，浏览器访问</h3><p><a href="https://192.168.1.114:1158/em" target="_blank" rel="external">https://192.168.1.114:1158/em</a></p>
-<h3 id="创建开机自动启动数据库的脚本"><a href="#创建开机自动启动数据库的脚本" class="headerlink" title="创建开机自动启动数据库的脚本"></a>创建开机自动启动数据库的脚本</h3><p>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"># vi /etc/init.d/Oracledb</div><div class="line">文件内容如下：</div><div class="line">#!/bin/bash</div><div class="line">#</div><div class="line"># /etc/init.d/oracledb</div><div class="line">#</div><div class="line"># Run-level Startup script for the Oracle Instance, Listener, and</div><div class="line"># Web Interface</div><div class="line"></div><div class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</div><div class="line">export ORACLE_SID=orcl</div><div class="line">export PATH=$ORACLE_HOME/bin:$PATH</div><div class="line"></div><div class="line">ORA_OWNR=&quot;oracle&quot;</div><div class="line"># if the executables do not exist -- display error</div><div class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</div><div class="line">then</div><div class="line">echo &quot;Oracle startup: cannot start&quot;</div><div class="line">exit 1</div><div class="line">fi</div><div class="line"># depending on parameter -- startup, shutdown, restart</div><div class="line"># of the instance and listener or usage display</div><div class="line">case &quot;$1&quot; in</div><div class="line">start)</div><div class="line"># Oracle listener and instance startup</div><div class="line">echo -n &quot;Starting Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</div><div class="line">touch /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">stop)</div><div class="line"># Oracle listener and instance shutdown</div><div class="line">echo -n &quot;Shutdown Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</div><div class="line">rm -f /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">reload|restart)</div><div class="line">$0 stop</div><div class="line">$0 start</div><div class="line">;;</div><div class="line">*)</div><div class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</div><div class="line">exit 1</div><div class="line">esac</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
+<h3 id="创建开机自动启动数据库的脚本"><a href="#创建开机自动启动数据库的脚本" class="headerlink" title="创建开机自动启动数据库的脚本"></a>创建开机自动启动数据库的脚本</h3><p>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"># vi /etc/init.d/oracledb</div><div class="line">文件内容如下：</div><div class="line">#!/bin/bash</div><div class="line">#</div><div class="line"># /etc/init.d/oracledb</div><div class="line">#</div><div class="line"># Run-level Startup script for the Oracle Instance, Listener, and</div><div class="line"># Web Interface</div><div class="line"></div><div class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</div><div class="line">export ORACLE_SID=orcl</div><div class="line">export PATH=$ORACLE_HOME/bin:$PATH</div><div class="line"></div><div class="line">ORA_OWNR=&quot;oracle&quot;</div><div class="line"># if the executables do not exist -- display error</div><div class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</div><div class="line">then</div><div class="line">echo &quot;Oracle startup: cannot start&quot;</div><div class="line">exit 1</div><div class="line">fi</div><div class="line"># depending on parameter -- startup, shutdown, restart</div><div class="line"># of the instance and listener or usage display</div><div class="line">case &quot;$1&quot; in</div><div class="line">start)</div><div class="line"># Oracle listener and instance startup</div><div class="line">echo -n &quot;Starting Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</div><div class="line">touch /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">stop)</div><div class="line"># Oracle listener and instance shutdown</div><div class="line">echo -n &quot;Shutdown Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</div><div class="line">rm -f /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">reload|restart)</div><div class="line">$0 stop</div><div class="line">$0 start</div><div class="line">;;</div><div class="line">*)</div><div class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</div><div class="line">exit 1</div><div class="line">esac</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
 <p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># chmod 755 /etc/init.d/oracledb</div><div class="line"># update-rc.d oracledb defaults 99</div></pre></td></tr></table></figure></p>
 <p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
 <h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ ps -ef|grep ora_|grep -v grep  --&gt;查看oracle进程</div><div class="line">$ ps -ef|grep tnslsnr|grep -v grep  --&gt;查看oracle的监听进程</div><div class="line">$ lsnrctl start --&gt;启动监听</div><div class="line">$ dbstart --&gt;启动数据库</div><div class="line">$ dbstop --&gt;停止数据库</div><div class="line">$ emctl start dbconsole --&gt;启动em控制台</div><div class="line">$ isqlplusctl start --&gt;启动pl/sql</div><div class="line">$ sqlplus &apos;/as sysdba&apos; --&gt;登录sqlplus</div><div class="line"></div><div class="line">$ env  --&gt;输出当前用户的环境变量</div><div class="line"></div><div class="line">$ netca --&gt;启用监听配置程序</div></pre></td></tr></table></figure>
 <p>参考文章</p>
 <blockquote>
-<p><a href="CentOS6.7安装Oracle 11g2R傻瓜图文教程">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
+<p><a href="http://www.jianshu.com/p/9b2f601c275d" target="_blank" rel="external">CentOS6.7安装Oracle 11g2R傻瓜图文教程</a><br><a href="http://www.jianshu.com/p/4d7ccf6135af" target="_blank" rel="external">Ubuntu 14.04安装Oracle11g 64位</a><br><a href="http://blog.csdn.net/u010286751/article/details/51975741" target="_blank" rel="external">ubuntu16.04安装oracle11g</a><br><a href="http://www.linuxidc.com/Linux/2011-12/48931.htm" target="_blank" rel="external">Ubuntu Server 11.04 安装 Oracle 11g r2 图解教程</a></p>
 </blockquote>
 
           
@@ -1689,156 +1828,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/26/JVM内存配置/" itemprop="url">
-                  JVM内存配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T15:10:59+08:00" content="2016-07-26">
-              2016-07-26
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/26/JVM内存配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/JVM内存配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/07/26/JVM内存配置/" class="leancloud_visitors" data-flag-title="JVM内存配置">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参数中-vmargs的意思是设置JVM参数，所以后面的其实都是JVM的参数了，我们首先了解一下JVM内存管理的机制，然后再解释每个参数代表的含义。</p>
-<h3 id="堆-Heap-和非堆-Non-heap-内存"><a href="#堆-Heap-和非堆-Non-heap-内存" class="headerlink" title="堆(Heap)和非堆(Non-heap)内存"></a>堆(Heap)和非堆(Non-heap)内存</h3><p>按照官方的说法：“Java虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在Java虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heapmemory)”。可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。</p>
-<h3 id="堆内存分配"><a href="#堆内存分配" class="headerlink" title="堆内存分配"></a>堆内存分配</h3><p>JVM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC后调整堆的大小。</p>
-<p>非堆内存分配</p>
-<p>JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。</p>
-<h3 id="JVM内存限制-最大值"><a href="#JVM内存限制-最大值" class="headerlink" title="JVM内存限制(最大值)"></a>JVM内存限制(最大值)</h3><p>首先JVM内存限制于实际的最大物理内存(废话！呵呵)，假设物理内存无限大的话，JVM内存的最大值跟操作系统有很大的关系。简单的说就32位处理器虽然可控内存空间有4GB,但是具体的操作系统会给一个限制，这个限制一般是2GB-3GB（一般来说Windows系统下为1.5G-2G，Linux系统下为2G-3G），而64bit以上的处理器就不会有限制了。</p>
-<h3 id="减少jvm内存回收引起的eclipse卡的问题"><a href="#减少jvm内存回收引起的eclipse卡的问题" class="headerlink" title="减少jvm内存回收引起的eclipse卡的问题"></a>减少jvm内存回收引起的eclipse卡的问题</h3><p>这个主要是jvm在client模式，进行内存回收时，会停下所有的其它工作，带回收完毕才去执行其它任务，在这期间eclipse就卡住了。所以适当的增加jvm申请的内存大小来减少其回收的次数甚至不回收，就会是卡的现象有明显改善。 </p>
-<p>主要通过以下的几个jvm参数来设置堆内存的： </p>
-<ul>
-<li>-Xmx512m    最大总堆内存，一般设置为物理内存的1/4</li>
-<li>-Xms512m    初始总堆内存，一般将它设置的和最大堆内存一样大，这样就不需要根据当前堆使用情况而调整堆的大小了</li>
-<li>-Xmn192m    年轻带堆内存，sun官方推荐为整个堆的3/8</li>
-<li>堆内存的组成    总堆内存 = 年轻带堆内存 + 年老带堆内存 + 持久带堆内存</li>
-<li>年轻带堆内存    对象刚创建出来时放在这里</li>
-<li>年老带堆内存    对象在被真正会回收之前会先放在这里</li>
-<li>持久带堆内存    class文件，元数据等放在这里</li>
-<li>-XX:PermSize=128m    持久带堆的初始大小</li>
-<li>-XX:MaxPermSize=128m    持久带堆的最大大小，eclipse默认为256m。如果要编译jdk这种，一定要把这个设的很大，因为它的类太多了。</li>
-</ul>
-<h3 id="eclipse运行配置"><a href="#eclipse运行配置" class="headerlink" title="eclipse运行配置"></a>eclipse运行配置</h3><p>Eclipse -&gt; Run -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br>或者 Run as -&gt; Run Configurations -&gt; Arguments -&gt; VM arguments<br> -Xms2048m -Xmx2048m<br><img src="http://i.imgur.com/O2JUIKO.png" alt=""></p>
-<p>-Xms是设置内存初始化的大小(如上面的2048m)<br>-Xmx是设置最大能够使用内存的大小（如上面的2048m, 最好不要超过物理内存）<br>也可通过 eclipse.ini配置</p>
-<p>参考文章：<br><a href="http://blog.csdn.net/gf771115/article/details/20220915" target="_blank" rel="external">Eclipse中进行JVM内存设置</a><br><a href="http://blog.csdn.net/buptdavid/article/details/43270997" target="_blank" rel="external">JVM监控与调优</a><br><a href="http://blog.csdn.net/wuzhilon88/article/details/49201891" target="_blank" rel="external">JVM调优总结(这个总结得比较全面)</a><br><a href="http://uule.iteye.com/blog/2114697" target="_blank" rel="external">JVM性能调优</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1884,7 +1873,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

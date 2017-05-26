@@ -293,6 +293,138 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/" itemprop="url">
+                  eclipse中操作hive错误org.apache.hadoop.security.AccessControlException
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T19:27:08+08:00" content="2016-11-03">
+              2016-11-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/" class="leancloud_visitors" data-flag-title="eclipse中操作hive错误org.apache.hadoop.security.AccessControlException">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask</div><div class="line"></div><div class="line">Job Submission failed with exception &apos;org.apache.hadoop.security.AccessControlException(Permission denied: user=anonymous, access=WRITE, inode=&quot;/user&quot;:hdfs:supergroup:drwxr-xr-x</div></pre></td></tr></table></figure></p>
+<p>解决：<br>权限问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop fs -chmod -R 777  /</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/03/eclipse中操作hive错误org.apache.hadoop.security.AccessControlException/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/28/Git SSH公钥配置/" itemprop="url">
                   Git SSH公钥配置
                 </a>
@@ -1520,143 +1652,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="url">
-                  oracle启动dbstart出错或无反应的解决办法及自启动
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-20T09:51:07+08:00" content="2016-08-20">
-              2016-08-20
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/08/20/oracle启动dbstart出错或无反应的解决办法及自启动/" class="leancloud_visitors" data-flag-title="oracle启动dbstart出错或无反应的解决办法及自启动">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p>启动dbstart 报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener Usage: /home/oracle/oracle11g/product/11.2.0/dbhome_1/bin/dbstart ORACLE_HOME</div></pre></td></tr></table></figure></p>
-<p>linux成功安装Oracle后切换到Oracle用户后，直接使用<code>dbstart</code>($ORACLE_HOME/bin中)启动oracle数据库报错如上。原因是dbstart调用的tnslsnr脚本位置有错。解决办法：<br>打开该脚本：<code>vim $ORACLE_HOME/bin/dbstart</code><br>查找“ORACLE_HOME_LISTENER”变量的定义处，<br>修改<br><code>ORACLE_HOME_LISTENER＝$1</code><br>为<code>ORACLE_HOME_LISTENER＝$ORACLE_HOME</code></p>
-<h3 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h3><p>启动<code>dbstart</code>没有反应，即不报错也不显示启动信息<br>原因是oracle的配置需要修改才能使用dbstart启动对应的数据实例。<br>解决办法：</p>
-<p><code>sudo vim /etc/oratab</code><br>将<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:N</code>改为<code>orcl:/home/oracle/oracle11g/product/11.2.0/dbhome_1:Y</code></p>
-<h3 id="问题三"><a href="#问题三" class="headerlink" title="问题三"></a>问题三</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;dbstart</div><div class="line">Can&apos;t find init file for Database &quot;orcl&quot;.</div><div class="line"></div><div class="line">Database &quot;orcl&quot; NOT started.</div></pre></td></tr></table></figure>
-<p>原因就是没有找到init文件 我的数据库实例是orcl<br>这个文件<code>在$ORACLE_HOME/dbs/</code>目录下<br><code>cd $ORACLE_HOME/dbs</code><br>解决办法就是建立一个initorcl.ora的软连接就可以了<br><code>ln -s spfileego.ora initorcl.ora</code></p>
-<h3 id="Oracle自启动"><a href="#Oracle自启动" class="headerlink" title="Oracle自启动"></a>Oracle自启动</h3><p>创建开机自动启动数据库的脚本<br>开一个普通的字符终端连接到UbuntuServer，运行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"># vi /etc/init.d/Oracledb</div><div class="line">文件内容如下：</div><div class="line">#!/bin/bash</div><div class="line">#</div><div class="line"># /etc/init.d/oracledb</div><div class="line">#</div><div class="line"># Run-level Startup script for the Oracle Instance, Listener, and</div><div class="line"># Web Interface</div><div class="line"></div><div class="line">export ORACLE_HOME=/home/oracle/oracle11g/product/11.2.0/dbhome_1</div><div class="line">export ORACLE_SID=orcl</div><div class="line">export PATH=$ORACLE_HOME/bin:$PATH</div><div class="line"></div><div class="line">ORA_OWNR=&quot;oracle&quot;</div><div class="line"># if the executables do not exist -- display error</div><div class="line">if [ ! -f $ORACLE_HOME/bin/dbstart -o ! -d $ORACLE_HOME ]</div><div class="line">then</div><div class="line">echo &quot;Oracle startup: cannot start&quot;</div><div class="line">exit 1</div><div class="line">fi</div><div class="line"># depending on parameter -- startup, shutdown, restart</div><div class="line"># of the instance and listener or usage display</div><div class="line">case &quot;$1&quot; in</div><div class="line">start)</div><div class="line"># Oracle listener and instance startup</div><div class="line">echo -n &quot;Starting Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl start&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbstart&quot;</div><div class="line">touch /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">stop)</div><div class="line"># Oracle listener and instance shutdown</div><div class="line">echo -n &quot;Shutdown Oracle: &quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/lsnrctl stop&quot;</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/dbshut&quot;</div><div class="line">rm -f /var/lock/oracle</div><div class="line">su $ORA_OWNR -c &quot;$ORACLE_HOME/bin/emctl stop dbconsole&quot;</div><div class="line">echo &quot;OK&quot;</div><div class="line">;;</div><div class="line">reload|restart)</div><div class="line">$0 stop</div><div class="line">$0 start</div><div class="line">;;</div><div class="line">*)</div><div class="line">echo &quot;Usage: `basename $0` start|stop|restart|reload&quot;</div><div class="line">exit 1</div><div class="line">esac</div><div class="line">exit 0</div></pre></td></tr></table></figure></p>
-<p>再运行如下命令设置权限，并放到启动脚本中去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># chmod 755 /etc/init.d/Oracledb</div><div class="line"># update-rc.d Oracledb defaults 99</div></pre></td></tr></table></figure></p>
-<p>最后：<br><code># vi /etc/oratab</code><br>把文件中的N改成Y，即”orcl:/opt/oracle/product/db:N”修改为”orcl:/opt/oracle/product/db:Y”。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1702,7 +1697,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
