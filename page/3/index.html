@@ -293,6 +293,135 @@
             
               
                 
+                <a class="post-title-link" href="/2016/12/09/Java获取与当天相差几天的日期两种方式/" itemprop="url">
+                  Java获取与当天相差几天的日期两种方式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T21:32:27+08:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/09/Java获取与当天相差几天的日期两种方式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/09/Java获取与当天相差几天的日期两种方式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/09/Java获取与当天相差几天的日期两种方式/" class="leancloud_visitors" data-flag-title="Java获取与当天相差几天的日期两种方式">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Date date=new Date();//取时间  </div><div class="line">Calendar calendar = new GregorianCalendar();  </div><div class="line">calendar.setTime(date);  </div><div class="line">calendar.add(calendar.DATE,1);//把日期往后增加一天.整数往后推,负数往前移动  </div><div class="line">date=calendar.getTime(); //这个时间就是日期往后推一天的结果   </div><div class="line">SimpleDateFormat formatter = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);  </div><div class="line">String dateString = formatter.format(date);  </div><div class="line">System.out.println(dateString);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/** </div><div class="line">     *获取两日期之间天数 </div><div class="line">     */  </div><div class="line">    public String getDate(Date d,long i)&#123;  </div><div class="line">         SimpleDateFormat df=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);     </div><div class="line">         /*System.out.println(&quot;今天的日期：&quot;+df.format(d));    </div><div class="line">         System.out.println(&quot;两天前的日期：&quot; + df.format(new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000)));   </div><div class="line">         System.out.println(&quot;三天后的日期：&quot; + df.format(new Date(d.getTime() + 3 * 24 * 60 * 60 * 1000)));*/  </div><div class="line">         return df.format(new Date(d.getTime() + i * 24 * 60 * 60 * 1000));  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/12/09/Log4j配置/" itemprop="url">
                   Log4j配置
                 </a>
@@ -1474,140 +1603,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/03/mapreduce执行错误Mapper.init错误/" itemprop="url">
-                  mapreduce执行错误Mapper.<init>错误
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T20:07:23+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/03/mapreduce执行错误Mapper.init错误/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/mapreduce执行错误Mapper.init错误/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/11/03/mapreduce执行错误Mapper.init错误/" class="leancloud_visitors" data-flag-title="mapreduce执行错误Mapper.<init>错误">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>参考<br><a href="http://blog.itpub.net/30066956/viewspace-2107549/" target="_blank" rel="external">http://blog.itpub.net/30066956/viewspace-2107549/</a></p>
-</blockquote>
-<p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">16/11/02 21:37:26 INFO mapreduce.Job: Task Id : attempt_1476760655616_0574_m_000027_2, Status : FAILED</div><div class="line">Error: java.lang.RuntimeException: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</div><div class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:131)</div><div class="line">	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:742)</div><div class="line">	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)</div><div class="line">	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:168)</div><div class="line">	at java.security.AccessController.doPrivileged(Native Method)</div><div class="line">	at javax.security.auth.Subject.doAs(Subject.java:415)</div><div class="line">	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1614)</div><div class="line">	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:163)</div><div class="line">Caused by: java.lang.NoSuchMethodException: com.hdu.recommend.tools.CopyData$QLMapper.&lt;init&gt;()</div><div class="line">	at java.lang.Class.getConstructor0(Class.java:2849)</div><div class="line">	at java.lang.Class.getDeclaredConstructor(Class.java:2053)</div><div class="line">	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:125)</div><div class="line">	... 7 more</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/03/mapreduce执行错误Mapper.init错误/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1653,7 +1648,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-count">59</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1670,7 +1665,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
