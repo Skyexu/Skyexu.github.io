@@ -387,13 +387,13 @@
 <h3 id="安装Scala"><a href="#安装Scala" class="headerlink" title="安装Scala"></a>安装Scala</h3><ol>
 <li>下载scala-2.11.7.tgz</li>
 <li><p>解压Scala</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -zxvf scala-2.11.7.tgz -C ~/cloud/</div></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>tar -zxvf scala-<span class="number">2.11</span>.<span class="number">7</span>.tgz -C ~<span class="regexp">/cloud/</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>配置环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export  SCALA_HOME=/home/ubuntu/cloud/scala-2.11.7</div><div class="line">export PATH = $PATH:$SCALA_HOME/bin</div></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export  SCALA_HOME=<span class="regexp">/home/u</span>buntu<span class="regexp">/cloud/</span>scala-<span class="number">2.11</span>.<span class="number">7</span></div><div class="line">export PATH = <span class="variable">$PATH</span>:<span class="variable">$SCALA_HOME</span><span class="regexp">/bin</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">scala -version</div><div class="line">Scala code runner version 2.11.7 -- Copyright 2002-2013, LAMP/EPFL</div></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">scala</span> -<span class="keyword">version</span></div><div class="line"><span class="keyword">Scala</span> code runner <span class="keyword">version</span> 2.11.7 -- <span class="keyword">Copyright</span> 2002-2013, LAMP/EPFL</div></pre></td></tr></table></figure>
 </li>
 <li><p>配置到每台节点</p>
 <a id="more"></a>

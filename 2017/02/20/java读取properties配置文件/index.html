@@ -385,33 +385,33 @@
 <h3 id="通过jdk提供的java-util-Properties类"><a href="#通过jdk提供的java-util-Properties类" class="headerlink" title="通过jdk提供的java.util.Properties类"></a>通过jdk提供的java.util.Properties类</h3><p>此类继承自java.util.HashTable，即实现了Map接口，所以，可使用相应的方法来操作属性文件，但不建议使用像put、putAll这两个方法，因为put方法不仅允许存入String类型的value，还可以存入Object类型的。因此java.util.Properties类提供了getProperty()和setProperty()方法来操作属性文件，同时使用store或save(已过时)来保存属性值（把属性值写入.properties配置文件）。在使用之前，还需要加载属性文件，它提供了两个方法：load和loadFromXML。load有两个方法的重载：load(InputStream inStream)、load(Reader reader)，所以，可根据不同的方式来加载属性文件。可根据不同的方式来获取InputStream，如：</p>
 <ol>
 <li><p>通过当前类加载器的getResourceAsStream方法获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">InputStream inStream = TestProperties.class.getClassLoader().getResourceAsStream(&quot;test.properties&quot;);</div></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">InputStream inStream</span> = TestProperties.class.getClassLoader().getResourceAsStream(<span class="string">"test.properties"</span>);</div></pre></td></tr></table></figure>
 </li>
 <li><p>从文件获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">InputStream inStream = new FileInputStream(new File(&quot;filePath&quot;));</div></pre></td></tr></table></figure>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">InputStream inStream = <span class="keyword">new</span><span class="type"></span> FileInputStream(<span class="keyword">new</span><span class="type"></span> File(<span class="string">"filePath"</span>));</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <a id="more"></a>
 <ol>
 <li><p>也是通过类加载器来获取，和第一种一样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">InputStream in = ClassLoader.getSystemResourceAsStream(&quot;filePath&quot;);</div></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">InputStream in</span> = ClassLoader.getSystemResourceAsStream(<span class="string">"filePath"</span>);</div></pre></td></tr></table></figure>
 </li>
 <li><p>在servlet中，还可以通过context来获取InputStream</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">InputStream in = context.getResourceAsStream(&quot;filePath&quot;);</div></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">InputStream in</span> = context.getResourceAsStream(<span class="string">"filePath"</span>);</div></pre></td></tr></table></figure>
 </li>
 <li><p>通过URL来获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">URL url = new URL(&quot;path&quot;);  </div><div class="line">InputStream inStream = url.openStream();</div></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">URL url</span> = new URL(<span class="string">"path"</span>);  </div><div class="line"><span class="attribute">InputStream inStream</span> = url.openStream();</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>读取方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Properties prop = new Properties();  </div><div class="line">prop.load(inStream);  </div><div class="line">String key = prop.getProperty(&quot;username&quot;);  </div><div class="line">//String key = (String) prop.get(&quot;username&quot;);</div></pre></td></tr></table></figure></p>
+<p>读取方法如下：<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Properties</span> prop = new <span class="keyword">Properties</span>();  </div><div class="line">prop.load(inStream);  </div><div class="line"><span class="keyword">String</span> key = prop.getProperty(<span class="string">"username"</span>);  </div><div class="line">//<span class="keyword">String</span> key = (<span class="keyword">String</span>) prop.get(<span class="string">"username"</span>);</div></pre></td></tr></table></figure></p>
 <h3 id="通过java-util-ResourceBundle类来读取"><a href="#通过java-util-ResourceBundle类来读取" class="headerlink" title="通过java.util.ResourceBundle类来读取"></a>通过java.util.ResourceBundle类来读取</h3><p>这种方式比使用Properties要方便一些。</p>
 <ol>
-<li>通过ResourceBundle.getBundle()静态方法来获取（ResourceBundle是一个抽象类），这种方式来获取properties属性文件不需要加.properties后缀名，只需要文件名即可。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ResourceBundle resource = ResourceBundle.getBundle(&quot;com/mmq/test&quot;);</div><div class="line">// test为属性文件名，放在包com.mmq下，如果是放在src下，直接用test即可</div></pre></td></tr></table></figure>
+<li>通过ResourceBundle.getBundle()静态方法来获取（ResourceBundle是一个抽象类），这种方式来获取properties属性文件不需要加.properties后缀名，只需要文件名即可。<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ResourceBundle resource = ResourceBundle.getBundle(<span class="string">"com/mmq/test"</span>);</div><div class="line">// <span class="built_in">test</span>为属性文件名，放在包com.mmq下，如果是放在src下，直接用<span class="built_in">test</span>即可</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>String key = resource.getString(“username”);  </p>
 <ol>
-<li>从InputStream中读取，获取InputStream的方法和上面一样，不再赘述。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ResourceBundle resource = new PropertyResourceBundle(inStream);</div></pre></td></tr></table></figure>
+<li>从InputStream中读取，获取InputStream的方法和上面一样，不再赘述。<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ResourceBundle resource</span> = new PropertyResourceBundle(inStream);</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>注意：在使用中遇到的最大的问题可能是配置文件的路径问题，如果配置文件入在当前类所在的包下，那么需要使用包名限定，如：test.properties入在com.mmq包下，则要使用com/mmq/test.properties（通过Properties来获取）或com/mmq/test（通过ResourceBundle来获取）；属性文件在src根目录下，则直接使用test.properties或test即可。</p>

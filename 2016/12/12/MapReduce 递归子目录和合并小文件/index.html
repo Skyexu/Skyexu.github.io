@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&amp;quot;mapreduce.input.filein">
+<meta name="description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&quot;mapreduce.input.fileinputfo">
 <meta name="keywords" content="MapReduce">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MapReduce 递归子目录和合并小文件">
 <meta property="og:url" content="http://yoursite.com/2016/12/12/MapReduce 递归子目录和合并小文件/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
-<meta property="og:description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&amp;quot;mapreduce.input.filein">
+<meta property="og:description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&quot;mapreduce.input.fileinputfo">
 <meta property="og:updated_time" content="2017-02-28T08:37:07.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MapReduce 递归子目录和合并小文件">
-<meta name="twitter:description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&amp;quot;mapreduce.input.filein">
+<meta name="twitter:description" content="递归子目录设置mapreduce.input.fileinputformat.input.dir.recursive=true，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如12// 递归子目录job.getConfiguration().setBoolean(&quot;mapreduce.input.fileinputfo">
 
 
 
@@ -381,8 +381,8 @@
       
 
       
-        <h2 id="递归子目录"><a href="#递归子目录" class="headerlink" title="递归子目录"></a>递归子目录</h2><p>设置<code>mapreduce.input.fileinputformat.input.dir.recursive=true</code>，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 递归子目录</div><div class="line">job.getConfiguration().setBoolean(&quot;mapreduce.input.fileinputformat.input.dir.recursive&quot;,true);</div></pre></td></tr></table></figure></p>
-<h2 id="CombineTextInputFormat-合并小文件"><a href="#CombineTextInputFormat-合并小文件" class="headerlink" title="CombineTextInputFormat 合并小文件"></a>CombineTextInputFormat 合并小文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//设置split大小</div><div class="line">job.getConfiguration().setLong(&quot;mapreduce.input.fileinputformat.split.maxsize&quot;, 128 * 1024 * 1024);</div><div class="line"></div><div class="line">//job.setInputFormatClass(TextInputFormat.class);</div><div class="line">		</div><div class="line">// 合并小文件</div><div class="line">job.setInputFormatClass(CombineTextInputFormat.class);</div></pre></td></tr></table></figure>
+        <h2 id="递归子目录"><a href="#递归子目录" class="headerlink" title="递归子目录"></a>递归子目录</h2><p>设置<code>mapreduce.input.fileinputformat.input.dir.recursive=true</code>，这个参数是客户端参数，可以在MapReduce中设置，也可以在mapred-site.xml中设置.在mapreduce程序中如<br><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 递归子目录</span></div><div class="line"><span class="selector-tag">job</span><span class="selector-class">.getConfiguration</span>()<span class="selector-class">.setBoolean</span>(<span class="string">"mapreduce.input.fileinputformat.input.dir.recursive"</span>,true);</div></pre></td></tr></table></figure></p>
+<h2 id="CombineTextInputFormat-合并小文件"><a href="#CombineTextInputFormat-合并小文件" class="headerlink" title="CombineTextInputFormat 合并小文件"></a>CombineTextInputFormat 合并小文件</h2><figure class="highlight cos"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//设置split大小</span></div><div class="line"><span class="keyword">job</span>.getConfiguration().setLong(<span class="string">"mapreduce.input.fileinputformat.split.maxsize"</span>, <span class="number">128</span> * <span class="number">1024</span> * <span class="number">1024</span>)<span class="comment">;</span></div><div class="line"></div><div class="line"><span class="comment">//job.setInputFormatClass(TextInputFormat.class);</span></div><div class="line">		</div><div class="line"><span class="comment">// 合并小文件</span></div><div class="line"><span class="keyword">job</span>.setInputFormatClass(CombineTextInputFormat.<span class="keyword">class</span>)<span class="comment">;</span></div></pre></td></tr></table></figure>
       
     </div>
 
@@ -424,8 +424,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" rel="next" title="MapReduce应用中CombineFileInputFormat原理与用法">
-                <i class="fa fa-chevron-left"></i> MapReduce应用中CombineFileInputFormat原理与用法
+              <a href="/2016/12/09/Java获取与当天相差几天的日期两种方式/" rel="next" title="Java获取与当天相差几天的日期两种方式">
+                <i class="fa fa-chevron-left"></i> Java获取与当天相差几天的日期两种方式
               </a>
             
           </div>
@@ -434,8 +434,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/12/16/MapReduce程序异常捕获存储/" rel="prev" title="MapReduce程序异常捕获存储">
-                MapReduce程序异常捕获存储 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/12/12/MapReduce应用中CombineFileInputFormat原理与用法/" rel="prev" title="MapReduce应用中CombineFileInputFormat原理与用法">
+                MapReduce应用中CombineFileInputFormat原理与用法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
