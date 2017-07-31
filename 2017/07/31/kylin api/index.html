@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/31/kylin api/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="kylin 的官网没有列出保存 cube 信息，model 信息，project等 rest api，这里通过查看源码对实际项目使用中有用到的 api 进行列举 官方文档http://kylin.apache.org/docs16/howto/howto_use_restapi.html#build-cube  保存项目POST /kylin/api/projects ProjectContro">
-<meta property="og:updated_time" content="2017-07-31T03:01:47.028Z">
+<meta property="og:updated_time" content="2017-07-31T04:02:02.002Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kylin api 整理（部分官网未给出）">
 <meta name="twitter:description" content="kylin 的官网没有列出保存 cube 信息，model 信息，project等 rest api，这里通过查看源码对实际项目使用中有用到的 api 进行列举 官方文档http://kylin.apache.org/docs16/howto/howto_use_restapi.html#build-cube  保存项目POST /kylin/api/projects ProjectContro">
@@ -426,6 +426,7 @@
 <li>name - <code>required</code> <code>String</code> 项目名</li>
 <li>description - <code>optional</code> <code>String</code> 项目描述</li>
 </ul>
+<a id="more"></a>
 <h2 id="导入-hive-table"><a href="#导入-hive-table" class="headerlink" title="导入 hive table"></a>导入 hive table</h2><p><code>POST /kylin/api/tables/{tables}/{project}</code></p>
 <h3 id="Request-Parameters"><a href="#Request-Parameters" class="headerlink" title="Request Parameters"></a>Request Parameters</h3><ul>
 <li>tables - <code>required</code> <code>string</code> 需要导入的表名，用 , 分隔</li>
