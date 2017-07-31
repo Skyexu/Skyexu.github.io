@@ -178,7 +178,7 @@
 
   <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
-
+    <a href="https://github.com/Skyexu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
@@ -387,7 +387,20 @@
 <h3 id="HDU另解："><a href="#HDU另解：" class="headerlink" title="HDU另解："></a>HDU另解：</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="keyword">import</span> java.util.*;</div><div class="line"></div><div class="line"><span class="keyword">public</span> class Main</div><div class="line">&#123;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args)</div><div class="line">	&#123;</div><div class="line">		Scanner input = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">		<span class="keyword">while</span> (input.hasNext())</div><div class="line">		&#123;</div><div class="line">			<span class="built_in">int</span> n = input.nextInt();</div><div class="line">			<span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">break</span>;</div><div class="line">			input.nextLine();</div><div class="line">			<span class="keyword">String</span> <span class="built_in">str</span> = input.nextLine();</div><div class="line">			<span class="built_in">char</span> c1[] = <span class="built_in">str</span>.toCharArray();                   <span class="comment">// 把每个字符单个存起来</span></div><div class="line">			<span class="built_in">char</span> c2[][] = <span class="keyword">new</span> <span class="built_in">char</span>[<span class="number">1010</span>][<span class="number">1010</span>];</div><div class="line">			<span class="built_in">int</span> <span class="built_in">line</span> = c1.length / n;                        <span class="comment">//记录行数</span></div><div class="line">			<span class="built_in">int</span> k = <span class="number">0</span>;                                      <span class="comment">// 记录c1字符的位数</span></div><div class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">line</span>; i++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">1</span>)</div><div class="line">				&#123;</div><div class="line">					<span class="keyword">for</span> (<span class="built_in">int</span> j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)</div><div class="line">					&#123;</div><div class="line">						c2[i][j] = c1[k++];</div><div class="line">					&#125;</div><div class="line">				&#125; </div><div class="line">				<span class="keyword">else</span></div><div class="line">				&#123;</div><div class="line">					<span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">					&#123;</div><div class="line">						c2[i][j] = c1[k++];</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">line</span>; i++)</div><div class="line">				&#123;</div><div class="line">					System.out.<span class="built_in">print</span>(c2[i][j]);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			System.out.<span class="built_in">println</span>();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
-
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- The end<i class="fa fa-paw"></i>Thanks for reading-------------</div>
+    
+</div>
+      
+    </div>
+    <div>
+      
+        
+      
+    </div>
     <div>
       
         
@@ -517,7 +530,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -567,6 +580,24 @@
                     <i class="fa fa-fw fa-github"></i>
                   
                   GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/70b4fd000153" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:xkhreal@gmail.com" target="_blank" title="Email">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Email
                 </a>
               </span>
             
@@ -625,7 +656,8 @@
 </div>
 
 
-<div class="powered-by">
+
+<!-- <div class="powered-by">
   由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
@@ -636,7 +668,7 @@
   </a>
 </div>
 
-
+-->
         
 <div class="busuanzi-count">
   <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
