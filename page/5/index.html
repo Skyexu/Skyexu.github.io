@@ -314,6 +314,486 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/21/HDUACM1200/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/21/HDUACM1200/" itemprop="url">HDUACM1200</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T15:00:56+08:00">
+                2016-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index">
+                    <span itemprop="name">ACM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/09/21/HDUACM1200/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/09/21/HDUACM1200/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">To <span class="keyword">and</span> Fro</div><div class="line"></div><div class="line">Time Limit: <span class="number">2000</span>/<span class="number">1000</span> MS (Java/Others)    Memory Limit: <span class="number">65536</span>/<span class="number">32768</span> K (Java/Others)</div><div class="line">Total Submission(s): <span class="number">6390</span>    Accepted Submission(s): <span class="number">4389</span></div><div class="line"></div><div class="line"></div><div class="line">Problem Description</div><div class="line">Mo <span class="keyword">and</span> Larry have devised <span class="keyword">a</span> way <span class="keyword">of</span> encrypting messages. They <span class="keyword">first</span> decide secretly <span class="keyword">on</span> <span class="title">the</span> <span class="title">number</span> <span class="title">of</span> <span class="title">columns</span> <span class="title">and</span> <span class="title">write</span> <span class="title">the</span> <span class="title">message</span> (<span class="title">letters</span> <span class="title">only</span>) <span class="title">down</span> <span class="title">the</span> <span class="title">columns</span>, <span class="title">padding</span> <span class="title">with</span> <span class="title">extra</span> <span class="title">random</span> <span class="title">letters</span> <span class="title">so</span> <span class="title">as</span> <span class="title">to</span> <span class="title">make</span> <span class="title">a</span> <span class="title">rectangular</span> <span class="title">array</span> <span class="title">of</span> <span class="title">letters</span>. <span class="title">For</span> <span class="title">example</span>, <span class="title">if</span> <span class="title">the</span> <span class="title">message</span> <span class="title">is</span> “<span class="title">There</span>’<span class="title">s</span> <span class="title">no</span> <span class="title">place</span> <span class="title">like</span> <span class="title">home</span> <span class="title">on</span> <span class="title">a</span> <span class="title">snowy</span> <span class="title">night</span>” <span class="title">and</span> <span class="title">there</span> <span class="title">are</span> <span class="title">five</span> <span class="title">columns</span>, <span class="title">Mo</span> <span class="title">would</span> <span class="title">write</span> <span class="title">down</span></div><div class="line"></div><div class="line">t o i o y</div><div class="line">h p k n n</div><div class="line">e l e <span class="keyword">a</span> i</div><div class="line">r <span class="keyword">a</span> h s g</div><div class="line">e c o n h</div><div class="line">s e m o t</div><div class="line">n l e w x</div><div class="line"></div><div class="line"></div><div class="line">Note that Mo includes only letters <span class="keyword">and</span> writes them all <span class="keyword">in</span> <span class="built_in">lower</span> <span class="keyword">case</span>. In this example, Mo used <span class="keyword">the</span> <span class="keyword">character</span> ‘x’ <span class="built_in">to</span> pad <span class="keyword">the</span> message out <span class="built_in">to</span> make <span class="keyword">a</span> rectangle, although he could have used <span class="keyword">any</span> letter.</div><div class="line"></div><div class="line">Mo <span class="keyword">then</span> sends <span class="keyword">the</span> message <span class="built_in">to</span> Larry <span class="keyword">by</span> writing <span class="keyword">the</span> letters <span class="keyword">in</span> <span class="keyword">each</span> row, alternating left-<span class="built_in">to</span>-<span class="literal">right</span> <span class="keyword">and</span> <span class="literal">right</span>-<span class="built_in">to</span>-left. So, <span class="keyword">the</span> above would be encrypted <span class="keyword">as</span></div><div class="line"></div><div class="line">toioynnkpheleaigshareconhtomesnlewx</div><div class="line"></div><div class="line">Your job is <span class="built_in">to</span> recover <span class="keyword">for</span> Larry <span class="keyword">the</span> original message (along <span class="keyword">with</span> <span class="keyword">any</span> extra padding letters) <span class="built_in">from</span> <span class="keyword">the</span> encrypted <span class="literal">one</span>.</div><div class="line"> </div><div class="line"></div><div class="line">Input</div><div class="line">There will be multiple input sets. Input <span class="keyword">for</span> <span class="keyword">each</span> <span class="built_in">set</span> will consist <span class="keyword">of</span> <span class="literal">two</span> <span class="keyword">lines</span>. The <span class="keyword">first</span> <span class="built_in">line</span> will contain <span class="keyword">an</span> <span class="keyword">integer</span> <span class="keyword">in</span> <span class="keyword">the</span> range <span class="number">2.</span> . . <span class="number">20</span> indicating <span class="keyword">the</span> <span class="built_in">number</span> <span class="keyword">of</span> columns used. The next <span class="built_in">line</span> is <span class="keyword">a</span> <span class="keyword">string</span> <span class="keyword">of</span> up <span class="built_in">to</span> <span class="number">200</span> <span class="built_in">lower</span> <span class="keyword">case</span> letters. The <span class="keyword">last</span> input <span class="built_in">set</span> is followed <span class="keyword">by</span> <span class="keyword">a</span> <span class="built_in">line</span> containing <span class="keyword">a</span> single <span class="number">0</span>, indicating <span class="function"><span class="keyword">end</span> <span class="title">of</span> <span class="title">input</span>.</span></div><div class="line"> </div><div class="line"></div><div class="line">Output</div><div class="line">Each input <span class="built_in">set</span> should generate <span class="literal">one</span> <span class="built_in">line</span> <span class="keyword">of</span> output, giving <span class="keyword">the</span> original plaintext message, <span class="keyword">with</span> no spaces.</div><div class="line"> </div><div class="line"></div><div class="line">Sample Input</div><div class="line"><span class="number">5</span></div><div class="line">toioynnkpheleaigshareconhtomesnlewx</div><div class="line"><span class="number">3</span></div><div class="line">ttyohhieneesiaabss</div><div class="line"><span class="number">0</span></div><div class="line"> </div><div class="line"></div><div class="line">Sample Output</div><div class="line">theresnoplacelikehomeonasnowynightx</div><div class="line">thisistheeasyoneab</div><div class="line"> </div><div class="line"></div><div class="line">Source</div><div class="line">East Central North America <span class="number">2004</span></div><div class="line"> </div><div class="line"></div><div class="line">Recommend</div><div class="line">Ignatius.L   |   We have carefully selected several similar problems <span class="keyword">for</span> you:  <span class="number">1196</span> <span class="number">1073</span> <span class="number">1161</span> <span class="number">1113</span> <span class="number">1256</span></div></pre></td></tr></table></figure>
+<h3 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hdu;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Scanner;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 做的时候没看清楚  直接把蛇形输出做了正序的转换，然后才进行二维数组存储，多了个步骤</div><div class="line"> * @author Skye</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> class Main &#123;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">		Scanner sc = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">		<span class="built_in">int</span> col = sc.nextInt();</div><div class="line">		<span class="keyword">String</span> message = <span class="keyword">null</span>;</div><div class="line">		<span class="built_in">int</span> rowNum,row = <span class="number">0</span>;</div><div class="line">		StringBuffer result = <span class="keyword">new</span> StringBuffer();</div><div class="line">		<span class="built_in">char</span>[] stringArr = <span class="keyword">null</span>;</div><div class="line">		StringBuffer tmpString = <span class="keyword">new</span> StringBuffer();</div><div class="line">		<span class="built_in">char</span>[] tmpChar = <span class="keyword">null</span>;</div><div class="line">		<span class="built_in">boolean</span> isChange = <span class="keyword">false</span>;</div><div class="line">		<span class="keyword">while</span> (col != <span class="number">0</span>) &#123;</div><div class="line">			message = sc.next();</div><div class="line">			rowNum = message.length()/col;</div><div class="line">			<span class="comment">// System.out.println(message);</span></div><div class="line">			stringArr = message.toCharArray();</div><div class="line">			<span class="comment">// ttyohhieneesiaabss</span></div><div class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; stringArr.length; i++) &#123;</div><div class="line">				<span class="comment">// System.out.println(stringArr[i]);</span></div><div class="line">				<span class="keyword">if</span> (i % col == <span class="number">0</span>) &#123; <span class="comment">// 到行开头</span></div><div class="line">					row = i / col + <span class="number">1</span>; <span class="comment">// 记录当前字母在第几行</span></div><div class="line">					<span class="keyword">if</span> (row % <span class="number">2</span> == <span class="number">0</span>) &#123;</div><div class="line">						isChange = <span class="keyword">true</span>;</div><div class="line">					&#125; <span class="keyword">else</span> &#123;</div><div class="line">						isChange = <span class="keyword">false</span>;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				<span class="keyword">if</span> (isChange == <span class="keyword">false</span>) &#123;</div><div class="line">					</div><div class="line">					<span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i % col == <span class="number">0</span>) &#123;</div><div class="line">						<span class="comment">//System.out.println(tmpString.toString());</span></div><div class="line">						tmpChar = tmpString.toString().toCharArray();</div><div class="line">						<span class="keyword">for</span> (<span class="built_in">int</span> j = tmpChar.length - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</div><div class="line">							result.<span class="built_in">append</span>(tmpChar[j]);</div><div class="line">						&#125;</div><div class="line">						tmpString = <span class="keyword">new</span> StringBuffer();</div><div class="line">					&#125;</div><div class="line">					result.<span class="built_in">append</span>(stringArr[i]);</div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					tmpString.<span class="built_in">append</span>(stringArr[i]);</div><div class="line">				&#125;</div><div class="line"></div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span>(isChange == <span class="keyword">true</span>)&#123;</div><div class="line">				<span class="comment">//System.out.println(tmpString.toString());</span></div><div class="line">				tmpChar = tmpString.toString().toCharArray();</div><div class="line">				<span class="keyword">for</span> (<span class="built_in">int</span> j = tmpChar.length - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</div><div class="line">					result.<span class="built_in">append</span>(tmpChar[j]);</div><div class="line">				&#125;</div><div class="line">				tmpString = <span class="keyword">new</span> StringBuffer();</div><div class="line">			&#125;</div><div class="line">			<span class="comment">//System.out.println(result);</span></div><div class="line">			</div><div class="line">			<span class="built_in">char</span>[][] charArr = <span class="keyword">new</span> <span class="built_in">char</span>[rowNum][col];</div><div class="line">			<span class="built_in">char</span>[] resultChar = result.toString().toCharArray();</div><div class="line">			<span class="built_in">int</span> count = <span class="number">0</span>;</div><div class="line">			<span class="keyword">for</span>(<span class="built_in">int</span> k = <span class="number">0</span>; k &lt; rowNum;k++)&#123;</div><div class="line">				<span class="keyword">for</span>(<span class="built_in">int</span> p = <span class="number">0</span>; p &lt; col;p++)&#123;</div><div class="line">					charArr[k][p] = resultChar[count++];</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			StringBuffer resultFinal = <span class="keyword">new</span> StringBuffer();</div><div class="line">			<span class="keyword">for</span>(<span class="built_in">int</span> k = <span class="number">0</span>; k &lt; col;k++)&#123;</div><div class="line">				<span class="keyword">for</span>(<span class="built_in">int</span> p = <span class="number">0</span>; p &lt; rowNum;p++)&#123;</div><div class="line">					resultFinal.<span class="built_in">append</span>(charArr[p][k]);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			System.out.<span class="built_in">println</span>(resultFinal);</div><div class="line">			resultFinal = <span class="keyword">new</span> StringBuffer();</div><div class="line">			result = <span class="keyword">new</span> StringBuffer();</div><div class="line">			col = sc.nextInt();</div><div class="line">		&#125;</div><div class="line">		sc.close();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="HDU另解："><a href="#HDU另解：" class="headerlink" title="HDU另解："></a>HDU另解：</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="keyword">import</span> java.util.*;</div><div class="line"></div><div class="line"><span class="keyword">public</span> class Main</div><div class="line">&#123;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args)</div><div class="line">	&#123;</div><div class="line">		Scanner input = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">		<span class="keyword">while</span> (input.hasNext())</div><div class="line">		&#123;</div><div class="line">			<span class="built_in">int</span> n = input.nextInt();</div><div class="line">			<span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">break</span>;</div><div class="line">			input.nextLine();</div><div class="line">			<span class="keyword">String</span> <span class="built_in">str</span> = input.nextLine();</div><div class="line">			<span class="built_in">char</span> c1[] = <span class="built_in">str</span>.toCharArray();                   <span class="comment">// 把每个字符单个存起来</span></div><div class="line">			<span class="built_in">char</span> c2[][] = <span class="keyword">new</span> <span class="built_in">char</span>[<span class="number">1010</span>][<span class="number">1010</span>];</div><div class="line">			<span class="built_in">int</span> <span class="built_in">line</span> = c1.length / n;                        <span class="comment">//记录行数</span></div><div class="line">			<span class="built_in">int</span> k = <span class="number">0</span>;                                      <span class="comment">// 记录c1字符的位数</span></div><div class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">line</span>; i++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">1</span>)</div><div class="line">				&#123;</div><div class="line">					<span class="keyword">for</span> (<span class="built_in">int</span> j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)</div><div class="line">					&#123;</div><div class="line">						c2[i][j] = c1[k++];</div><div class="line">					&#125;</div><div class="line">				&#125; </div><div class="line">				<span class="keyword">else</span></div><div class="line">				&#123;</div><div class="line">					<span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">					&#123;</div><div class="line">						c2[i][j] = c1[k++];</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">line</span>; i++)</div><div class="line">				&#123;</div><div class="line">					System.out.<span class="built_in">print</span>(c2[i][j]);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			System.out.<span class="built_in">println</span>();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/31/Java Map 按key排序和按Value排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/31/Java Map 按key排序和按Value排序/" itemprop="url">Java Map 按key排序和按Value排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-31T15:24:13+08:00">
+                2016-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/31/Java Map 按key排序和按Value排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/08/31/Java Map 按key排序和按Value排序/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>做推荐系统项目时，对标签评分需要对标签评分map进行排序.</p>
+<h3 id="理论准备"><a href="#理论准备" class="headerlink" title="理论准备"></a>理论准备</h3><ul>
+<li><p>Map是键值对的集合接口，它的实现类主要包括：HashMap,TreeMap,Hashtable以及LinkedHashMap等。</p>
+</li>
+<li><p>TreeMap：基于红黑树（Red-Black tree）的 NavigableMap 实现，该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。<br>HashMap的值是没有顺序的，它是按照key的HashCode来实现的，对于这个无序的HashMap我们要怎么来实现排序呢？参照TreeMap的value排序。</p>
+</li>
+<li><p>Map.Entry返回Collections视图。</p>
+</li>
+</ul>
+<h3 id="key排序"><a href="#key排序" class="headerlink" title="key排序"></a>key排序</h3><p>TreeMap默认是升序的，如果我们需要改变排序方式，则需要使用比较器：Comparator。Comparator可以对集合对象或者数组进行排序的比较器接口，实现该接口的public compare(T o1,To2)方法即可实现排序，如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.Iterator;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"><span class="keyword">import</span> java.util.TreeMap;</div><div class="line"><span class="keyword">public</span> class TreeMapTest &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</div><div class="line">        Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;(</div><div class="line">                <span class="keyword">new</span> Comparator&lt;<span class="keyword">String</span>&gt;() &#123;</div><div class="line">                    <span class="keyword">public</span> <span class="keyword">int</span> compare(<span class="keyword">String</span> obj1, <span class="keyword">String</span> obj2) &#123;</div><div class="line">                        <span class="comment">// 降序排序</span></div><div class="line">                        <span class="built_in">return</span> obj2.compareTo(obj1);</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"b"</span>, <span class="string">"ccccc"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"d"</span>, <span class="string">"aaaaa"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"c"</span>, <span class="string">"bbbbb"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"a"</span>, <span class="string">"ddddd"</span>);</div><div class="line">        </div><div class="line">        Set&lt;<span class="keyword">String</span>&gt; keySet = <span class="built_in">map</span>.keySet();</div><div class="line">        Iterator&lt;<span class="keyword">String</span>&gt; iter = keySet.iterator();</div><div class="line">        <span class="built_in">while</span> (iter.hasNext()) &#123;</div><div class="line">            <span class="keyword">String</span> key = iter.next();</div><div class="line">            System.out.<span class="built_in">println</span>(key + <span class="string">":"</span> + <span class="built_in">map</span>.<span class="built_in">get</span>(key));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行如下：<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">d:</span>aaaaa</div><div class="line"><span class="symbol">c:</span>bbbbb</div><div class="line"><span class="symbol">b:</span>ccccc</div><div class="line"><span class="symbol">a:</span>ddddd</div></pre></td></tr></table></figure></p>
+<h3 id="value排序"><a href="#value排序" class="headerlink" title="value排序"></a>value排序</h3><p>上面例子是对根据TreeMap的key值来进行排序的，但是有时我们需要根据TreeMap的value来进行排序。对value排序我们就需要借助于Collections的sort(List<t> list, Comparator&lt;? super T&gt; c)方法，该方法根据指定比较器产生的顺序对指定列表进行排序。但是有一个前提条件，那就是所有的元素都必须能够根据所提供的比较器来进行比较，如下：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Collections;</div><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Map.Entry;</div><div class="line"><span class="keyword">import</span> java.util.TreeMap;</div><div class="line"><span class="keyword">public</span> class TreeMapTest &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</div><div class="line">        Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;();</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"a"</span>, <span class="string">"ddddd"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"c"</span>, <span class="string">"bbbbb"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"d"</span>, <span class="string">"aaaaa"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"b"</span>, <span class="string">"ccccc"</span>);</div><div class="line">        </div><div class="line">        <span class="comment">//这里将map.entrySet()转换成list</span></div><div class="line">        List&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt;(<span class="built_in">map</span>.entrySet());</div><div class="line">        <span class="comment">//然后通过比较器来实现排序</span></div><div class="line">        Collections.sort(list,<span class="keyword">new</span> Comparator&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt;() &#123;</div><div class="line">            <span class="comment">//升序排序</span></div><div class="line">            <span class="keyword">public</span> <span class="keyword">int</span> compare(Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; o1,</div><div class="line">                    Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; o2) &#123;</div><div class="line">                <span class="built_in">return</span> o1.getValue().compareTo(o2.getValue());</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">        &#125;);</div><div class="line">        </div><div class="line">        <span class="built_in">for</span>(Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt; mapping:list)&#123; </div><div class="line">               System.out.<span class="built_in">println</span>(mapping.<span class="built_in">getKey</span>()+<span class="string">":"</span>+mapping.getValue()); </div><div class="line">          &#125; </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></t></p>
+<p>运行结果如下：<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">d:</span>aaaaa</div><div class="line"><span class="symbol">c:</span>bbbbb</div><div class="line"><span class="symbol">b:</span>ccccc</div><div class="line"><span class="symbol">a:</span>ddddd</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参考：<a href="http://blog.csdn.net/xiaoyu714543065/article/details/38519817" target="_blank" rel="external">http://blog.csdn.net/xiaoyu714543065/article/details/38519817</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/29/Java BufferdReader读取文件乱码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/29/Java BufferdReader读取文件乱码/" itemprop="url">Java BufferdReader读取文件乱码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-29T21:23:57+08:00">
+                2016-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/29/Java BufferdReader读取文件乱码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/08/29/Java BufferdReader读取文件乱码/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="javaBufferdReader读取文件乱码"><a href="#javaBufferdReader读取文件乱码" class="headerlink" title="javaBufferdReader读取文件乱码"></a>javaBufferdReader读取文件乱码</h3><p>以下为读取文件方法</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> putIdGame()&#123;</div><div class="line">	</div><div class="line">	URL.setURLStreamHandlerFactory(<span class="keyword">new</span> FsUrlStreamHandlerFactory());</div><div class="line">	<span class="built_in">int</span> count = <span class="number">0</span>;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line"></div><div class="line">		</div><div class="line">		URL url = <span class="keyword">new</span> URL(HDFS + path);</div><div class="line">		InputStream gameList = url.openStream();</div><div class="line">		<span class="keyword">BufferedReader</span> reader_url = <span class="keyword">new</span> <span class="keyword">BufferedReader</span>(<span class="keyword">new</span> InputStreamReader(gameList,<span class="string">"UTF-8"</span>));</div><div class="line">		<span class="keyword">String</span> inString_RL = reader_url.readLine();</div><div class="line">		</div><div class="line">		<span class="keyword">while</span> (inString_RL != <span class="keyword">null</span> &amp;&amp; count &lt; <span class="number">50</span>) &#123;</div><div class="line">			<span class="built_in">int</span> userId;</div><div class="line">			<span class="keyword">String</span>[] <span class="built_in">str</span> = inString_RL.<span class="built_in">split</span>(<span class="string">","</span>); </div><div class="line">			count ++;</div><div class="line">			<span class="built_in">map</span>.put(<span class="built_in">str</span>[<span class="number">1</span>], <span class="built_in">str</span>[<span class="number">0</span>]);</div><div class="line">			System.out.<span class="built_in">println</span>(<span class="built_in">str</span>[<span class="number">0</span>]);</div><div class="line">			inString_RL = reader_url.readLine();</div><div class="line">		&#125;</div><div class="line">		reader_url.close();</div><div class="line">	&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">		System.out.<span class="built_in">println</span>(<span class="string">"未找文件！"</span>);</div><div class="line">	&#125; <span class="keyword">catch</span> (IOException e1) &#123;</div><div class="line">		System.out.<span class="built_in">println</span>(<span class="string">"文件读写错误！"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>InputStreamReader</code>中加入”UTF-8”即可</p>
+<h3 id="Java读取文件时第一行出现乱码“？”问号"><a href="#Java读取文件时第一行出现乱码“？”问号" class="headerlink" title="Java读取文件时第一行出现乱码“？”问号"></a>Java读取文件时第一行出现乱码“？”问号</h3><p>在windows 环境下，使用java文件流读取文本文件时，会出现第一个字符为未知字符”?” ,其他字符完整。而且第一个字符显示为？但是用equals比对发现并非是”?”号,google之，了解到bom编码标记。使用 16进制打印输出结果：</p>
+<p>只要出现该头的16进制编码为这种字符便可以断定该文本文件的编码方式了。</p>
+<p>bom编码标记：</p>
+<p>bom全称是：byte order mark，汉语意思是标记字节顺序码。只是出现在：unicode字符集中，只有unicode字符集，存储时候，要求指定编码，如果不指定，windows还会用默认的：ANSI读取。常见的bom头是：</p>
+<p>  UTF-8 ║ EF BB BF<br>  UTF-16LE ║ FF FE (小尾）<br>  UTF-16BE ║ FE FF （大尾）<br>  UTF-32LE ║ FF FE 00 00<br>  UTF-32BE ║ 00 00 FE FF</p>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4><ol>
+<li><p>工具将txt文件另存为UTF-8无BOM格式</p>
+</li>
+<li></li>
+</ol>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> readerFile(InputStream <span class="keyword">in</span>) throws IOException &#123;</div><div class="line">		StringBuffer strBuff = <span class="keyword">new</span> <span class="type">StringBuffer</span>();</div><div class="line">		<span class="keyword">String</span> temp = <span class="literal">null</span>;</div><div class="line">		BufferedReader reader = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span> <span class="type">InputStreamReader</span>(<span class="keyword">in</span>,Charset.forName(<span class="string">"utf-8"</span>)));</div><div class="line">		<span class="keyword">while</span> ((temp = reader.readLine()) != <span class="literal">null</span>) &#123;</div><div class="line">			byte[] by = temp.getBytes();</div><div class="line">			<span class="keyword">String</span> header = Integer.toHexString(by[<span class="number">0</span>]).toUpperCase();</div><div class="line">			<span class="comment">//判断是否拥有无法识别的字符</span></div><div class="line">			<span class="keyword">if</span> (header.equalsIgnoreCase(<span class="string">"FFFFFFEF"</span>) || header.equalsIgnoreCase(<span class="string">"3F"</span>)) &#123;</div><div class="line">				strBuff.append(temp.substring(<span class="number">1</span>) + <span class="string">"\n"</span>);</div><div class="line">				<span class="keyword">continue</span>;</div><div class="line">			&#125;</div><div class="line">			strBuff.append(temp + <span class="string">"\n"</span>);</div><div class="line">		&#125;</div><div class="line">		reader.close();</div><div class="line">		<span class="keyword">in</span>.close();</div><div class="line">		<span class="keyword">return</span> strBuff.toString();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/26/HDFS工具类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1573,527 +2053,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/16/Ubuntu 16.04 mysql安装配置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Skye">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skye's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/16/Ubuntu 16.04 mysql安装配置/" itemprop="url">Ubuntu 16.04 mysql安装配置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-16T12:00:26+08:00">
-                2016-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/16/Ubuntu 16.04 mysql安装配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/08/16/Ubuntu 16.04 mysql安装配置/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><p><code>sudo apt-get install mysql-server mysql-client</code></p>
-<h3 id="测试是否安装成功"><a href="#测试是否安装成功" class="headerlink" title="测试是否安装成功"></a>测试是否安装成功</h3><p><code>sudo netstat -tap | grep mysql</code></p>
-<h3 id="相关操作"><a href="#相关操作" class="headerlink" title="相关操作"></a>相关操作</h3><ul>
-<li>登录 <code>mysql -uroot -p</code></li>
-<li>检查MySQL服务器占用端口 <code>netstat -nlt|grep 3306</code></li>
-<li>检查MySQL服务器系统进程 <code>ps -aux|grep mysql</code></li>
-<li>查看数据库的字符集编码 <code>show variables like &#39;%char%&#39;;</code></li>
-</ul>
-<h3 id="让MySQL服务器被远程访问"><a href="#让MySQL服务器被远程访问" class="headerlink" title="让MySQL服务器被远程访问"></a>让MySQL服务器被远程访问</h3><ul>
-<li><p>打开mysql配置文件</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/mysql/my.cnf</div><div class="line">#找到将bind-address = <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>注销​</div><div class="line">#bind-address            = <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>修改后，重启MySQL服务器<br><code>sudo /etc/init.d/mysql restart</code></p>
-</li>
-<li><p>重新登录<code>mysql -uroot -p</code></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">grant</span> all <span class="keyword">privileges</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'root'</span>@<span class="string">'%'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'xxxxxx'</span>;</div><div class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</div></pre></td></tr></table></figure>
-</li>
-<li><p>检查MySQL服务器占用端口</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">~ netstat -nlt|grep <span class="number">3306</span></div><div class="line">  tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:<span class="number">3306</span>            <span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>:*               LISTEN</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>我们看到从之间的网络监听从 127.0.0.1:3306 变成 0 0.0.0.0:3306，表示MySQL已经允许远程登陆访问。</p>
-<h3 id="将字符编码设置为UTF-8"><a href="#将字符编码设置为UTF-8" class="headerlink" title="将字符编码设置为UTF-8"></a>将字符编码设置为UTF-8</h3><p>默认情况下，MySQL的字符集是latin1，因此在存储中文的时候，会出现乱码的情况，所以我们需要把字符集统一改成UTF-8。<br>打开mysql配置文件<br><code>sudo vim /etc/mysql/my.cnf</code></p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">a） 打开mysql配置文件：</div><div class="line"></div><div class="line">                vim/etc/mysql/<span class="keyword">my</span>.cnf</div><div class="line">b） 在[client]下追加：</div><div class="line"></div><div class="line">                default-<span class="built_in">character</span>-<span class="keyword">set</span>=utf8</div><div class="line">c） 在[mysqld]下追加：</div><div class="line"></div><div class="line">                <span class="built_in">character</span>-<span class="keyword">set</span>-server=utf8</div><div class="line">d） 在[mysql]下追加：</div><div class="line"></div><div class="line">                default-<span class="built_in">character</span>-<span class="keyword">set</span>=utf8</div></pre></td></tr></table></figure>
-<p>修改后，重启MySQL服务器,并登录<br><code>mysql -uroot -p</code></p>
-<p>再次查看字符串编码<br><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="section">mysql&gt; show variables like '%char%';</span></div><div class="line">+--------------------------+----------------------------+</div><div class="line"><span class="section">| Variable_name            | Value                      |</span></div><div class="line">+--------------------------+----------------------------+</div><div class="line">| character<span class="emphasis">_set_</span>client     | utf8                       |</div><div class="line">| character<span class="emphasis">_set_</span>connection | utf8                       |</div><div class="line">| character<span class="emphasis">_set_</span>database   | utf8                       |</div><div class="line">| character<span class="emphasis">_set_</span>filesystem | binary                     |</div><div class="line">| character<span class="emphasis">_set_</span>results    | utf8                       |</div><div class="line">| character<span class="emphasis">_set_</span>server     | utf8                       |</div><div class="line">| character<span class="emphasis">_set_</span>system     | utf8                       |</div><div class="line"><span class="section">| character_sets_dir       | /usr/share/mysql/charsets/ |</span></div><div class="line">+--------------------------+----------------------------+</div><div class="line">8 rows in set (0.00 sec)</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/Mahout0.10.1安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Skye">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skye's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/Mahout0.10.1安装/" itemprop="url">Mahout0.10.1安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T20:00:16+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/15/Mahout0.10.1安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/08/15/Mahout0.10.1安装/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h3><h3 id="编辑环境变量"><a href="#编辑环境变量" class="headerlink" title="编辑环境变量"></a>编辑环境变量</h3><p><code>sudo vim /etc/profile</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#MAHOUT</span></div><div class="line"><span class="built_in">export</span> MAHOUT_HOME=/home/ubuntu/cloud/mahout-0.10.1</div><div class="line"><span class="built_in">export</span> MAHOUT_CONF_DIR=<span class="variable">$MAHOUT_HOME</span>/conf</div><div class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</div><div class="line"></div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin:<span class="variable">$MAHOUT_HOME</span>/conf:<span class="variable">$MAHOUT_HOME</span>/bin:</div></pre></td></tr></table></figure></p>
-<h3 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h3><p><code>source /etc/profile</code></p>
-<h3 id="输入mahout测试-出现许多算法"><a href="#输入mahout测试-出现许多算法" class="headerlink" title="输入mahout测试 出现许多算法"></a>输入mahout测试 出现许多算法</h3><h3 id="进行kmeans算法简单运行"><a href="#进行kmeans算法简单运行" class="headerlink" title="进行kmeans算法简单运行"></a>进行kmeans算法简单运行</h3><ul>
-<li>下载测试数据集synthetic_control.data<br> <a href="http://archive.ics.uci.edu/ml/databases/synthetic_control/" target="_blank" rel="external">http://archive.ics.uci.edu/ml/databases/synthetic_control/</a></li>
-<li>在hdfs上创建目录  <code>/user/ubuntu/testdata</code></li>
-<li>上传测试数据<br><code>hadoop fs -put synthetic_control.data /user/ubuntu/testdata</code>  </li>
-<li>运行<br><code>mahout org.apache.mahout.clustering.syntheticcontrol.kmeans.Job</code></li>
-</ul>
-<p>参考</p>
-<blockquote>
-<p><a href="http://www.cnblogs.com/zhangduo/p/4679907.html" target="_blank" rel="external">http://www.cnblogs.com/zhangduo/p/4679907.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/Hadoop2.7.2集群搭建/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Skye">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skye's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/Hadoop2.7.2集群搭建/" itemprop="url">Hadoop2.7.2集群搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T17:26:16+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/15/Hadoop2.7.2集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/08/15/Hadoop2.7.2集群搭建/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="四台电脑集群"><a href="#四台电脑集群" class="headerlink" title="四台电脑集群"></a>四台电脑集群</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.111</span>   <span class="selector-tag">master</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.112</span>   <span class="selector-tag">slave1</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.113</span>   <span class="selector-tag">slave2</span></div><div class="line">192<span class="selector-class">.168</span><span class="selector-class">.1</span><span class="selector-class">.114</span>   <span class="selector-tag">slave3</span></div></pre></td></tr></table></figure>
-<h3 id="修改hosts"><a href="#修改hosts" class="headerlink" title="修改hosts"></a>修改hosts</h3><p><code>vim /etc/hosts</code></p>
-<h3 id="配置master到其它三台slave的免密码登陆"><a href="#配置master到其它三台slave的免密码登陆" class="headerlink" title="配置master到其它三台slave的免密码登陆"></a>配置master到其它三台slave的免密码登陆</h3><p>各服务器上使用   ssh-keygen -t rsa    一路按回车就行了。<br>刚才都作甚了呢？主要是设置ssh的密钥和密钥的存放路径。 路径为~/.ssh下。<br>打开~/.ssh 下面有三个文件<br>authorized_keys，已认证的keys<br>id_rsa，私钥<br>id_rsa.pub，公钥   三个文件。<br>下面就是关键的地方了，（我们要做ssh认证。进行下面操作前，可以先搜关于认证和加密区别以及各自的过程。）<br>①在master上将公钥放到authorized_keys里。命令：<br><code>sudo cat id_rsa.pub &gt;&gt; authorized_keys</code><br>②将master上的authorized_keys放到其他linux的~/.ssh目录下。命令：<br><code>sudo scp authorized_keys ubuntu@192.168.1.112:~/.ssh</code><br>sudo scp authorized_keys 远程主机用户名@远程主机名或ip:存放路径。<br>③修改authorized_keys权限，命令：chmod 644 authorized_keys<br>④测试是否成功<br>ssh slave1 输入用户名密码，然后退出，再次ssh slave1不用密码，直接进入系统。这就表示成功了。</p>
-<h3 id="安装jdk1-7"><a href="#安装jdk1-7" class="headerlink" title="安装jdk1.7"></a>安装jdk1.7</h3><ol>
-<li><code>mkdir /usr/java</code></li>
-<li><code>sudo tar -zxvf jdk-7u79-linux-x64.tar.gz -C /usr/java</code></li>
-<li><p><code>vim /etc/profile</code></p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=<span class="regexp">/usr/java</span><span class="regexp">/jdk1.7.0_79</span></div><div class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/<span class="class"><span class="keyword">lib</span></span></div><div class="line">export PATH=$&#123;JAVA_HOME&#125;/<span class="symbol">bin:</span>$PATH</div></pre></td></tr></table></figure>
-</li>
-<li><p>刷新配置<br><code>source /etc/profile</code></p>
-</li>
-<li>测试<br><code>java -version</code></li>
-</ol>
-<h3 id="关闭每台机器的防火墙"><a href="#关闭每台机器的防火墙" class="headerlink" title="关闭每台机器的防火墙"></a>关闭每台机器的防火墙</h3><p><code>sudo ufw disable</code> (重启生效)</p>
-<h3 id="创建-home-cloud目录"><a href="#创建-home-cloud目录" class="headerlink" title="创建/home/cloud目录"></a>创建/home/cloud目录</h3><p><code>mkdir ~/cloud</code></p>
-<h3 id="解压hadoop"><a href="#解压hadoop" class="headerlink" title="解压hadoop"></a>解压hadoop</h3><p><code>tar -zxvf hadoop-2.7.2.tar.gz -C ./cloud</code></p>
-<h3 id="配置hadoop-env-sh-yarn-env-sh"><a href="#配置hadoop-env-sh-yarn-env-sh" class="headerlink" title="配置hadoop-env.sh yarn-env.sh"></a>配置hadoop-env.sh yarn-env.sh</h3><p>修改JAVA_HOME值<code>export JAVA_HOME=/usr/java/jdk1.7.0_79</code></p>
-<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir <span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span>/tmp</div><div class="line">mkdir <span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span><span class="meta-keyword">/dfs/</span>data</div><div class="line">mkdir <span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span><span class="meta-keyword">/dfs/</span>name</div></pre></td></tr></table></figure>
-<h3 id="配置slaves"><a href="#配置slaves" class="headerlink" title="配置slaves"></a>配置slaves</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">slave1</span></div><div class="line">slave2</div><div class="line">slave3</div></pre></td></tr></table></figure>
-<h3 id="配置core-site-xml"><a href="#配置core-site-xml" class="headerlink" title="配置core-site.xml"></a>配置core-site.xml</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="params">&lt;configuration&gt;</span></div><div class="line">       <span class="params">&lt;property&gt;</span></div><div class="line">                <span class="params">&lt;name&gt;</span>fs.defaultFS<span class="params">&lt;/name&gt;</span></div><div class="line">                <span class="params">&lt;value&gt;</span>hdfs:<span class="comment">//master:9000&lt;/value&gt;</span></div><div class="line">       <span class="params">&lt;/property&gt;</span></div><div class="line">       <span class="params">&lt;property&gt;</span></div><div class="line">                <span class="params">&lt;name&gt;</span>io.file.buffer.size<span class="params">&lt;/name&gt;</span></div><div class="line">                <span class="params">&lt;value&gt;</span><span class="number">131072</span><span class="params">&lt;/value&gt;</span></div><div class="line">        <span class="params">&lt;/property&gt;</span></div><div class="line">       <span class="params">&lt;property&gt;</span></div><div class="line">               <span class="params">&lt;name&gt;</span>hadoop.tmp.dir<span class="params">&lt;/name&gt;</span></div><div class="line">               <span class="params">&lt;value&gt;</span>file:<span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span>/tmp<span class="params">&lt;/value&gt;</span></div><div class="line">               <span class="params">&lt;description&gt;</span>Abase for other temporary   directories.<span class="params">&lt;/description&gt;</span></div><div class="line">       <span class="params">&lt;/property&gt;</span></div><div class="line">        <span class="params">&lt;property&gt;</span></div><div class="line">               <span class="params">&lt;name&gt;</span>hadoop.proxyuser.ubuntu.hosts<span class="params">&lt;/name&gt;</span></div><div class="line">               <span class="params">&lt;value&gt;</span>*<span class="params">&lt;/value&gt;</span></div><div class="line">       <span class="params">&lt;/property&gt;</span></div><div class="line">       <span class="params">&lt;property&gt;</span></div><div class="line">               <span class="params">&lt;name&gt;</span>hadoop.proxyuser.ubuntu.groups<span class="params">&lt;/name&gt;</span></div><div class="line">               <span class="params">&lt;value&gt;</span>*<span class="params">&lt;/value&gt;</span></div><div class="line">       <span class="params">&lt;/property&gt;</span></div><div class="line"><span class="params">&lt;/configuration&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="配置hdfs-site-xml"><a href="#配置hdfs-site-xml" class="headerlink" title="配置hdfs-site.xml"></a>配置hdfs-site.xml</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="params">&lt;configuration&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.secondary.http-address<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span>master:<span class="number">9001</span><span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.replication<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span><span class="number">4</span><span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.permissions.enabled<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span>false<span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.name.dir<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span>file:<span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span><span class="meta-keyword">/dfs/</span>name<span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.datanode.data.dir<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span>file:<span class="meta-keyword">/home/</span>ubuntu<span class="meta-keyword">/cloud/</span>hadoop<span class="number">-2.7</span><span class="number">.2</span><span class="meta-keyword">/dfs/</span>data<span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line">    <span class="params">&lt;property&gt;</span>  </div><div class="line">        <span class="params">&lt;name&gt;</span>dfs.webhdfs.enabled<span class="params">&lt;/name&gt;</span>  </div><div class="line">        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span>  </div><div class="line">    <span class="params">&lt;/property&gt;</span>  </div><div class="line"><span class="params">&lt;/configuration&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="配置mapred-site-xml"><a href="#配置mapred-site-xml" class="headerlink" title="配置mapred-site.xml"></a>配置mapred-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">property</span>&gt;</span>                                                                  <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">           <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.jobhistory.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:10020<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.jobhistory.webapp.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:19888<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="配置yarn-site-xml"><a href="#配置yarn-site-xml" class="headerlink" title="配置yarn-site.xml"></a>配置yarn-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span>                                                                </div><div class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services.mapreduce.shuffle.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.mapred.ShuffleHandler<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8032<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.scheduler.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8030<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.resource-tracker.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">             <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8031<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.admin.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8033<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.webapp.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8088<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="复制到其它节点"><a href="#复制到其它节点" class="headerlink" title="复制到其它节点"></a>复制到其它节点</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo scp -r /home/ubuntu/cloud ubuntu<span class="variable">@slave1</span><span class="symbol">:~/</span></div><div class="line">sudo scp -r /home/ubuntu/cloud ubuntu<span class="variable">@slave2</span><span class="symbol">:~/</span></div><div class="line">sudo scp -r /home/ubuntu/cloud ubuntu<span class="variable">@slave3</span><span class="symbol">:~/</span></div></pre></td></tr></table></figure>
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p><code>vim /etc/profile</code><br><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export HADOOP_HOME=<span class="regexp">/home/u</span>buntu<span class="regexp">/cloud/</span>hadoop-<span class="number">2.7</span>.<span class="number">2</span></div><div class="line">export PATH=<span class="variable">$PATH</span>:<span class="variable">$&#123;JAVA_HOME&#125;</span><span class="regexp">/bin:$HADOOP_HOME/</span>bin:<span class="variable">$HADOOP_HOME</span><span class="regexp">/sbin:</span></div></pre></td></tr></table></figure></p>
-<h3 id="启动hadoop"><a href="#启动hadoop" class="headerlink" title="启动hadoop"></a>启动hadoop</h3><ul>
-<li>格式化namenode <code>hadoop namenode –format</code></li>
-<li>启动hdfs <code>start-dfs.sh</code></li>
-<li>启动yarn <code>start-yarn.sh</code></li>
-<li>web端查看 <code>http://master:8088 http://master:50070</code></li>
-</ul>
-
-          
-        
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2138,7 +2102,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">63</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2149,7 +2113,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2160,7 +2124,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
