@@ -110,16 +110,16 @@
 <meta name="description" content="由于租户对ECS实例(虚拟机,VM)请求的行为具有一定规律,可以通过对历史ECS实例请求的分析,预测到未来一段时间的ECS实例请求,然后对预测的请求分配资源,这样可以找到一个接近最优的分配策略,实现资源最大化利用,同时也能参考预测的结果制定云数据中心的建设计划。 赛题分为预测与分配两个部分。我们队伍初赛拿到杭夏赛区第十，复赛尽力了没能进决赛。">
 <meta name="keywords" content="Machine learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2018 华为软件精英挑战赛">
+<meta property="og:title" content="2018 华为软件精英挑战赛参赛总结">
 <meta property="og:url" content="http://yoursite.com/2018/04/28/huaweicraft2018/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="由于租户对ECS实例(虚拟机,VM)请求的行为具有一定规律,可以通过对历史ECS实例请求的分析,预测到未来一段时间的ECS实例请求,然后对预测的请求分配资源,这样可以找到一个接近最优的分配策略,实现资源最大化利用,同时也能参考预测的结果制定云数据中心的建设计划。 赛题分为预测与分配两个部分。我们队伍初赛拿到杭夏赛区第十，复赛尽力了没能进决赛。">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-4-28/83963413.jpg">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-4-28/44584716.jpg">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-4-28/27092328.jpg">
-<meta property="og:updated_time" content="2018-04-28T08:33:22.183Z">
+<meta property="og:updated_time" content="2018-04-28T08:42:14.790Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2018 华为软件精英挑战赛">
+<meta name="twitter:title" content="2018 华为软件精英挑战赛参赛总结">
 <meta name="twitter:description" content="由于租户对ECS实例(虚拟机,VM)请求的行为具有一定规律,可以通过对历史ECS实例请求的分析,预测到未来一段时间的ECS实例请求,然后对预测的请求分配资源,这样可以找到一个接近最优的分配策略,实现资源最大化利用,同时也能参考预测的结果制定云数据中心的建设计划。 赛题分为预测与分配两个部分。我们队伍初赛拿到杭夏赛区第十，复赛尽力了没能进决赛。">
 <meta name="twitter:image" content="http://ojpgmz933.bkt.clouddn.com/18-4-28/83963413.jpg">
 
@@ -155,7 +155,7 @@
 
 
 
-  <title>2018 华为软件精英挑战赛 | Skye's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>2018 华为软件精英挑战赛参赛总结 | Skye's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -335,7 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2018 华为软件精英挑战赛</h1>
+          <h1 class="post-title" itemprop="name headline">2018 华为软件精英挑战赛参赛总结</h1>
         
 
         <div class="post-meta">
@@ -448,6 +448,7 @@
 <p>其它尝试做法还有<a href="https://www.jianshu.com/p/31e20f00c26f?spm=5176.9876270.0.0.1b6d2ef1X7fSIM" target="_blank" rel="external">周期因子规则</a>、线性回归、取平均值、平移前预测周期等等。时间跨度太小，样本量也就过小了，也就没有去尝试更复杂一点地机器学习模型，我们最后的预测采用的是不同模型的加权结果。</p>
 <h2 id="分配"><a href="#分配" class="headerlink" title="分配"></a>分配</h2><p>一开始使用了背包模型，后来使用了粒子群算法，提升明显。对于还资源利用率不满的物理机又进行了进一步填补操作，使得物理机资源利用率基本能达到比较高的分数，在预测不那么准的情况下，提升明显。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个比赛还是比较花时间的，题目给的练习数据和真正的线上评测数据相差较大，难度进一步提升，只能通过线上每天100次地不断提交反馈来进行修正。预测方面尝试了一些模型，但是对原始数据的处理不够细，应该更多地去思考原始数据层面的分析处理。分配方面由于使用了三维数组，导致空间比较大，线上运行会出现用例出错况。后来使用 Byte 去存储，也还是会出现问题，这对比赛结果也有一定影响。比赛后期，大部分队伍都开始针对虚拟机甚至用例进行参数调整，模型不够健壮的缺点就体现出来了，这样调整提升也变得些许无聊。预测部分能提升的还是很多的，没能进决赛还是有点遗憾，修炼还不够。</p>
+<p>复赛现场华为招待的挺不错的，大巴接送，赛区36强拿到了面试绿卡。比赛能学到一些东西，但是比赛过程花了比较长的时间。</p>
 
       
     </div>
@@ -877,7 +878,7 @@
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2018/04/28/huaweicraft2018/';
           this.page.identifier = '2018/04/28/huaweicraft2018/';
-          this.page.title = '2018 华为软件精英挑战赛';
+          this.page.title = '2018 华为软件精英挑战赛参赛总结';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skye-1.disqus.com/embed.js';
