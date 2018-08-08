@@ -1,0 +1,1304 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="R2uwcaZkQQII0J13dPPp56vFo0D9_D2sAAhPk9is0wM" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="推荐系统,Machine Learning,数据结构," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="稀疏矩阵在矩阵中，若数值为0的元素数目远远多于非0元素的数目时，则称该矩阵为稀疏矩阵。与之相反，若非0元素数目占大多数时，则称该矩阵为稠密矩阵。 注：压缩存储的矩阵可以分为特殊矩阵和稀疏矩阵。对于那些具有相同元素或零元素在矩阵中分布具有一定规律的矩阵，被称之为特殊矩阵。对于那些零元素数据远远多于非零元素数目，并且非零元素的分布没有规律的矩阵称之为稀疏矩阵。">
+<meta name="keywords" content="推荐系统,Machine Learning,数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="稀疏矩阵与稠密矩阵以及 LibeRec 中的实现">
+<meta property="og:url" content="http://yoursite.com/2018/08/08/SparseMatrix/index.html">
+<meta property="og:site_name" content="Skye&#39;s Blog">
+<meta property="og:description" content="稀疏矩阵在矩阵中，若数值为0的元素数目远远多于非0元素的数目时，则称该矩阵为稀疏矩阵。与之相反，若非0元素数目占大多数时，则称该矩阵为稠密矩阵。 注：压缩存储的矩阵可以分为特殊矩阵和稀疏矩阵。对于那些具有相同元素或零元素在矩阵中分布具有一定规律的矩阵，被称之为特殊矩阵。对于那些零元素数据远远多于非零元素数目，并且非零元素的分布没有规律的矩阵称之为稀疏矩阵。">
+<meta property="og:image" content="http://netlib.org/linalg/html_templates/_22900_equation2668.gif">
+<meta property="og:updated_time" content="2018-08-08T08:38:59.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="稀疏矩阵与稠密矩阵以及 LibeRec 中的实现">
+<meta name="twitter:description" content="稀疏矩阵在矩阵中，若数值为0的元素数目远远多于非0元素的数目时，则称该矩阵为稀疏矩阵。与之相反，若非0元素数目占大多数时，则称该矩阵为稠密矩阵。 注：压缩存储的矩阵可以分为特殊矩阵和稀疏矩阵。对于那些具有相同元素或零元素在矩阵中分布具有一定规律的矩阵，被称之为特殊矩阵。对于那些零元素数据远远多于非零元素数目，并且非零元素的分布没有规律的矩阵称之为稀疏矩阵。">
+<meta name="twitter:image" content="http://netlib.org/linalg/html_templates/_22900_equation2668.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/08/SparseMatrix/"/>
+
+
+
+
+
+  <title>稀疏矩阵与稠密矩阵以及 LibeRec 中的实现 | Skye's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/Skyexu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Skye's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Forever youthful,forever weeping</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/08/SparseMatrix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">稀疏矩阵与稠密矩阵以及 LibeRec 中的实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T14:20:59+08:00">
+                2018-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/08/SparseMatrix/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/08/SparseMatrix/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="稀疏矩阵"><a href="#稀疏矩阵" class="headerlink" title="稀疏矩阵"></a>稀疏矩阵</h2><p>在矩阵中，若数值为0的元素数目远远多于非0元素的数目时，则称该矩阵为<strong>稀疏矩阵</strong>。与之相反，若非0元素数目占大多数时，则称该矩阵为<strong>稠密矩阵</strong>。</p>
+<p>注：压缩存储的矩阵可以分为特殊矩阵和稀疏矩阵。对于那些具有相同元素或零元素在矩阵中分布具有一定规律的矩阵，被称之为特殊矩阵。对于那些零元素数据远远多于非零元素数目，并且非零元素的分布没有规律的矩阵称之为稀疏矩阵。</p>
+<a id="more"></a>
+<h3 id="稀疏矩阵的特性"><a href="#稀疏矩阵的特性" class="headerlink" title="稀疏矩阵的特性"></a>稀疏矩阵的特性</h3><ul>
+<li><p>稀疏矩阵其非零元素的个数远远小于零元素的个数，而且这些非零元素的分布也没有规律。</p>
+</li>
+<li><p>稀疏因子是用于描述稀疏矩阵的非零元素的比例情况。设一个 n*m 的稀疏矩阵 A 中有 t 个非零元素，则稀疏因子δ 的计算公式：$δ=t/m<em>n​$ </em>(当这个值小于等于0.05时，可以认为是稀疏矩阵)*</p>
+</li>
+</ul>
+<h3 id="稀疏矩阵的压缩存储"><a href="#稀疏矩阵的压缩存储" class="headerlink" title="稀疏矩阵的压缩存储"></a>稀疏矩阵的压缩存储</h3><p>存储矩阵的一般方法是采用二维数组，其优点是可以随机地访问每一个元素，因而能够较容易地实现矩阵的各种运算，如转置运算、加法运算、乘法运算等。但对于稀疏矩阵来说，采用二维数组的存储方法既浪费大量的存储单元用来存放零元素，又要在运算中花费大量的时间来进行零元素的无效计算，显然不科学。所以必须考虑对稀疏矩阵进行压缩存储。</p>
+<p>对稀疏矩阵进行压缩存储的一种较好的方法是：只存储在矩阵中极少数的非零元素，为此必须对每一个非零元素，保存它的下标和值。可以采用一个三元组<code>Trituple&lt;row,column,value&gt;</code>来唯一地确定一个矩阵元素。因此，稀疏矩阵需要使用一个三元组数组(亦称为三元组表)来表示。</p>
+<p>常见的压缩存储方式有压缩行和压缩列。</p>
+<p>对于如下矩阵</p>
+<p><img src="http://netlib.org/linalg/html_templates/_22900_equation2668.gif" alt=""></p>
+<p>以三元组的方式(假设索引从1开始)为：</p>
+<p>(row_index,col_index,value)</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">按行存储</div><div class="line">[(<span class="number">1</span>,<span class="number">1</span>,<span class="number">10</span>),(<span class="number">1</span>,<span class="number">5</span>,<span class="number">-2</span>),			<span class="comment">//第1行</span></div><div class="line">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>), (<span class="number">2</span>,<span class="number">2</span>,<span class="number">9</span>),(<span class="number">2</span>,<span class="number">6</span>,<span class="number">3</span>),	<span class="comment">//第2行</span></div><div class="line">(<span class="number">3</span>,<span class="number">2</span>,<span class="number">7</span>),(<span class="number">3</span>,<span class="number">3</span>,<span class="number">8</span>),(<span class="number">3</span>,<span class="number">4</span>,<span class="number">7</span>),	<span class="comment">//第3行</span></div><div class="line">(<span class="number">4</span>,<span class="number">1</span>,<span class="number">3</span>),(<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>),			<span class="comment">//第4行</span></div><div class="line">(<span class="number">5</span>,<span class="number">2</span>,<span class="number">8</span>),(<span class="number">5</span>,<span class="number">4</span>,<span class="number">9</span>),(<span class="number">5</span>,<span class="number">5</span>,<span class="number">9</span>),	<span class="comment">//第5行</span></div><div class="line">(<span class="number">6</span>,<span class="number">2</span>,<span class="number">4</span>),(<span class="number">6</span>,<span class="number">5</span>,<span class="number">2</span>),(<span class="number">6</span>,<span class="number">6</span>,<span class="number">-1</span>)]	<span class="comment">//第6行</span></div><div class="line"> 	 </div><div class="line">按列存储</div><div class="line">[(<span class="number">1</span>,<span class="number">1</span>,<span class="number">10</span>),(<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>),(<span class="number">4</span>,<span class="number">1</span>,<span class="number">3</span>),			<span class="comment">//第1列</span></div><div class="line">(<span class="number">2</span>,<span class="number">2</span>,<span class="number">9</span>),(<span class="number">3</span>,<span class="number">2</span>,<span class="number">7</span>),(<span class="number">5</span>,<span class="number">2</span>,<span class="number">8</span>),(<span class="number">6</span>,<span class="number">2</span>,<span class="number">4</span>),	<span class="comment">//第2列</span></div><div class="line">(<span class="number">3</span>,<span class="number">3</span>,<span class="number">8</span>),							<span class="comment">//第3列</span></div><div class="line">(<span class="number">3</span>,<span class="number">4</span>,<span class="number">7</span>),(<span class="number">5</span>,<span class="number">4</span>,<span class="number">9</span>),					<span class="comment">//第4列</span></div><div class="line">(<span class="number">1</span>,<span class="number">5</span>,<span class="number">-2</span>),(<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>),(<span class="number">5</span>,<span class="number">5</span>,<span class="number">9</span>),(<span class="number">6</span>,<span class="number">5</span>,<span class="number">2</span>),	<span class="comment">//第5列</span></div><div class="line">(<span class="number">2</span>,<span class="number">6</span>,<span class="number">3</span>),(<span class="number">6</span>,<span class="number">6</span>,<span class="number">-1</span>)]					<span class="comment">//第6列</span></div></pre></td></tr></table></figure>
+<h4 id="Compressed-Row-Storage-CRS-压缩行存储"><a href="#Compressed-Row-Storage-CRS-压缩行存储" class="headerlink" title="Compressed Row Storage (CRS) 压缩行存储"></a>Compressed Row Storage (CRS) 压缩行存储</h4><p>压缩行和列存储格式是最通用的：它们不对矩阵的稀疏性结构做出假设，并且不存储任何不必要的元素。 但是，效率不高，需要对矩阵向量积或预处理器求解中的每个标量运算进行间接寻址步骤。</p>
+<p>CSR矩阵格式通过用三个一维的数组来存储一个m×n的矩阵M。定义nnz（Num-non-zero）为矩阵M中非0元素的个数。</p>
+<ol>
+<li><code>val[]</code> : 存储非 0 元素，长度为 nnz。</li>
+<li><code>col_ind[]</code>：存储 val 中元素的列索引，nnz。</li>
+<li><code>row_ptr[]</code>：存储每一行中第一个非零元素在 val 中的下标，长度为 m+1,其中 $row_ptr[m+1] = nnz+1$ 。这里即将行元素索引压缩了。</li>
+</ol>
+<p>我们只需要 $2*nnz+m+1$的空间去存储矩阵。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">index     = [<span class="number">1</span>,  <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>, <span class="number">15</span>,<span class="number">16</span>] <span class="comment">//数组下标</span></div><div class="line">value     = [<span class="number">10</span>,<span class="number">-2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">-1</span>] <span class="comment">//按行读取时，依次出现的非零值</span></div><div class="line">col_index = [<span class="number">1</span>,  <span class="number">5</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>,  <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>,  <span class="number">6</span>] <span class="comment">//按行读取时，依次出现的非零值所在的列下标</span></div><div class="line">row_ptr   = [<span class="number">1</span>,  <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>,<span class="number">11</span>,<span class="number">14</span>,<span class="number">17</span>] <span class="comment">//按行读取时，每一行中第一个出现的非零值在value数组中的下标值,可以参考三元组中按行存储。</span></div></pre></td></tr></table></figure>
+<h4 id="Compressed-Column-Storage-CCS-压缩列存储"><a href="#Compressed-Column-Storage-CCS-压缩列存储" class="headerlink" title="Compressed Column Storage (CCS) 压缩列存储"></a>Compressed Column Storage (CCS) 压缩列存储</h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">index     = [<span class="number">1</span>,  <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>, <span class="number">15</span>,<span class="number">16</span>] <span class="comment">//数组下标</span></div><div class="line">value     = [<span class="number">10</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">-2</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-1</span>] <span class="comment">//按列读取时，依次出现的非零值</span></div><div class="line">row_index = [<span class="number">1</span>,  <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">5</span>,  <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">2</span>,  <span class="number">6</span>] <span class="comment">//案列读取时，依次出现非零值所在的行下标</span></div><div class="line">col_ptr   = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">9</span>,<span class="number">11</span>,<span class="number">15</span>,<span class="number">17</span>] <span class="comment">//按列读取时，每一列中第一个出现的非零值在value数组中的下标值,可以参考三元组中按列存储。</span></div></pre></td></tr></table></figure>
+<h2 id="LibRec-实现"><a href="#LibRec-实现" class="headerlink" title="LibRec 实现"></a>LibRec 实现</h2><p>由于推荐系统场景中，用户物品的行为矩阵是一个稀疏矩阵，LibRec 2.0 中的 <code>SparseMatrix.java</code>类 实现了这一数据结构。其同时实现了 CRS 与 CCS 压缩存储。</p>
+<p>我们先查看 LibRec 如何读取输入的用户评分/行为矩阵。以 <code>TextDataConvertor.java</code>为例，<code>readData()</code>函数实现了数据读取，存入 <code>SparseMatrx</code>。主要查看以下部分。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Table &#123;row-id, col-id, rate&#125;  矩阵的三元组</span></div><div class="line">Table&lt;Integer, Integer, Double&gt; dataTable = HashBasedTable.create();</div><div class="line"><span class="comment">// Map &#123;col-id, multiple row-id&#125;: used to fast build a rating matrix 是一个Multimap，存储列索引对应的行索引用以加快稀疏矩阵构建</span></div><div class="line">Multimap&lt;Integer, Integer&gt; colMap = HashMultimap.create();</div><div class="line"></div><div class="line">....</div><div class="line">    <span class="comment">// 不断读取数据行</span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; loopLength; i++) &#123;</div><div class="line">                    String line = bufferData[i];</div><div class="line">                    String[] data = line.trim().split(<span class="string">"[ \t,]+"</span>);</div><div class="line">                    String user = data[<span class="number">0</span>];</div><div class="line">                    String item = data[<span class="number">1</span>];</div><div class="line">                    Double rate = ((dataColumnFormat.equals(<span class="string">"UIR"</span>) || 		dataColumnFormat.equals(<span class="string">"UIRT"</span>)) &amp;&amp; data.length &gt;= <span class="number">3</span>) ? Double.valueOf(data[<span class="number">2</span>]) : <span class="number">1.0</span>;</div><div class="line"></div><div class="line">                    <span class="comment">// binarize the rating for item recommendation task</span></div><div class="line">                    <span class="keyword">if</span> (binThold &gt;= <span class="number">0</span>) &#123;</div><div class="line">                        rate = rate &gt; binThold ? <span class="number">1.0</span> : <span class="number">0.0</span>;</div><div class="line">                    &#125;</div><div class="line"></div><div class="line">                    <span class="comment">// inner id starting from 0 </span></div><div class="line">            		<span class="comment">//稀疏矩阵的行索引，以判断 userId 是否存在来递增</span></div><div class="line">                    <span class="keyword">int</span> row = userIds.containsKey(user) ? userIds.get(user) : userIds.size();</div><div class="line">                    userIds.put(user, row);</div><div class="line">				  <span class="comment">//稀疏矩阵的列索引，以判断 itemId 是否存在来递增</span></div><div class="line">                    <span class="keyword">int</span> col = itemIds.containsKey(item) ? itemIds.get(item) : itemIds.size();</div><div class="line">                    itemIds.put(item, col);</div><div class="line"></div><div class="line">                    dataTable.put(row, col, rate);</div><div class="line">                    colMap.put(col, row);</div><div class="line">                    <span class="comment">// record rating's issuing time</span></div><div class="line">                    <span class="keyword">if</span> (StringUtils.equals(dataColumnFormat, <span class="string">"UIRT"</span>) &amp;&amp; data.length &gt;= <span class="number">4</span>) &#123;</div><div class="line">                        <span class="keyword">if</span> (timeTable == <span class="keyword">null</span>) &#123;</div><div class="line">                            timeTable = HashBasedTable.create();</div><div class="line">                        &#125;</div><div class="line">                        <span class="comment">// convert to million-seconds</span></div><div class="line">                        <span class="keyword">long</span> mms = <span class="number">0L</span>;</div><div class="line">                        <span class="keyword">try</span> &#123;</div><div class="line">                            mms = Long.parseLong(data[<span class="number">3</span>]); <span class="comment">// cannot format</span></div><div class="line">                            <span class="comment">// 9.7323480e+008</span></div><div class="line">                        &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</div><div class="line">                            mms = (<span class="keyword">long</span>) Double.parseDouble(data[<span class="number">3</span>]);</div><div class="line">                        &#125;</div><div class="line">                        <span class="keyword">long</span> timestamp = timeUnit.toMillis(mms);</div><div class="line">                        timeTable.put(row, col, timestamp);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (!isComplete) &#123;</div><div class="line">                    bufferLine = bufferData[bufferData.length - <span class="number">1</span>];</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    bufferLine = <span class="string">""</span>;</div><div class="line">                &#125;</div><div class="line">                buffer.clear();</div><div class="line">            &#125;</div><div class="line">            fileRead.close();</div><div class="line">            fis.close();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> numRows = numUsers(), numCols = numItems();</div><div class="line">        <span class="comment">// build rating matrix  </span></div><div class="line">        preferenceMatrix = <span class="keyword">new</span> SparseMatrix(numRows, numCols, dataTable, colMap);</div><div class="line">        <span class="keyword">if</span> (timeTable != <span class="keyword">null</span>)</div><div class="line">            datetimeMatrix = <span class="keyword">new</span> SparseMatrix(numRows, numCols, timeTable, colMap);</div><div class="line">        <span class="comment">// release memory of data table</span></div><div class="line">        dataTable = <span class="keyword">null</span>;</div><div class="line">        timeTable = <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>我们通过构造器来查看如何进行稀疏矩阵构建。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Construct a sparse matrix with both CRS and CCS structures</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> rows       number of rows</div><div class="line">     * <span class="doctag">@param</span> cols       number of columns</div><div class="line">     * <span class="doctag">@param</span> dataTable  data table  传入原始数据矩阵的三元组</div><div class="line">     * <span class="doctag">@param</span> colMap     column map  存储列索引对应的行索引用以加快稀疏矩阵构建</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SparseMatrix</span><span class="params">(<span class="keyword">int</span> rows, <span class="keyword">int</span> cols, Table&lt;Integer, Integer, ? extends Number&gt; dataTable, Multimap&lt;Integer, Integer&gt; colMap)</span> </span>&#123;</div><div class="line">        numRows = rows;</div><div class="line">        numColumns = cols;</div><div class="line">        valueSet = <span class="keyword">new</span> TreeSet&lt;&gt;();</div><div class="line">        construct(dataTable, colMap);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"> <span class="comment">/**</span></div><div class="line">     * Construct a sparse matrix</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> dataTable       data table</div><div class="line">     * <span class="doctag">@param</span> columnStructure column structure</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">construct</span><span class="params">(Table&lt;Integer, Integer, ? extends Number&gt; dataTable,</span></span></div><div class="line">                           Multimap&lt;Integer, Integer&gt; columnStructure) &#123;</div><div class="line">        <span class="keyword">int</span> nnz = dataTable.size();</div><div class="line"></div><div class="line">        <span class="comment">// CRS 压缩行存储</span></div><div class="line">        rowPtr = <span class="keyword">new</span> <span class="keyword">int</span>[numRows + <span class="number">1</span>];</div><div class="line">        colInd = <span class="keyword">new</span> <span class="keyword">int</span>[nnz];</div><div class="line">        rowData = <span class="keyword">new</span> <span class="keyword">double</span>[nnz];</div><div class="line"></div><div class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= numRows; ++i) &#123;</div><div class="line">            <span class="comment">// 存储 rowPtr，为稀疏矩阵中每行第一个非0元素在 rowData 中的索引</span></div><div class="line">            Set&lt;Integer&gt; cols = dataTable.row(i - <span class="number">1</span>).keySet();</div><div class="line">            rowPtr[i] = rowPtr[i - <span class="number">1</span>] + cols.size();</div><div class="line">            <span class="comment">// 存储 colInd，按行读取时，依次出现的非零值所在的列下标</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col : cols) &#123;</div><div class="line">                colInd[j++] = col;</div><div class="line">                <span class="keyword">if</span> (col &lt; <span class="number">0</span> || col &gt;= numColumns)</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"colInd["</span> + j + <span class="string">"]="</span> + col</div><div class="line">                            + <span class="string">", which is not a valid column index"</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 排序，保证列是从小到大的顺序</span></div><div class="line">            Arrays.sort(colInd, rowPtr[i - <span class="number">1</span>], rowPtr[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// CCS</span></div><div class="line">        colPtr = <span class="keyword">new</span> <span class="keyword">int</span>[numColumns + <span class="number">1</span>];</div><div class="line">        rowInd = <span class="keyword">new</span> <span class="keyword">int</span>[nnz];</div><div class="line">        colData = <span class="keyword">new</span> <span class="keyword">double</span>[nnz];</div><div class="line"></div><div class="line">        j = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= numColumns; ++i) &#123;</div><div class="line">            <span class="comment">// dataTable.col(i-1) is more time-consuming than columnStructure.get(i-1)</span></div><div class="line">            <span class="comment">// 由于 dataTable.col(i-1) 比 columnStructure.get(i-1) 慢很多，使用 colMap 来加快构建速度</span></div><div class="line">            Collection&lt;Integer&gt; rows = columnStructure != <span class="keyword">null</span> ? columnStructure.get(i - <span class="number">1</span>) : dataTable.column(i - <span class="number">1</span>)</div><div class="line">                    .keySet();</div><div class="line">            colPtr[i] = colPtr[i - <span class="number">1</span>] + rows.size();</div><div class="line"></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> row : rows) &#123;</div><div class="line">                rowInd[j++] = row;</div><div class="line">                <span class="keyword">if</span> (row &lt; <span class="number">0</span> || row &gt;= numRows)</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"rowInd["</span> + j + <span class="string">"]="</span> + row + <span class="string">", which is not a valid row index"</span>);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Arrays.sort(rowInd, colPtr[i - <span class="number">1</span>], colPtr[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// set data  设置稀疏矩阵中的非0值，包括 rowData 和 colData</span></div><div class="line">        <span class="keyword">for</span> (Cell&lt;Integer, Integer, ? extends Number&gt; en : dataTable.cellSet()) &#123;</div><div class="line">            <span class="keyword">int</span> row = en.getRowKey();</div><div class="line">            <span class="keyword">int</span> col = en.getColumnKey();</div><div class="line">            <span class="keyword">double</span> val = en.getValue().doubleValue();</div><div class="line"></div><div class="line">            set(row, col, val);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>以设置矩阵非0值与通过行列索引查找 rowData 的相应索引位置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Set a value to entry [row, column]</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> row    row id</div><div class="line">     * <span class="doctag">@param</span> column column id</div><div class="line">     * <span class="doctag">@param</span> val    value to set</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> column, <span class="keyword">double</span> val)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> index = getCRSIndex(row, column);</div><div class="line">        rowData[index] = val;</div><div class="line"></div><div class="line">        index = getCCSIndex(row, column);</div><div class="line">        colData[index] = val;</div><div class="line"></div><div class="line">        valueSetAdd(val);</div><div class="line">    &#125;</div><div class="line"><span class="comment">/**</span></div><div class="line">     * Finds the insertion index of CRS</div><div class="line">     * 通过行列索引查找 rowData 的相应索引位置</div><div class="line">     * <span class="doctag">@param</span> row  the index of row</div><div class="line">     * <span class="doctag">@param</span> col  the index of column</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getCRSIndex</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span> </span>&#123;</div><div class="line">        <span class="comment">// 二分查找， colInd 存储 rowData 对应的矩阵列下标，rowPtr[row] 代表了 colIndex 中第 row 行第一个非零元素对应的位置，col 是需要查找的值</span></div><div class="line">        <span class="keyword">int</span> i = Arrays.binarySearch(colInd, rowPtr[row], rowPtr[row + <span class="number">1</span>], col);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (i &gt;= <span class="number">0</span> &amp;&amp; colInd[i] == col)</div><div class="line">            <span class="keyword">return</span> i;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Entry ("</span> + (row + <span class="number">1</span>) + <span class="string">", "</span> + (col + <span class="number">1</span>)</div><div class="line">                    + <span class="string">") is not in the matrix structure"</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>查找稀疏矩阵中的对应元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Retrieve value at entry [row, column]</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> row    row id</div><div class="line">     * <span class="doctag">@param</span> column column id</div><div class="line">     * <span class="doctag">@return</span> value at entry [row, column]</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> column)</span> </span>&#123;</div><div class="line">		<span class="comment">// 与 getCRSIndex 原理相同，通过 rowPtr 和 colInd 来进行 rowData 的元素定位</span></div><div class="line">        <span class="keyword">int</span> index = Arrays.binarySearch(colInd, rowPtr[row], rowPtr[row + <span class="number">1</span>], column);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (index &gt;= <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> rowData[index];</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="http://netlib.org/linalg/html_templates/node91.html" target="_blank" rel="external">Compressed Row Storage (CRS)</a></p>
+<p><a href="http://netlib.org/linalg/html_templates/node92.html" target="_blank" rel="external">Compressed Column Storage (CCS)</a></p>
+<p><a href="https://www.librec.net/" target="_blank" rel="external">LibRec</a></p>
+<p><a href="http://westerly-lzh.github.io/cn/2014/12/Sparse-Matrix-Storage-Style/" target="_blank" rel="external">http://westerly-lzh.github.io/cn/2014/12/Sparse-Matrix-Storage-Style/</a></p>
+</blockquote>
+
+      
+    </div>
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- The end<i class="fa fa-paw"></i>Thanks for reading-------------</div>
+    
+</div>
+      
+    </div>
+    <div>
+      
+        
+      
+    </div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推荐系统/" rel="tag"># 推荐系统</a>
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/huaweicraft2018/" rel="next" title="2018 华为软件精英挑战赛参赛总结">
+                <i class="fa fa-chevron-left"></i> 2018 华为软件精英挑战赛参赛总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+           
+              <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/70b4fd000153" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:xkhreal@gmail.com" target="_blank" title="Email">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Email
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://huanqiang.wang/" title="Huanqiang" target="_blank">Huanqiang</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏矩阵"><span class="nav-number">1.</span> <span class="nav-text">稀疏矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#稀疏矩阵的特性"><span class="nav-number">1.1.</span> <span class="nav-text">稀疏矩阵的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#稀疏矩阵的压缩存储"><span class="nav-number">1.2.</span> <span class="nav-text">稀疏矩阵的压缩存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Compressed-Row-Storage-CRS-压缩行存储"><span class="nav-number">1.2.1.</span> <span class="nav-text">Compressed Row Storage (CRS) 压缩行存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Compressed-Column-Storage-CCS-压缩列存储"><span class="nav-number">1.2.2.</span> <span class="nav-text">Compressed Column Storage (CCS) 压缩列存储</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LibRec-实现"><span class="nav-number">2.</span> <span class="nav-text">LibRec 实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+
+
+<!-- <div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+-->
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skye-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/08/SparseMatrix/';
+          this.page.identifier = '2018/08/08/SparseMatrix/';
+          this.page.title = '稀疏矩阵与稠密矩阵以及 LibeRec 中的实现';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skye-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
