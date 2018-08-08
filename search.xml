@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[稀疏矩阵与稠密矩阵以及 LibeRec 中的实现]]></title>
+      <title><![CDATA[稀疏矩阵与稠密矩阵以及 LibRec 中的实现]]></title>
       <url>http://yoursite.com/2018/08/08/SparseMatrix/</url>
       <content type="html"><![CDATA[<h2 id="稀疏矩阵"><a href="#稀疏矩阵" class="headerlink" title="稀疏矩阵"></a>稀疏矩阵</h2><p>在矩阵中，若数值为0的元素数目远远多于非0元素的数目时，则称该矩阵为<strong>稀疏矩阵</strong>。与之相反，若非0元素数目占大多数时，则称该矩阵为<strong>稠密矩阵</strong>。</p>
 <p>注：压缩存储的矩阵可以分为特殊矩阵和稀疏矩阵。对于那些具有相同元素或零元素在矩阵中分布具有一定规律的矩阵，被称之为特殊矩阵。对于那些零元素数据远远多于非零元素数目，并且非零元素的分布没有规律的矩阵称之为稀疏矩阵。</p>
