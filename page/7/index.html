@@ -314,6 +314,167 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/Mahout0.10.1安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/Mahout0.10.1安装/" itemprop="url">Mahout0.10.1安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T20:00:16+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/15/Mahout0.10.1安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/08/15/Mahout0.10.1安装/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h3><h3 id="编辑环境变量"><a href="#编辑环境变量" class="headerlink" title="编辑环境变量"></a>编辑环境变量</h3><p><code>sudo vim /etc/profile</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#MAHOUT</span></div><div class="line"><span class="built_in">export</span> MAHOUT_HOME=/home/ubuntu/cloud/mahout-0.10.1</div><div class="line"><span class="built_in">export</span> MAHOUT_CONF_DIR=<span class="variable">$MAHOUT_HOME</span>/conf</div><div class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</div><div class="line"></div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin:<span class="variable">$MAHOUT_HOME</span>/conf:<span class="variable">$MAHOUT_HOME</span>/bin:</div></pre></td></tr></table></figure></p>
+<h3 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h3><p><code>source /etc/profile</code></p>
+<h3 id="输入mahout测试-出现许多算法"><a href="#输入mahout测试-出现许多算法" class="headerlink" title="输入mahout测试 出现许多算法"></a>输入mahout测试 出现许多算法</h3><h3 id="进行kmeans算法简单运行"><a href="#进行kmeans算法简单运行" class="headerlink" title="进行kmeans算法简单运行"></a>进行kmeans算法简单运行</h3><ul>
+<li>下载测试数据集synthetic_control.data<br> <a href="http://archive.ics.uci.edu/ml/databases/synthetic_control/" target="_blank" rel="external">http://archive.ics.uci.edu/ml/databases/synthetic_control/</a></li>
+<li>在hdfs上创建目录  <code>/user/ubuntu/testdata</code></li>
+<li>上传测试数据<br><code>hadoop fs -put synthetic_control.data /user/ubuntu/testdata</code>  </li>
+<li>运行<br><code>mahout org.apache.mahout.clustering.syntheticcontrol.kmeans.Job</code></li>
+</ul>
+<p>参考</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/zhangduo/p/4679907.html" target="_blank" rel="external">http://www.cnblogs.com/zhangduo/p/4679907.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/Hadoop2.7.2集群搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1891,193 +2052,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/16/HBase集群搭建/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Skye">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skye's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/16/HBase集群搭建/" itemprop="url">HBase集群搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-16T16:26:16+08:00">
-                2016-06-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/06/16/HBase集群搭建/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/06/16/HBase集群搭建/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-上传hbase安装包"><a href="#1-上传hbase安装包" class="headerlink" title="1. 上传hbase安装包"></a>1. 上传hbase安装包</h2><h2 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h2><h2 id="3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"><a href="#3-配置hbase集群，要修改3个文件（首先zk集群已经安装好了）" class="headerlink" title="3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）"></a>3. 配置hbase集群，要修改3个文件（首先zk集群已经安装好了）</h2><p><em>注意：要把hadoop的hdfs-site.xml和core-site.xml 放到hbase/conf下</em></p>
-<h4 id="vim-hbase-env-sh"><a href="#vim-hbase-env-sh" class="headerlink" title="vim hbase-env.sh"></a>vim hbase-env.sh</h4><pre><code>export JAVA_HOME=/usr/java/jdk1.7.0_55
-//告诉hbase使用外部的zk 
-export HBASE_MANAGES_ZK=false
-</code></pre><h4 id="vim-hbase-site-xml"><a href="#vim-hbase-site-xml" class="headerlink" title="vim hbase-site.xml"></a>vim hbase-site.xml</h4><pre><code> &lt;configuration&gt;
-    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.rootdir&lt;/name&gt;
-            &lt;value&gt;hdfs://ns1/hbase&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定hbase是分布式的 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
-            &lt;value&gt;true&lt;/value&gt;
-    &lt;/property&gt;
-    &lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
-    &lt;property&gt;
-            &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
-            &lt;value&gt;itcast04:2181,itcast05:2181,itcast06:2181&lt;/value&gt;
-    &lt;/property&gt;
-&lt;/configuration&gt;
-</code></pre><h4 id="vim-regionservers"><a href="#vim-regionservers" class="headerlink" title="vim regionservers"></a>vim regionservers</h4><pre><code>itcast03
-itcast04
-itcast05
-itcast06
-</code></pre><h2 id="4-将配置好的HBase拷贝到每一个节点并同步时间"><a href="#4-将配置好的HBase拷贝到每一个节点并同步时间" class="headerlink" title="4. 将配置好的HBase拷贝到每一个节点并同步时间"></a>4. 将配置好的HBase拷贝到每一个节点并同步时间</h2><pre><code>scp -r /itcast/hbase-0.96.2-hadoop2/ itcast02:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast03:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast04:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast05:/itcast/
-scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
-</code></pre><h2 id="5-启动所有的hbase"><a href="#5-启动所有的hbase" class="headerlink" title="5. 启动所有的hbase"></a>5. 启动所有的hbase</h2><pre><code>分别启动zk
-    ./zkServer.sh start
-启动hbase集群
-    start-dfs.sh
-启动hbase，在主节点上运行：
-    start-hbase.sh
-</code></pre><h2 id="6-通过浏览器访问hbase管理页面"><a href="#6-通过浏览器访问hbase管理页面" class="headerlink" title="6.通过浏览器访问hbase管理页面"></a>6.通过浏览器访问hbase管理页面</h2><pre><code>192.168.1.201:60010
-</code></pre><h2 id="7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动"><a href="#7-为保证集群的可靠性，要启动多个HMaster-在itcast02上启动" class="headerlink" title="7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动"></a>7.为保证集群的可靠性，要启动多个HMaster,在itcast02上启动</h2><pre><code>hbase-daemon.sh start master
-</code></pre>
-          
-        
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2127,7 +2101,7 @@ scp -r /itcast/hbase-0.96.2-hadoop2/ itcast06:/itcast/
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

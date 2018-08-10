@@ -314,6 +314,172 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/31/Java Map 按key排序和按Value排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/31/Java Map 按key排序和按Value排序/" itemprop="url">Java Map 按key排序和按Value排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-31T15:24:13+08:00">
+                2016-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/31/Java Map 按key排序和按Value排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/08/31/Java Map 按key排序和按Value排序/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>做推荐系统项目时，对标签评分需要对标签评分map进行排序.</p>
+<h3 id="理论准备"><a href="#理论准备" class="headerlink" title="理论准备"></a>理论准备</h3><ul>
+<li><p>Map是键值对的集合接口，它的实现类主要包括：HashMap,TreeMap,Hashtable以及LinkedHashMap等。</p>
+</li>
+<li><p>TreeMap：基于红黑树（Red-Black tree）的 NavigableMap 实现，该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。<br>HashMap的值是没有顺序的，它是按照key的HashCode来实现的，对于这个无序的HashMap我们要怎么来实现排序呢？参照TreeMap的value排序。</p>
+</li>
+<li><p>Map.Entry返回Collections视图。</p>
+</li>
+</ul>
+<h3 id="key排序"><a href="#key排序" class="headerlink" title="key排序"></a>key排序</h3><p>TreeMap默认是升序的，如果我们需要改变排序方式，则需要使用比较器：Comparator。Comparator可以对集合对象或者数组进行排序的比较器接口，实现该接口的public compare(T o1,To2)方法即可实现排序，如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.Iterator;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Set;</div><div class="line"><span class="keyword">import</span> java.util.TreeMap;</div><div class="line"><span class="keyword">public</span> class TreeMapTest &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</div><div class="line">        Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;(</div><div class="line">                <span class="keyword">new</span> Comparator&lt;<span class="keyword">String</span>&gt;() &#123;</div><div class="line">                    <span class="keyword">public</span> <span class="keyword">int</span> compare(<span class="keyword">String</span> obj1, <span class="keyword">String</span> obj2) &#123;</div><div class="line">                        <span class="comment">// 降序排序</span></div><div class="line">                        <span class="built_in">return</span> obj2.compareTo(obj1);</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"b"</span>, <span class="string">"ccccc"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"d"</span>, <span class="string">"aaaaa"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"c"</span>, <span class="string">"bbbbb"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"a"</span>, <span class="string">"ddddd"</span>);</div><div class="line">        </div><div class="line">        Set&lt;<span class="keyword">String</span>&gt; keySet = <span class="built_in">map</span>.keySet();</div><div class="line">        Iterator&lt;<span class="keyword">String</span>&gt; iter = keySet.iterator();</div><div class="line">        <span class="built_in">while</span> (iter.hasNext()) &#123;</div><div class="line">            <span class="keyword">String</span> key = iter.next();</div><div class="line">            System.out.<span class="built_in">println</span>(key + <span class="string">":"</span> + <span class="built_in">map</span>.<span class="built_in">get</span>(key));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行如下：<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">d:</span>aaaaa</div><div class="line"><span class="symbol">c:</span>bbbbb</div><div class="line"><span class="symbol">b:</span>ccccc</div><div class="line"><span class="symbol">a:</span>ddddd</div></pre></td></tr></table></figure></p>
+<h3 id="value排序"><a href="#value排序" class="headerlink" title="value排序"></a>value排序</h3><p>上面例子是对根据TreeMap的key值来进行排序的，但是有时我们需要根据TreeMap的value来进行排序。对value排序我们就需要借助于Collections的sort(List<t> list, Comparator&lt;? super T&gt; c)方法，该方法根据指定比较器产生的顺序对指定列表进行排序。但是有一个前提条件，那就是所有的元素都必须能够根据所提供的比较器来进行比较，如下：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Collections;</div><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Map.Entry;</div><div class="line"><span class="keyword">import</span> java.util.TreeMap;</div><div class="line"><span class="keyword">public</span> class TreeMapTest &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</div><div class="line">        Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;();</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"a"</span>, <span class="string">"ddddd"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"c"</span>, <span class="string">"bbbbb"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"d"</span>, <span class="string">"aaaaa"</span>);</div><div class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"b"</span>, <span class="string">"ccccc"</span>);</div><div class="line">        </div><div class="line">        <span class="comment">//这里将map.entrySet()转换成list</span></div><div class="line">        List&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt;(<span class="built_in">map</span>.entrySet());</div><div class="line">        <span class="comment">//然后通过比较器来实现排序</span></div><div class="line">        Collections.sort(list,<span class="keyword">new</span> Comparator&lt;Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt;&gt;() &#123;</div><div class="line">            <span class="comment">//升序排序</span></div><div class="line">            <span class="keyword">public</span> <span class="keyword">int</span> compare(Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; o1,</div><div class="line">                    Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; o2) &#123;</div><div class="line">                <span class="built_in">return</span> o1.getValue().compareTo(o2.getValue());</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">        &#125;);</div><div class="line">        </div><div class="line">        <span class="built_in">for</span>(Map.Entry&lt;<span class="keyword">String</span>,<span class="keyword">String</span>&gt; mapping:list)&#123; </div><div class="line">               System.out.<span class="built_in">println</span>(mapping.<span class="built_in">getKey</span>()+<span class="string">":"</span>+mapping.getValue()); </div><div class="line">          &#125; </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></t></p>
+<p>运行结果如下：<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">d:</span>aaaaa</div><div class="line"><span class="symbol">c:</span>bbbbb</div><div class="line"><span class="symbol">b:</span>ccccc</div><div class="line"><span class="symbol">a:</span>ddddd</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参考：<a href="http://blog.csdn.net/xiaoyu714543065/article/details/38519817" target="_blank" rel="external">http://blog.csdn.net/xiaoyu714543065/article/details/38519817</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/29/Java BufferdReader读取文件乱码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1911,167 +2077,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/Mahout0.10.1安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Skye">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skye's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/Mahout0.10.1安装/" itemprop="url">Mahout0.10.1安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T20:00:16+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/15/Mahout0.10.1安装/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/08/15/Mahout0.10.1安装/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h3><h3 id="编辑环境变量"><a href="#编辑环境变量" class="headerlink" title="编辑环境变量"></a>编辑环境变量</h3><p><code>sudo vim /etc/profile</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#MAHOUT</span></div><div class="line"><span class="built_in">export</span> MAHOUT_HOME=/home/ubuntu/cloud/mahout-0.10.1</div><div class="line"><span class="built_in">export</span> MAHOUT_CONF_DIR=<span class="variable">$MAHOUT_HOME</span>/conf</div><div class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</div><div class="line"></div><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin:<span class="variable">$MAHOUT_HOME</span>/conf:<span class="variable">$MAHOUT_HOME</span>/bin:</div></pre></td></tr></table></figure></p>
-<h3 id="更新配置"><a href="#更新配置" class="headerlink" title="更新配置"></a>更新配置</h3><p><code>source /etc/profile</code></p>
-<h3 id="输入mahout测试-出现许多算法"><a href="#输入mahout测试-出现许多算法" class="headerlink" title="输入mahout测试 出现许多算法"></a>输入mahout测试 出现许多算法</h3><h3 id="进行kmeans算法简单运行"><a href="#进行kmeans算法简单运行" class="headerlink" title="进行kmeans算法简单运行"></a>进行kmeans算法简单运行</h3><ul>
-<li>下载测试数据集synthetic_control.data<br> <a href="http://archive.ics.uci.edu/ml/databases/synthetic_control/" target="_blank" rel="external">http://archive.ics.uci.edu/ml/databases/synthetic_control/</a></li>
-<li>在hdfs上创建目录  <code>/user/ubuntu/testdata</code></li>
-<li>上传测试数据<br><code>hadoop fs -put synthetic_control.data /user/ubuntu/testdata</code>  </li>
-<li>运行<br><code>mahout org.apache.mahout.clustering.syntheticcontrol.kmeans.Job</code></li>
-</ul>
-<p>参考</p>
-<blockquote>
-<p><a href="http://www.cnblogs.com/zhangduo/p/4679907.html" target="_blank" rel="external">http://www.cnblogs.com/zhangduo/p/4679907.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2121,7 +2126,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
