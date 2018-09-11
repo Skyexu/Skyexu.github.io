@@ -115,7 +115,29 @@
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="支持向量机（SVM）是90年代中期发展起来的基于统计学习理论的一种机器学习方法，通过寻求结构化风险最小来提高学习机泛化能力，实现经验风险和置信范围的最小化，从而达到在统计样本量较少的情况下，亦能获得良好统计规律的目的。 通俗来讲，它是一种二类分类模型，其基本模型定义为特征空间上的间隔最大的线性分类器，即支持向量机的学习策略便是间隔最大化，最终可转化为一个凸二次规划问题的求解。  线性分割 kern">
 <meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-13/56429398-file_1489401775120_16d40.png">
-<meta property="og:updated_time" content="2017-03-15T10:44:53.041Z">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-9-11/26618178.jpg">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132400.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111647.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111746.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132655.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713134514.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713134322.png">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-9-11/53636212.jpg">
+<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/18-9-11/56623170.jpg">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713143622.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713202306.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713152150.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713152255.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713193142.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713193328.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713195055.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713195135.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713200756.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713200840.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713203827.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111647.png">
+<meta property="og:image" content="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132655.png">
+<meta property="og:updated_time" content="2018-09-11T10:56:21.969Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支持向量机 Support Vector Machine">
 <meta name="twitter:description" content="支持向量机（SVM）是90年代中期发展起来的基于统计学习理论的一种机器学习方法，通过寻求结构化风险最小来提高学习机泛化能力，实现经验风险和置信范围的最小化，从而达到在统计样本量较少的情况下，亦能获得良好统计规律的目的。 通俗来讲，它是一种二类分类模型，其基本模型定义为特征空间上的间隔最大的线性分类器，即支持向量机的学习策略便是间隔最大化，最终可转化为一个凸二次规划问题的求解。  线性分割 kern">
@@ -422,18 +444,142 @@
 <p>通俗来讲，它是一种二类分类模型，其基本模型定义为特征空间上的间隔最大的线性分类器，即支持向量机的学习策略便是间隔最大化，最终可转化为一个凸二次规划问题的求解。</p>
 <ul>
 <li>线性分割</li>
-<li>kernel trick 核技巧，多特征，将x,y映射到多维空间进行特征分割，之后再返回二维空间形成非线性分割线</li>
+<li>kernel trick 核技巧，多特征，将x,y映射到多维空间进行特征分割，之后再返回二维空间形成非线性分割线。<strong>核函数</strong>表示将输入从输入空间映射到特征空间得到的特征向量之间的内积。</li>
 </ul>
 <p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-13/56429398-file_1489401775120_16d40.png" alt=""></p>
+<h2 id="什么是支持向量"><a href="#什么是支持向量" class="headerlink" title="什么是支持向量"></a>什么是支持向量</h2><ul>
+<li>训练数据集中与分离超平面距离最近的样本点的实例称为支持向量。支持向量在分离超平面时起决定作用，所以叫支持向量机。</li>
+<li>更通俗的解释：<ul>
+<li>数据集中的某些点，位置比较特殊。比如 <code>x+y-2=0</code> 这条直线，假设出现在直线上方的样本记为 A 类，下方的记为 B 类。</li>
+<li>在寻找找这条直线的时候，一般只需看两类数据，它们各自最靠近划分直线的那些点，而其他的点起不了决定作用。</li>
+<li>这些点就是所谓的“支持点”，在数学中，这些点称为<strong>向量</strong>，所以更正式的名称为“<strong>支持向量</strong>”。</li>
+</ul>
+</li>
+</ul>
+<h2 id="支持向量机的分类"><a href="#支持向量机的分类" class="headerlink" title="支持向量机的分类"></a>支持向量机的分类</h2><ul>
+<li>线性可分支持向量机<ul>
+<li>当训练数据<strong>线性可分</strong>时，通过<strong>硬间隔最大化</strong>，学习一个线性分类器，即线性可分支持向量机，又称<strong>硬间隔支持向量机</strong>。</li>
+</ul>
+</li>
+<li>线性支持向量机<ul>
+<li>当训练数据<strong>接近线性可分</strong>时，通过<strong>软间隔最大化</strong>，学习一个线性分类器，即线性支持向量机，又称<strong>软间隔支持向量机</strong>。</li>
+</ul>
+</li>
+<li>非线性支持向量机<ul>
+<li>当训练数据<strong>线性不可分</strong>时，通过使用<strong>核技巧</strong>及软间隔最大化，学习非线性支持向量机。</li>
+</ul>
+</li>
+</ul>
+<h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><ul>
+<li><p><strong>线性可分</strong> ：存在一个超平面使得数据集中的正负样本正确划分到超平面的两侧。</p>
+</li>
+<li><p>当训练数据<strong>线性可分</strong>时，通过<strong>硬间隔最大化</strong>，学习一个线性分类器，即线性可分支持向量机，又称<strong>硬间隔支持向量机</strong>。感知机模型，即误差最小化的模型来求分离超平面的解有无穷多个。利用间隔最大化求解最优分离超平面，这时，解是唯一的。</p>
+<p><img src="http://ojpgmz933.bkt.clouddn.com/18-9-11/26618178.jpg" alt=""></p>
+</li>
+<li><p>线性 SVM 的推导分为两部分</p>
+<ol>
+<li>如何根据<strong>间隔最大化</strong>的目标导出 SVM 的<strong>标准问题</strong>；</li>
+<li>拉格朗日乘子法对偶问题的求解过程.</li>
+</ol>
+</li>
+</ul>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p>训练集 <code>T</code></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=T=%5Cleft&space;%7B&space;(x_1,y_1" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132400.png" alt="img"></a>,(x_2,y_2),%5Ccdots,(x_N,y_N)&space;%5Cright&space;%7D)</p>
+<p>y 为 1 或者 -1，正负样本</p>
+</li>
+<li><p><strong>分离超平面</strong> <code>(w,b)</code></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=w%5E*%5Ccdot&space;x+b%5E*=0" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111647.png" alt="img"></a></p>
+<p>如果使用映射函数，那么分离超平面为</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=w%5E*%5Ccdot&space;%5CPhi&space;(x" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111746.png" alt="img"></a>+b%5E*=0)</p>
+<blockquote>
+<p>映射函数 <code>Φ(x)</code> 定义了从输入空间到特征空间的变换，特征空间通常是更高维的，甚至无穷维；方便起见，这里假设 <code>Φ(x)</code> 做的是恒等变换。</p>
+</blockquote>
+</li>
+<li><p>分类决策函数 <code>f(x)</code></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=f(x" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132655.png" alt="img"></a>=%5Cmathrm%7Bsign%7D(w%5E<em>%5Ccdot&space;x+b%5E</em>))</p>
+</li>
+</ul>
+<h3 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h3><ol>
+<li><p><strong>从“函数间隔”到“几何间隔”</strong> </p>
+<p>给定训练集<code>T</code>和超平面<code>(w,b)</code>，定义<strong>函数间隔γ^</strong>：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%5Chat%7B%5Cgamma%7D&amp;=%5Cunderset%7Bi=1,%5Ccdots,N%7D%7B%5Cmin%7D,y_i(wx_i+b" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713134514.png" alt="img"></a>&space;%5C&space;&amp;=%5Cunderset%7Bi=1,%5Ccdots,N%7D%7B%5Cmin%7D,%5Chat%7B%5Cgamma%7D_i%5Cend%7Baligned%7D)</p>
+<p>对 <code>w</code> 作规范化，使函数间隔成为<strong>几何间隔γ</strong></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%5Cgamma&amp;=%5Cunderset%7Bi=1,%5Ccdots,N%7D%7B%5Cmin%7D,y_i(%5Cfrac%7Bw%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7Dx_i+%5Cfrac%7Bb%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713134322.png" alt="img"></a>%5C&space;&amp;=%5Cunderset%7Bi=1,%5Ccdots,N%7D%7B%5Cmin%7D,%5Cfrac%7B%5Cgamma_i%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7D&space;%5Cend%7Baligned%7D)</p>
+</li>
+<li><p><strong>最大化几何间隔</strong></p>
+<p>对训练数据集找到几何间隔最大的超平面意味着以充分大的确信度对训练数据进行分类。即，不仅将正负实例点分开，而且对于最难分的点也有足够大的确信度将它们分开。这样对未知的新实例有很好的分类预测能力。</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;&amp;%7B%5Ccolor%7BRed%7D&space;%5Cunderset%7Bw,b%7D%7B%5Cmax%7D%7D&space;%5Cquad%5Cgamma&space;%5C&space;&amp;&space;%5Cmathrm%7Bs.t.%7D%5Cquad,&space;y_i(%5Cfrac%7Bw%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7Dx_i+%5Cfrac%7Bb%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7D" target="_blank" rel="external"><img src="http://ojpgmz933.bkt.clouddn.com/18-9-11/53636212.jpg" alt=""></a>&space;%5Cgeq&space;%5Cgamma,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D)</p>
+<p>​</p>
+<p>由函数间隔与几何间隔的关系，等价于</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;&amp;%5Cunderset%7Bw,b%7D%7B%5Cmax%7D&space;%5Cquad%7B%5Ccolor%7BRed%7D&space;%5Cfrac%7B%5Chat%7B%5Cgamma%7D%7D%7B%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7D&space;&space;&amp;&space;%5Cmathrm%7Bs.t.%7D%5Cquad,&space;y_i(wx_i+b" target="_blank" rel="external"><img src="http://ojpgmz933.bkt.clouddn.com/18-9-11/56623170.jpg" alt=""></a>&space;%5Cgeq&space;%7B%5Ccolor%7BRed%7D&space;%5Chat%7B%5Cgamma%7D%7D,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D)</p>
+<p>​</p>
+<p>函数间隔<code>γ^</code>的取值不会影响最终的超平面<code>(w,b)</code>：取<code>γ^=1</code>；又最大化 <code>1/||w||</code> 等价于最小化<code>1/2*||w||^2</code>，于是有</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;&amp;%7B%5Ccolor%7BRed%7D&space;%5Cunderset%7Bw,b%7D%7B%5Cmax%7D&space;%7D&space;%5Cquad%5Cfrac%7B%5Chat%7B%5Cgamma%7D%7D%7B%7B%5Ccolor%7BRed%7D&space;%5Cleft&space;%7C&space;w&space;%5Cright&space;%7C%7D%7D&space;%5C&space;&amp;&space;%5Cmathrm%7Bs.t.%7D%5Cquad,&space;y_i(wx_i+b" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713143622.png" alt="img"></a>&space;%5Cgeq&space;%5Chat%7B%5Cgamma%7D_i,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D)</p>
+<p>​</p>
+<blockquote>
+<p>为什么令<code>γ^=1</code>？——比例改变<code>(ω,b)</code>，超平面不会改变，但函数间隔<code>γ^</code>会成比例改变，因此可以通过等比例改变<code>(ω,b)</code>使函数间隔<code>γ^=1</code></p>
+</blockquote>
+<ul>
+<li><p>该约束最优化问题即为<strong>线性支持向量机</strong>的标准问题——这是一个<strong>凸二次优化</strong>问题，可以使用商业 QP 代码完成。</p>
+<p>理论上，线性 SVM 的问题已经解决了；但在高等数学中，<strong>带约束的最优化问题</strong>还可以用另一种方法求解——<strong>拉格朗日乘子法</strong>。该方法的优点一是更容易求解，而是自然引入<strong>核函数</strong>，进而推广到非线性的情况。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>构建拉格朗日函数</strong></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;L(w,b,%7B%5Ccolor%7BRed%7D&space;%5Calpha%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713202306.png" alt="img"></a>=&amp;%5Cfrac%7B1%7D%7B2%7Dw%5ETw-%5Csum_%7Bi=1%7D%5EN%7B%5Ccolor%7BRed%7D&space;%5Calpha_i%7D%5By_i(w%5ETx_i+b)-1%5D%5C&space;&amp;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;%5Cgeq&space;0%7D,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D)</p>
+</li>
+<li><p>标准问题是求极小极大问题：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%7B%5Ccolor%7BRed%7D&space;%5Cunderset%7Bw,b%7D%7B%5Cmin%7D%7D&space;%7B%5Ccolor%7BBlue%7D&space;%5Cunderset%7B%5Calpha%7D%7B%5Cmax%7D%7D&space;L(w,b,%5Calpha" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713152150.png" alt="img"></a>&space;%5Cend%7Baligned%7D)</p>
+<p>其对偶问题为：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%7B%5Ccolor%7BBlue%7D&space;%5Cunderset%7B%5Calpha%7D%7B%5Cmax%7D%7D&space;%7B%5Ccolor%7BRed%7D&space;%5Cunderset%7Bw,b%7D%7B%5Cmin%7D%7D&space;L(w,b,%5Calpha" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713152255.png" alt="img"></a>&space;%5Cend%7Baligned%7D)</p>
+</li>
+<li><p>求 <code>L</code> 对 <code>(w,b)</code> 的极小</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%5Cmathrm%7Bset%7D%5Cquad&space;%5Cfrac%7B%5Cpartial&space;L%7D%7B%5Cpartial&space;w%7D=0&space;;;&amp;%5CRightarrow;&space;w-%5Csum_%7Bi=1%7D%5EN&space;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;y_i&space;x_i%7D=0%5C&space;&amp;%5CRightarrow;&space;w=%5Csum_%7Bi=1%7D%5EN&space;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;y_i&space;x_i%7D&space;%5Cend%7Baligned%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713193142.png" alt="img"></a></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;%5Cmathrm%7Bset%7D%5Cquad&space;%5Cfrac%7B%5Cpartial&space;L%7D%7B%5Cpartial&space;b%7D=0&space;;;&amp;%5CRightarrow;&space;%5Csum_%7Bi=1%7D%5EN&space;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;y_i%7D=0&space;%5Cend%7Baligned%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713193328.png" alt="img"></a></p>
+<p>结果代入<code>L</code>，有：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;L(w,b,%7B%5Ccolor%7BRed%7D&space;%5Calpha%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713195055.png" alt="img"></a>&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-%5Csum_%7Bi=1%7D%5EN%7B%5Ccolor%7BRed%7D&space;%5Calpha_i%7D%5By_i(w%5ETx<em>i+b)-1%5D%5C&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-w%5ET%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_iy_ix<em>i-b%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_iy<em>i+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-w%5ETw+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=-%5Cfrac%7B1%7D%7B2%7Dw%5ETw+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=-%5Cfrac%7B1%7D%7B2%7D%5Csum</em>%7Bi=1%7D%5EN%5Csum_%7Bj=1%7D%5EN&space;%5Calpha_i%5Calpha_j%5Ccdot&space;y_iy_j%5Ccdot&space;%7B%5Ccolor%7BRed%7D&space;x_i%5ETx<em>j%7D+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_i&space;%5Cend%7Baligned%7D)</p>
+<p>即</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;L(w,b,%7B%5Ccolor%7BRed%7D&space;%5Calpha%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713195135.png" alt="img"></a>&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-%5Csum_%7Bi=1%7D%5EN%7B%5Ccolor%7BRed%7D&space;%5Calpha_i%7D%5By_i(w%5ETx<em>i+b)-1%5D%5C&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-w%5ET%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_iy_ix<em>i-b%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_iy<em>i+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=%5Cfrac%7B1%7D%7B2%7Dw%5ETw-w%5ETw+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=-%5Cfrac%7B1%7D%7B2%7Dw%5ETw+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha<em>i%5C&space;&amp;=-%5Cfrac%7B1%7D%7B2%7D%5Csum</em>%7Bi=1%7D%5EN%5Csum_%7Bj=1%7D%5EN&space;%5Calpha_i%5Calpha_j%5Ccdot&space;y_iy_j%5Ccdot&space;%7B%5Ccolor%7BRed%7D&space;x_i%5ETx<em>j%7D+%5Csum</em>%7Bi=1%7D%5EN&space;%5Calpha_i&space;%5Cend%7Baligned%7D)</p>
+</li>
+<li><p>求 <code>L</code> 对 <code>α</code> 的极大，即</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;&amp;%5Cunderset%7B%5Calpha%7D%7B%5Cmax%7D&space;%5Cquad&space;-%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi=1%7D%5EN%5Csum_%7Bj=1%7D%5EN&space;%5Calpha_i%5Calpha_j%5Ccdot&space;y_iy_j%5Ccdot&space;x_i%5ETx_j+%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i%5C&space;&amp;&space;%5Cmathrm%7Bs.t.%7D%5Cquad;&space;%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i&space;y_i=0,&space;&space;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;%5Cgeq&space;0%7D,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713200756.png" alt="img"></a></p>
+<p>该问题的对偶问题为：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;&amp;%7B%5Ccolor%7BRed%7D&space;%5Cunderset%7B%5Calpha%7D%7B%5Cmin%7D&space;%7D&space;%5Cquad&space;%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi=1%7D%5EN%5Csum_%7Bj=1%7D%5EN&space;%5Calpha_i%5Calpha_j%5Ccdot&space;y_iy_j%5Ccdot&space;x_i%5ETx_j-%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i%5C&space;&amp;&space;%5Cmathrm%7Bs.t.%7D%5Cquad;&space;%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i&space;y_i=0,&space;&space;%7B%5Ccolor%7BRed%7D&space;%5Calpha_i&space;%5Cgeq&space;0%7D,%5Cquad&space;i=1,2,%5Ccdots,N&space;%5Cend%7Baligned%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713200840.png" alt="img"></a></p>
+<p>于是，标准问题最后等价于求解该<strong>对偶问题</strong></p>
+<blockquote>
+<p>继续求解该优化问题，有 <a href="https://blog.csdn.net/ajianyingxiaoqinghan/article/details/73087304#t11" target="_blank" rel="external">SMO 方法</a>；因为《统计学习方法》也只讨论到这里，故推导也止于此</p>
+</blockquote>
+</li>
+<li><p>设 <code>α</code> 的解为 <code>α*</code>，则存在下标<code>j</code>使<code>α_j &gt; 0</code>，可得标准问题的解为：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=%5Cbegin%7Baligned%7D&space;w%5E*&amp;=%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i%5E*y_ix_i%5C&space;b%5E*&amp;=%7B%5Ccolor%7BRed%7D&space;y_j%7D-%5Csum_%7Bi=1%7D%5EN&space;%5Calpha_i%5E*y_i(x_i%5ET%7B%5Ccolor%7BRed%7D&space;x_j%7D" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713203827.png" alt="img"></a>&space;%5Cend%7Baligned%7D)</p>
+<p>可得分离超平面及分类决策函数为：</p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=w%5E*%5Ccdot&space;x+b%5E*=0" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713111647.png" alt="img"></a></p>
+<p><a href="http://www.codecogs.com/eqnedit.php?latex=f(x" target="_blank" rel="external"><img src="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/assets/%E5%85%AC%E5%BC%8F_20180713132655.png" alt="img"></a>=%5Cmathrm%7Bsign%7D(w%5E<em>%5Ccdot&space;x+b%5E</em>))</p>
+</li>
+</ol>
+<h2 id="线性支持向量机"><a href="#线性支持向量机" class="headerlink" title="线性支持向量机"></a>线性支持向量机</h2><p>即在线性可分向量机的基础上，增加惩罚参数和松弛变量，使模型可以排除一些特异点之后线性可分，使<strong>软间隔最大化</strong>。</p>
+<h2 id="非线性支持向量机"><a href="#非线性支持向量机" class="headerlink" title="非线性支持向量机"></a>非线性支持向量机</h2><p>非线性问题所采用的方法是进行非线性变换，将非线性问题转化为线性问题。</p>
+<ul>
+<li>多项式和函数</li>
+<li>高斯核函数</li>
+<li>字符串核函数</li>
+</ul>
 <h2 id="使用-sklearn-实战"><a href="#使用-sklearn-实战" class="headerlink" title="使用 sklearn 实战"></a>使用 sklearn 实战</h2><a id="more"></a>
-<p>###调参</p>
-<p>在 rbf 核下，分别使用10、100、1000、10000的C参数进行调整输出准确率。<br>使用1%的数据集。</p>
+<h3 id="调参"><a href="#调参" class="headerlink" title="调参"></a>调参</h3><p>在 rbf 核下，分别使用10、100、1000、10000的C参数进行调整输出准确率。<br>使用1%的数据集。</p>
 <p><strong>C参数</strong>： 低C使决策表面平滑，而高C旨在通过给予模型自由选择更多样本作为支持向量来正确地分类所有训练样本。</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">features_train</span> = features_train[:len(features_train)/<span class="number">100</span>]</div><div class="line"><span class="attr">labels_train</span> = labels_train[:len(labels_train)/<span class="number">100</span>]</div></pre></td></tr></table></figure>
 <p>结果如下<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="attr">C</span>=<span class="number">10.0</span> accuracy=<span class="number">0.616040955631</span></div><div class="line"><span class="attr">C</span>=<span class="number">100.0</span> accuracy=<span class="number">0.616040955631</span></div><div class="line"><span class="attr">C</span>=<span class="number">1000</span>. accuracy=<span class="number">0.821387940842</span></div><div class="line"><span class="attr">C</span>=<span class="number">10000</span>. accuracy=<span class="number">0.892491467577</span></div></pre></td></tr></table></figure></p>
 <h3 id="结果计算"><a href="#结果计算" class="headerlink" title="结果计算"></a>结果计算</h3><p>在全数据集下，进行准确度计算，并计算预测为Chris邮件的个数</p>
 <figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"></div><div class="line"><span class="string">""" </span></div><div class="line">    This is the code to accompany the Lesson 2 (SVM) mini-project.</div><div class="line"></div><div class="line">    Use a SVM to identify emails from the Enron corpus by their authors:    </div><div class="line">    Sara has label 0</div><div class="line">    Chris has label 1</div><div class="line">"""</div><div class="line">    </div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</div><div class="line">sys.path.append(<span class="string">"../tools/"</span>)</div><div class="line"><span class="keyword">from</span> email_preprocess <span class="keyword">import</span> preprocess</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">### features_train and features_test are the features for the training</span></div><div class="line">### <span class="keyword">and</span> testing datasets, respectively</div><div class="line"><span class="comment">### labels_train and labels_test are the corresponding item labels</span></div><div class="line">features_train, features_test, labels_train, labels_test = preprocess()</div><div class="line"></div><div class="line"># reduce training data</div><div class="line">#features_train = features_train[:len(features_train)/100]</div><div class="line">#labels_train = labels_train[:len(labels_train)/100]</div><div class="line"></div><div class="line"></div><div class="line">###<span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span></div><div class="line"><span class="comment">### your code goes here ###</span></div><div class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</div><div class="line">clf = SVC(kernel=<span class="string">'rbf'</span>,C=<span class="number">10000.</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#### now your job is to fit the classifier</span></div><div class="line">###<span class="comment"># using the training features/labels, and to</span></div><div class="line"><span class="comment">#### make a set of predictions on the test data</span></div><div class="line">t0 = time()</div><div class="line">clf.fit(features_train,labels_train)</div><div class="line">print "training time : " ,round(time()-t0,3),"s"</div><div class="line"></div><div class="line">###<span class="comment"># store your predictions in a list named pred</span></div><div class="line">t1 = time()</div><div class="line">pred = clf.predict(features_test)</div><div class="line"><span class="built_in">print</span> <span class="string">"predicting time : "</span> ,round(time()-t1,<span class="number">3</span>),<span class="string">"s"</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</div><div class="line">acc = accuracy_score(pred, labels_test)</div><div class="line"><span class="built_in">print</span> <span class="string">"accuracy: "</span>, acc</div><div class="line"></div><div class="line"><span class="comment"># answer1=pred[10]</span></div><div class="line"><span class="comment"># answer2=pred[26]</span></div><div class="line"><span class="comment"># answer3=pred[50]</span></div><div class="line"></div><div class="line">num = <span class="number">0</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> pred:</div><div class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</div><div class="line">        num = num + <span class="number">1</span></div><div class="line"></div><div class="line"><span class="built_in">print</span> <span class="string">"total Chris(1): "</span>, num</div><div class="line"><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">######</span><span class="comment">###</span></div></pre></td></tr></table></figure>
 <p>结果如下<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="literal">no</span>. <span class="string">of</span> <span class="string">Chris</span> <span class="string">training</span> <span class="attr">emails:</span> <span class="number">7936</span></div><div class="line"><span class="literal">no</span>. <span class="string">of</span> <span class="string">Sara</span> <span class="string">training</span> <span class="attr">emails:</span> <span class="number">7884</span></div><div class="line"><span class="string">training</span> <span class="string">time</span> <span class="string">:</span>  <span class="number">159.096</span> <span class="string">s</span></div><div class="line"><span class="string">predicting</span> <span class="string">time</span> <span class="string">:</span>  <span class="number">19.393</span> <span class="string">s</span></div><div class="line"><span class="attr">accuracy:</span>  <span class="number">0.990898748578</span></div><div class="line"><span class="string">total</span> <span class="string">Chris(1):</span>  <span class="number">877</span></div></pre></td></tr></table></figure></p>
+<p>参考</p>
+<blockquote>
+<ul>
+<li>统计学习方法  李航</li>
+<li><a href="https://github.com/imhuay/Algorithm_Interview_Notes-Chinese" target="_blank" rel="external">https://github.com/imhuay/Algorithm_Interview_Notes-Chinese</a></li>
+</ul>
+</blockquote>
 
       
     </div>
@@ -689,7 +835,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-sklearn-实战"><span class="nav-number">1.</span> <span class="nav-text">使用 sklearn 实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#结果计算"><span class="nav-number">1.1.</span> <span class="nav-text">结果计算</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是支持向量"><span class="nav-number">1.</span> <span class="nav-text">什么是支持向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持向量机的分类"><span class="nav-number">2.</span> <span class="nav-text">支持向量机的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性可分支持向量机"><span class="nav-number">3.</span> <span class="nav-text">线性可分支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公式推导"><span class="nav-number">3.2.</span> <span class="nav-text">公式推导</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性支持向量机"><span class="nav-number">4.</span> <span class="nav-text">线性支持向量机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非线性支持向量机"><span class="nav-number">5.</span> <span class="nav-text">非线性支持向量机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-sklearn-实战"><span class="nav-number">6.</span> <span class="nav-text">使用 sklearn 实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调参"><span class="nav-number">6.1.</span> <span class="nav-text">调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果计算"><span class="nav-number">6.2.</span> <span class="nav-text">结果计算</span></a></li></ol></li></ol></div>
             
 
           </div>
