@@ -107,23 +107,23 @@
 
 
 
-<meta name="description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta name="description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以">
 <meta name="keywords" content="Hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大数据系列 2：分布式文件系统 HDFS">
 <meta property="og:url" content="http://yoursite.com/2018/12/24/大数据系列 2：分布式文件系统 HDFS/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
-<meta property="og:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta property="og:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyflkr5vmnj20oa0gsjs7.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhkin1lm1j20oa0ewaal.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn63iu99g206x05m3yl.gif">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn4lfwyig20ct07pwep.gif">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg">
-<meta property="og:updated_time" content="2019-02-27T13:04:05.746Z">
+<meta property="og:updated_time" content="2019-02-27T13:10:08.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据系列 2：分布式文件系统 HDFS">
-<meta name="twitter:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta name="twitter:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
 
 
@@ -427,10 +427,10 @@
 <blockquote>
 <p>Google 三架马车中，第一架即是 GFS（Googel File system ）</p>
 </blockquote>
-<p>[TOC]</p>
 <h2 id="文件系统从垂直伸缩到水平伸缩"><a href="#文件系统从垂直伸缩到水平伸缩" class="headerlink" title="文件系统从垂直伸缩到水平伸缩"></a>文件系统从垂直伸缩到水平伸缩</h2><p>早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。</p>
 <p>独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以认为是一种垂直伸缩。其基本思想是把多个磁盘组装起来称为一个磁盘阵列，使之性能达到甚至超过一个价格昂贵、容量巨大的硬盘。根据 RAID 实现方式的不同，可以有不同的效果，包括提升容量、磁盘容错、处理性能。</p>
 <p>互联网时代，<strong>计算机硬件的性能提升早已放缓</strong>，公司购买大型计算机的成本是很大的，所以开始出现水平伸缩的方式，通过分布式技术，在集群中不断增加计算机来提升计算能力。将 RAID 的思想应用到分布式集群，就产生了分布式文件系统，分布式存储技术的典型代表就是 HDFS。</p>
+<a id="more"></a>
 <p>HDFS (Hadoop Distributed File System) 被设计用来搭建大规模的分布式集群，提供海量数据的读写、存储。</p>
 <p>HDFS 的特点和设计目标：</p>
 <ul>

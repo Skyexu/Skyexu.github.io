@@ -117,7 +117,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fn2bfh40j20zk0k0ta0.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fp7oqlk3j20o90ag0vk.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg">
-<meta property="og:updated_time" content="2019-02-27T12:58:49.617Z">
+<meta property="og:updated_time" content="2019-02-27T13:09:05.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据系列4：MapReduce 编程模型原理">
 <meta name="twitter:description" content="本文将介绍Google 三架马车中的第二架——MapReduce 计算框架  MapReduce 是什么MapReduce 是一种编程模型，用于大规模数据集（大于1TB）的并行运算。它极大地方便了编程人员将自己的程序运行在分布式系统上。这种编程模型在很长时间以前就出现了，但在以前这个编程模型不是非常火热。当 Google 关于 MapReduce 计算框架的论文发布，紧接着 Hadoop 的开">
@@ -426,6 +426,7 @@
 </blockquote>
 <h2 id="MapReduce-是什么"><a href="#MapReduce-是什么" class="headerlink" title="MapReduce 是什么"></a>MapReduce 是什么</h2><p>MapReduce 是一种编程模型，用于大规模数据集（大于1TB）的并行运算。它极大地方便了编程人员将自己的程序运行在分布式系统上。这种编程模型在很长时间以前就出现了，但在以前这个编程模型不是非常火热。当 Google 关于 MapReduce 计算框架的<a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/mapreduce-osdi04.pdf" target="_blank" rel="external">论文</a>发布，紧接着 Hadoop 的开源使这个编程模型变得异常火爆，从而使得大数据计算通用编程成为可能。</p>
 <p>MapReduce <strong>即是编程模型，又是计算框架</strong>。开发人员需要基于 MapReduce 编程模型去开发分布式程序，然后将程序通过 MapReduce 计算框架分发到 Hadoop 集群中来运行。</p>
+<a id="more"></a>
 <hr>
 <p>网上有一个形象的例子来解释这个编程模型。</p>
 <p>我问妻子：“你真的想要弄懂什么是 MapReduce？” 她很坚定地回答说“是的”。 因此我问道：</p>
