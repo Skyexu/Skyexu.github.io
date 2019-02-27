@@ -314,6 +314,659 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/" itemprop="url">VMWare虚拟机：“锁定文件失败”的解决方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-19T14:38:06+08:00">
+                2016-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机技巧</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/19/VMWare虚拟机：“锁定文件失败”的解决方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>如果使用VMWare虚拟机的时候突然系统崩溃蓝屏或者强行关机，有一定几率会导致无法启动，会提示：锁定文件失败，打不开磁盘或快照所依赖的磁盘。</p>
+<blockquote>
+<p>虚拟磁盘(.vmdk)本身有一个磁盘保护机制，为了防止多台虚拟机同时访问同一个虚拟磁盘(.vmdk)带来的数据丢失和性能削减方面的隐患，每次启动虚拟机的时候虚拟机会使用扩展名为.lck（磁盘锁）文件对虚拟磁盘(.vmdk)进行锁定保护。当虚拟机关闭时.lck（磁盘锁）文件自动删除。但是可能由于您非正常关闭虚拟机，这时虚拟机还没来得及删除您系统上的.lck（磁盘锁）文件，所以当下次您启动虚拟机的时候出现了上述错误。</p>
+</blockquote>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>打开你存放虚拟机系统文件的文件夹，注意，是系统文件，不是虚拟机的安装目录。搜索关键字<code>*.lck</code>，删除搜索到的文件即可。</p>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/19/亚马逊EC2搭建Shadowsocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="url">亚马逊EC2搭建Shadowsocks</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-19T11:26:26+08:00">
+                2016-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机技巧</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/19/亚马逊EC2搭建Shadowsocks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/19/亚马逊EC2搭建Shadowsocks/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在网上寻找优秀的科学上网方式中发现，自己搭建Shadowscoks是非常不错的方式，并且AWS有一年的免费使用期限，到期后再买别的VPS就行了。<br><a href="https://segmentfault.com/a/1190000003101075" target="_blank" rel="external">https://segmentfault.com/a/1190000003101075</a><br>上面连接的教程从注册申请AWS到搭建服务已经非常详细，自己再做一些补充。</p>
+<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><p>在EC2上创建好Linux服务器后（本人为Ubuntu）需要对其安装环境<br>参考官方文档<a href="http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/putty.html" target="_blank" rel="external">使用 PuTTY 从 Windows 连接到 Linux 实例</a>连接服务器</p>
+<h3 id="安装shadowsocks依赖"><a href="#安装shadowsocks依赖" class="headerlink" title="安装shadowsocks依赖"></a>安装shadowsocks依赖</h3><ol>
+<li><code>sudo -s // 获取超级管理员权限</code></li>
+<li><code>apt-get update // 更新apt-get</code></li>
+<li><code>apt-get install python-pip // 安装python包管理工具pip</code></li>
+<li><code>pip install shadowsocks // 安装shadowsocks</code></li>
+</ol>
+<h3 id="配置shadowsocks"><a href="#配置shadowsocks" class="headerlink" title="配置shadowsocks"></a>配置shadowsocks</h3><p><code>vim /etc/shadowsocks.json</code></p>
+<p>单一端口配置<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"server"</span>:<span class="string">"server_ip"</span>, #EC2实例的<span class="built_in">IP</span>，注意这里我们不能填写公有<span class="built_in">IP</span>，需要填写私有<span class="built_in">IP</span>或者<span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>  填<span class="number">0.0</span><span class="meta">.0</span><span class="meta">.0</span>即可</div><div class="line"><span class="string">"server_port"</span>:<span class="number">8388</span>, #server端监听的端口，需要在EC2实例中开放此端口</div><div class="line"><span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line"><span class="string">"local_port"</span>:<span class="number">1080</span>,</div><div class="line"><span class="string">"password"</span>:<span class="string">"password"</span>, #密码</div><div class="line"><span class="string">"timeout"</span>:<span class="number">300</span>,</div><div class="line"><span class="string">"method"</span>:<span class="string">"aes-256-cfb"</span>, #加密方式</div><div class="line"><span class="string">"fast_open"</span>: false #是否开启fast open</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果想要把VPN分享给其它人而不泄露自己的密码，也可以在配置文件中设置多端口+多密码的模式，如：<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"server"</span>:<span class="string">"server_ip"</span>, <span class="meta">#EC2实例的IP，注意这里我们不能填写公有IP，需要填写私有IP或者0.0.0.0</span></div><div class="line"><span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line"><span class="string">"local_port"</span>:<span class="number">1080</span>,</div><div class="line"><span class="string">"port_password"</span>:</div><div class="line">&#123;</div><div class="line"><span class="string">"8088”: “password8088”,</span></div><div class="line"><span class="string">"8089”: "</span>password8089”</div><div class="line">&#125;</div><div class="line"><span class="string">"timeout"</span>:<span class="number">300</span>,</div><div class="line"><span class="string">"method"</span>:<span class="string">"aes-256-cfb"</span>, <span class="meta">#加密方式</span></div><div class="line"><span class="string">"fast_open"</span>: false <span class="meta">#是否开启fast open</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="配置完成后启动Shawdowsocks"><a href="#配置完成后启动Shawdowsocks" class="headerlink" title="配置完成后启动Shawdowsocks"></a>配置完成后启动Shawdowsocks</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">启动：ssserver -c /etc/shadowsocks<span class="selector-class">.json</span> -d start</div><div class="line">停止：ssserver -c /etc/shadowsocks<span class="selector-class">.json</span> -d stop</div><div class="line">重启：ssserver -c /etc/shadowsocks<span class="selector-class">.json</span> -d restart</div><div class="line">查看状态：ssserver -c /etc/shadowsocks<span class="selector-class">.json</span> -d status</div></pre></td></tr></table></figure>
+<h3 id="关闭服务器防火墙"><a href="#关闭服务器防火墙" class="headerlink" title="关闭服务器防火墙"></a>关闭服务器防火墙</h3><p><code>sudo ufw disable</code></p>
+<h3 id="开启AWS入站端口"><a href="#开启AWS入站端口" class="headerlink" title="开启AWS入站端口"></a>开启AWS入站端口</h3><p>配置好shaodowsocks后，还需要将配置中的端口打开,这样客户端的服务才能链接得上EC2中的shadowsocks服务。<br>在EC2网页中编辑入站规则将配置文件中的端口号（如8388）加入入站规则。<br>服务器端配置完毕。</p>
+<h2 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h2><p><a href="https://www.gaotizi.com/knowledgebase/2/shadowsocks.html" target="_blank" rel="external">shadowsocks下载地址1</a><br><a href="https://shadowsocks.com/client.html" target="_blank" rel="external">shadowsocks下载地址2</a><br>windows10尽量使用2.3版本，否则可能出现500或者502错误<br><a href="http://pan.baidu.com/s/1hqIk4mS" target="_blank" rel="external">http://pan.baidu.com/s/1hqIk4mS</a></p>
+<h3 id="500或者502错误"><a href="#500或者502错误" class="headerlink" title="500或者502错误"></a>500或者502错误</h3><ul>
+<li>使用2.3版本</li>
+<li>或者尝试以下命令<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">netsh <span class="class"><span class="keyword">interface</span> <span class="title">ipv4</span>  <span class="title">reset</span></span></div><div class="line">netsh <span class="class"><span class="keyword">interface</span> <span class="title">ipv6</span>  <span class="title">reset</span></span></div><div class="line">netsh winsock reset</div></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/13/window下搭建eclipse运行MapReduce环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/13/window下搭建eclipse运行MapReduce环境/" itemprop="url">window下搭建eclipse运行MapReduce环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-13T09:47:21+08:00">
+                2016-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/13/window下搭建eclipse运行MapReduce环境/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/13/window下搭建eclipse运行MapReduce环境/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="系统环境及所需文件"><a href="#系统环境及所需文件" class="headerlink" title="系统环境及所需文件"></a>系统环境及所需文件</h2><ul>
+<li>eclipse-jee-mars-2</li>
+<li>hadoop2.7.2</li>
+<li><a href="https://github.com/winghc/hadoop2x-eclipse-plugin" target="_blank" rel="external">hadoop-eclipse-plugin</a></li>
+<li><a href="http://download.csdn.net/download/chenxf10/9564165" target="_blank" rel="external">hadoop.dll &amp; winutils.exe</a></li>
+</ul>
+<h2 id="修改Master节点的hdfs-site-xml"><a href="#修改Master节点的hdfs-site-xml" class="headerlink" title="修改Master节点的hdfs-site.xml"></a>修改Master节点的hdfs-site.xml</h2><pre><code>&lt;property&gt;      
+    &lt;name&gt;dfs.permissions&lt;/name&gt;      
+    &lt;value&gt;false&lt;/value&gt;  
+&lt;/property&gt; 
+</code></pre><p>旨在取消权限检查</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span> </div><div class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.web.ugi<span class="tag">&lt;/<span class="name">name</span>&gt;</span> </div><div class="line">	<span class="tag">&lt;<span class="name">value</span>&gt;</span>Skye,supergroup<span class="tag">&lt;/<span class="name">value</span>&gt;</span> </div><div class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="配置Hadoop插件"><a href="#配置Hadoop插件" class="headerlink" title="配置Hadoop插件"></a>配置Hadoop插件</h2><ol>
+<li>windows下载hadoop-2.7.2解压到某目录下，如：E:\hadoop\hadoop-2.7.2</li>
+<li>下载hadoop-eclipse-plugin插件hadoop-eclipse-plugin，将release目录下的hadoop-eclipse-plugin-2.6.0.jar拷贝到eclipse/plugins，重启eclipse。</li>
+<li>插件配置windows-&gt;show view-&gt;other 显示mapreduce视图</li>
+<li>window-&gt;preferences-&gt;hadoop map/reduce 指定windows上的hadoop根目录（即：E:\hadoop\hadoop-2.7.2）</li>
+<li>在Map/Reduce Locations 面板中，点击小象图标定义hadoop<br><img src="http://i.imgur.com/61yzGm9.png" alt=""><br>解释：<br>MapReduce Master<br>Host：虚拟机hadoop master对应ip<br>Port：hdfs-site.xml中dfs.datanode.ipc.address指定的的端口号。此处填9001<br>DFS Master中Port：core-site.xml中fs.defaultFS指定的端口。应填9000<br>User name：linux中运行hadoop的用户。 </li>
+</ol>
+<h2 id="配置完毕查看结果"><a href="#配置完毕查看结果" class="headerlink" title="配置完毕查看结果"></a>配置完毕查看结果</h2><p><img src="http://i.imgur.com/zVOXsbw.png" alt=""></p>
+<h2 id="windows下运行环境配置"><a href="#windows下运行环境配置" class="headerlink" title="windows下运行环境配置"></a>windows下运行环境配置</h2><ol>
+<li>在系统环境变量中增加HADOOP_HOME，并在Path中加入%HADOOP_HOME%\bin</li>
+<li>将下载下来的hadoop.dll,winutils.exe拷贝到HADOOP_HOME/bin目录下</li>
+</ol>
+<h2 id="创建-MapReduce工程并运行"><a href="#创建-MapReduce工程并运行" class="headerlink" title="创建 MapReduce工程并运行"></a>创建 MapReduce工程并运行</h2><p>需要拷贝 服务器hadoop中的log4j.properties文件到工程的src目录</p>
+<p><code>run on hadoop</code></p>
+<p>运行时报如下错误，弄了好长一段时间，发现原因是服务器通过内网ip访问，外网无法解析。用虚拟机连接成功.<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">38</span> INFO util.ProcfsBasedProcessTree: ProcfsBasedProcessTree currently is supported only <span class="keyword">on</span> <span class="title">Linux</span>.</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapreduce.Job: Job job_local510776960_0001 running <span class="keyword">in</span> uber mode : <span class="literal">false</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapreduce.Job:  map <span class="number">0</span>% reduce <span class="number">0</span>%</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.Task:  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@<span class="number">3</span>bfe5dd7</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: Processing <span class="built_in">split</span>: hdfs://Master:<span class="number">9000</span>/test/test3.txt:<span class="number">0</span>+<span class="number">259</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: (EQUATOR) <span class="number">0</span> kvi <span class="number">26214396</span>(<span class="number">104857584</span>)</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: mapreduce.task.io.<span class="built_in">sort</span>.mb: <span class="number">100</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: soft limit <span class="keyword">at</span> <span class="number">83886080</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: bufstart = <span class="number">0</span>; bufvoid = <span class="number">104857600</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: kvstart = <span class="number">26214396</span>; <span class="built_in">length</span> = <span class="number">6553600</span></div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">42</span>:<span class="number">39</span> INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">43</span>:<span class="number">00</span> WARN hdfs.BlockReaderFactory: I/O error constructing remote block reader.</div><div class="line">java.net.ConnectException: Connection timed out: no further information</div><div class="line">	<span class="keyword">at</span> sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)</div><div class="line">	<span class="keyword">at</span> sun.nio.ch.SocketChannelImpl.finishConnect(Unknown Source)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:<span class="number">206</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.net.NetUtils.connect(NetUtils.java:<span class="number">531</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSClient.newConnectedPeer(DFSClient.java:<span class="number">3436</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.nextTcpPeer(BlockReaderFactory.java:<span class="number">777</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.getRemoteBlockReaderFromTcp(BlockReaderFactory.java:<span class="number">694</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.build(BlockReaderFactory.java:<span class="number">355</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:<span class="number">656</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:<span class="number">882</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.<span class="built_in">read</span>(DFSInputStream.java:<span class="number">934</span>)</div><div class="line">	<span class="keyword">at</span> java.io.DataInputStream.<span class="built_in">read</span>(Unknown Source)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.fillBuffer(UncompressedSplitLineReader.java:<span class="number">59</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.util.LineReader.readDefaultLine(LineReader.java:<span class="number">216</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.util.LineReader.readLine(LineReader.java:<span class="number">174</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.readLine(UncompressedSplitLineReader.java:<span class="number">91</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.LineRecordReader.skipUtfByteOrderMark(LineRecordReader.java:<span class="number">144</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.LineRecordReader.nextKeyValue(LineRecordReader.java:<span class="number">184</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask$NewTrackingRecordReader.nextKeyValue(MapTask.java:<span class="number">556</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.task.MapContextImpl.nextKeyValue(MapContextImpl.java:<span class="number">80</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.nextKeyValue(WrappedMapper.java:<span class="number">91</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:<span class="number">145</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:<span class="number">787</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask.run(MapTask.java:<span class="number">341</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.LocalJobRunner$Job$MapTaskRunnable.run(LocalJobRunner.java:<span class="number">243</span>)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.FutureTask.run(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.lang.Thread.run(Unknown Source)</div><div class="line"><span class="number">16</span>/<span class="number">07</span>/<span class="number">13</span> <span class="number">10</span>:<span class="number">43</span>:<span class="number">00</span> WARN hdfs.DFSClient: Failed <span class="built_in">to</span> connect <span class="built_in">to</span> /<span class="number">10.0</span><span class="number">.0</span><span class="number">.14</span>:<span class="number">50010</span> <span class="keyword">for</span> block, <span class="built_in">add</span> <span class="built_in">to</span> deadNodes <span class="keyword">and</span> continue. java.net.ConnectException: Connection timed out: no further information</div><div class="line">java.net.ConnectException: Connection timed out: no further information</div><div class="line">	<span class="keyword">at</span> sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)</div><div class="line">	<span class="keyword">at</span> sun.nio.ch.SocketChannelImpl.finishConnect(Unknown Source)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:<span class="number">206</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.net.NetUtils.connect(NetUtils.java:<span class="number">531</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSClient.newConnectedPeer(DFSClient.java:<span class="number">3436</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.nextTcpPeer(BlockReaderFactory.java:<span class="number">777</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.getRemoteBlockReaderFromTcp(BlockReaderFactory.java:<span class="number">694</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.BlockReaderFactory.build(BlockReaderFactory.java:<span class="number">355</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:<span class="number">656</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:<span class="number">882</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.hdfs.DFSInputStream.<span class="built_in">read</span>(DFSInputStream.java:<span class="number">934</span>)</div><div class="line">	<span class="keyword">at</span> java.io.DataInputStream.<span class="built_in">read</span>(Unknown Source)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.fillBuffer(UncompressedSplitLineReader.java:<span class="number">59</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.util.LineReader.readDefaultLine(LineReader.java:<span class="number">216</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.util.LineReader.readLine(LineReader.java:<span class="number">174</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.readLine(UncompressedSplitLineReader.java:<span class="number">91</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.LineRecordReader.skipUtfByteOrderMark(LineRecordReader.java:<span class="number">144</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.input.LineRecordReader.nextKeyValue(LineRecordReader.java:<span class="number">184</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask$NewTrackingRecordReader.nextKeyValue(MapTask.java:<span class="number">556</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.task.MapContextImpl.nextKeyValue(MapContextImpl.java:<span class="number">80</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.nextKeyValue(WrappedMapper.java:<span class="number">91</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:<span class="number">145</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:<span class="number">787</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.MapTask.run(MapTask.java:<span class="number">341</span>)</div><div class="line">	<span class="keyword">at</span> org.apache.hadoop.mapred.LocalJobRunner$Job$MapTaskRunnable.run(LocalJobRunner.java:<span class="number">243</span>)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.FutureTask.run(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</div><div class="line">	<span class="keyword">at</span> java.lang.Thread.run(Unknown Source)</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/11/mapreduce任务运行时shuffle Error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/11/mapreduce任务运行时shuffle Error/" itemprop="url">mapreduce任务运行时shuffle Error</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-11T12:36:36+08:00">
+                2016-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/11/mapreduce任务运行时shuffle Error/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/11/mapreduce任务运行时shuffle Error/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><em>本文引用参考</em>：<a href="http://blog.csdn.net/dslztx/article/details/46445725" target="_blank" rel="external">MapReduce任务Shuffle Error错误</a><br><em>相关参考连接</em>：<a href="http://blog.csdn.net/stark_summer/article/details/48494391" target="_blank" rel="external"> yarn &amp; mapreduce 配置参数总结</a></p>
+<h2 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h2><p>在运行MapReduce任务的时候，出现如下错误：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Error: org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.Shuffle</span><span class="variable">$ShuffleError</span>: error <span class="keyword">in</span> shuffle <span class="keyword">in</span> fetcher#<span class="number">1</span></div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.Shuffle</span><span class="selector-class">.run</span>(Shuffle<span class="selector-class">.java</span>:<span class="number">134</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapred</span><span class="selector-class">.ReduceTask</span><span class="selector-class">.run</span>(ReduceTask<span class="selector-class">.java</span>:<span class="number">376</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapred</span><span class="selector-class">.YarnChild</span>$<span class="number">2</span>.run(YarnChild<span class="selector-class">.java</span>:<span class="number">167</span>)</div><div class="line">        at java<span class="selector-class">.security</span><span class="selector-class">.AccessController</span><span class="selector-class">.doPrivileged</span>(Native Method)</div><div class="line">        at javax<span class="selector-class">.security</span><span class="selector-class">.auth</span><span class="selector-class">.Subject</span><span class="selector-class">.doAs</span>(Subject<span class="selector-class">.java</span>:<span class="number">396</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.security</span><span class="selector-class">.UserGroupInformation</span><span class="selector-class">.doAs</span>(UserGroupInformation<span class="selector-class">.java</span>:<span class="number">1556</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapred</span><span class="selector-class">.YarnChild</span><span class="selector-class">.main</span>(YarnChild<span class="selector-class">.java</span>:<span class="number">162</span>)</div><div class="line">Caused by: java<span class="selector-class">.lang</span><span class="selector-class">.OutOfMemoryError</span>: Java heap space</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.io</span><span class="selector-class">.BoundedByteArrayOutputStream</span>.&lt;init&gt;(BoundedByteArrayOutputStream<span class="selector-class">.java</span>:<span class="number">56</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.io</span><span class="selector-class">.BoundedByteArrayOutputStream</span>.&lt;init&gt;(BoundedByteArrayOutputStream<span class="selector-class">.java</span>:<span class="number">46</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.InMemoryMapOutput</span>.&lt;init&gt;(InMemoryMapOutput<span class="selector-class">.java</span>:<span class="number">63</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.MergeManagerImpl</span><span class="selector-class">.unconditionalReserve</span>(MergeManagerImpl<span class="selector-class">.java</span>:<span class="number">297</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.MergeManagerImpl</span><span class="selector-class">.reserve</span>(MergeManagerImpl<span class="selector-class">.java</span>:<span class="number">287</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.Fetcher</span><span class="selector-class">.copyMapOutput</span>(Fetcher<span class="selector-class">.java</span>:<span class="number">411</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.Fetcher</span><span class="selector-class">.copyFromHost</span>(Fetcher<span class="selector-class">.java</span>:<span class="number">341</span>)</div><div class="line">        at org<span class="selector-class">.apache</span><span class="selector-class">.hadoop</span><span class="selector-class">.mapreduce</span><span class="selector-class">.task</span><span class="selector-class">.reduce</span><span class="selector-class">.Fetcher</span><span class="selector-class">.run</span>(Fetcher<span class="selector-class">.java</span>:<span class="number">165</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>  根据《Hadoop:The Definitive Guide 4th　Edition》所述(P203-219)，map任务和reduce任务之间要经过一个shuffle过程，该过程复制map任务的输出作为reduce任务的输入。<br>  具体的来说，shuffle过程的输入是：map任务的输出文件，它的输出接收者是：运行reduce任务的机子上的内存buffer，并且shuffle过程以并行方式运行。<br>  参数mapreduce.reduce.shuffle.input.buffer.percent控制运行reduce任务的机子上多少比例的内存用作上述buffer(默认值为0.70)，参数mapreduce.reduce.shuffle.parallelcopies控制shuffle过程的并行度(默认值为5)。那么”mapreduce.reduce.shuffle.input.buffer.percent” * “mapreduce.reduce.shuffle.parallelcopies” 必须小于等于1，否则就会出现如上错误<br>因此，我将mapreduce.reduce.shuffle.input.buffer.percent设置成值为0.1，就可以正常运行了（设置成0.2，还是会抛同样的错）</p>
+<p><code>job.getConfiguration().setStrings(&quot;mapreduce.reduce.shuffle.input.buffer.percent&quot;, &quot;0.1&quot;);</code><br>或者在<code>maperd-site.xml</code>中修改<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.reduce.input.buffer.percent<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>0.0<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>  另外，可以发现如果使用两个参数的默认值，那么两者乘积为3.5，大大大于1了，为什么没有经常抛出以上的错误呢？<br>1)首先，把默认值设为比较大，主要是基于性能考虑，将它们设为比较大，可以大大加快从map复制数据的速度<br>2)其次，要抛出如上异常，还需满足另外一个条件，就是map任务的数据一下子准备好了等待shuffle去复制，在这种情况下，就会导致shuffle过程的“线程数量”和“内存buffer使用量”都是满负荷的值，自然就造成了内存不足的错误；而如果map任务的数据是断断续续完成的，那么没有一个时刻shuffle过程的“线程数量”和“内存buffer使用量”是满负荷值的，自然也就不会抛出如上错误</p>
+<p>另外，如果在设置以上参数后，还是出现错误，那么有可能是运行Reduce任务的进程的内存总量不足，可以通过mapred.child.java.opts参数来调节，比如设置mapred.child.java.opts=-Xmx2024m</p>
+
+          
+        
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/16/HBase集群搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -785,7 +1438,7 @@ System.exit(job.waitForCompletion(true)?0:1);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-count">76</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -807,7 +1460,7 @@ System.exit(job.waitForCompletion(true)?0:1);
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -901,7 +1554,7 @@ System.exit(job.waitForCompletion(true)?0:1);
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

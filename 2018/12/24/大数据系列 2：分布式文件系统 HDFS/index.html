@@ -1,0 +1,1350 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="R2uwcaZkQQII0J13dPPp56vFo0D9_D2sAAhPk9is0wM" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hadoop," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta name="keywords" content="Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据系列 2：分布式文件系统 HDFS">
+<meta property="og:url" content="http://yoursite.com/2018/12/24/大数据系列 2：分布式文件系统 HDFS/index.html">
+<meta property="og:site_name" content="Skye&#39;s Blog">
+<meta property="og:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyflkr5vmnj20oa0gsjs7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhkin1lm1j20oa0ewaal.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn63iu99g206x05m3yl.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn4lfwyig20ct07pwep.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg">
+<meta property="og:updated_time" content="2019-02-27T13:04:05.746Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大数据系列 2：分布式文件系统 HDFS">
+<meta name="twitter:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  [TOC] 文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Di">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/24/大数据系列 2：分布式文件系统 HDFS/"/>
+
+
+
+
+
+  <title>大数据系列 2：分布式文件系统 HDFS | Skye's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/Skyexu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Skye's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Forever youthful,forever weeping</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/24/大数据系列 2：分布式文件系统 HDFS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Skye">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skye's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">大数据系列 2：分布式文件系统 HDFS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-24T20:36:36+08:00">
+                2018-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/24/大数据系列 2：分布式文件系统 HDFS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/12/24/大数据系列 2：分布式文件系统 HDFS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg" alt=""></p>
+<blockquote>
+<p>Google 三架马车中，第一架即是 GFS（Googel File system ）</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="文件系统从垂直伸缩到水平伸缩"><a href="#文件系统从垂直伸缩到水平伸缩" class="headerlink" title="文件系统从垂直伸缩到水平伸缩"></a>文件系统从垂直伸缩到水平伸缩</h2><p>早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。</p>
+<p>独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以认为是一种垂直伸缩。其基本思想是把多个磁盘组装起来称为一个磁盘阵列，使之性能达到甚至超过一个价格昂贵、容量巨大的硬盘。根据 RAID 实现方式的不同，可以有不同的效果，包括提升容量、磁盘容错、处理性能。</p>
+<p>互联网时代，<strong>计算机硬件的性能提升早已放缓</strong>，公司购买大型计算机的成本是很大的，所以开始出现水平伸缩的方式，通过分布式技术，在集群中不断增加计算机来提升计算能力。将 RAID 的思想应用到分布式集群，就产生了分布式文件系统，分布式存储技术的典型代表就是 HDFS。</p>
+<p>HDFS (Hadoop Distributed File System) 被设计用来搭建大规模的分布式集群，提供海量数据的读写、存储。</p>
+<p>HDFS 的特点和设计目标：</p>
+<ul>
+<li><strong>硬件容错</strong> 大规模集群有大量节点，硬件会有一定的损坏概率，所以 HDFS 支持错误检测，快速和自动的恢复服务。</li>
+<li><strong>流式访问</strong> HDFS 支持流式访问数据，被设计用于批量处理而非用户交互。重点是高吞吐量访问而不是低延迟。（换句话受，HDFS 为高吞吐量而设计，以高延迟为代价）</li>
+<li><strong>存储大文件</strong> HDFS 适合存储大型文件，并将文件分块存储到不同的节点上。</li>
+<li><strong>简单一致性模型</strong> 一次写入，多次读取。支持追加数据，不支持修改数据内容。这样的设计简化了一致性模型，支持高吞吐量的访问。</li>
+<li><strong>移动计算比移动数据更划算</strong> 程序比数据小得多，那么将程序分发到数据所在得地方进行计算。比如 Mapreduce 任务在多个节点上分别运行后再分别聚合的思路。</li>
+<li><strong>跨平台</strong> HDFS 作为大数据存储，被广泛应用于多种大数据平台。</li>
+</ul>
+<h2 id="HDFS-架构"><a href="#HDFS-架构" class="headerlink" title="HDFS 架构"></a>HDFS 架构</h2><p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyflkr5vmnj20oa0gsjs7.jpg" alt="HDFS 架构图"></p>
+<p>HDFS 的架构如上图所示。可以看到其中的关键组件包括一个 NameNode(NN) 和多个 DataNode(DN)，事实上大部分的分布式技术都是类似这样的主从(Master-Slave) 结构。</p>
+<p>HDFS 中文件被切分文多个数据块（Block）存储在多个 DataNode 中，块大小默认为 128M，数据块副本默认为3。</p>
+<p><strong>NameNode</strong> 管理 HDFS 文件系统的元数据（Metadata）和控制客户端（Client）对文件的访问请求。文件操作比如打开、关闭、重命名等都由 NameNode 执行，响应操作记录也存储在其中。文件的数据块副本数和对应的 DataNode 地址也由 NameNode 维护存储。</p>
+<p><strong>DataNode</strong> 管理相应节点的存储，响应 NameNode 命令，读写用户的文件对应的数据块，定期向 NameNode 发送心跳信息，汇报本身及其所有 block 信息、健康状况。</p>
+<h2 id="数据副本存放"><a href="#数据副本存放" class="headerlink" title="数据副本存放"></a>数据副本存放</h2><p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhkin1lm1j20oa0ewaal.jpg" alt="块副本"></p>
+<p>上图展示了 HDFS 数据副本存放的示意。从 NameNode 的元数据信息中可以看到，对于文件 part-0 ，其副本份数是 2，block ID 分别为 1 和 3。其中 block1 存放在 DataNode1 和 DataNode3 中，这样即使某个 DataNode 宕机，也不会影响文件的访问。</p>
+<p>HDFS 数据块分布在不同的 DataNode 上，所以文件系统可以并行地进行读写操作，实现告诉访问。</p>
+<p>大型的 HDFS 集群往往有多个机架。当副本个数为 3 时，往数据块副本存放策略是一个当前运行客户端的节点上，另外两个副本放在其它机架的不同节点上，从而保证数据的可靠性和读写性能。</p>
+<p>以上就是 HDFS 的基本存储原理。</p>
+<h2 id="HDFS-高可用-（High-Availability，HA）"><a href="#HDFS-高可用-（High-Availability，HA）" class="headerlink" title="HDFS 高可用 （High Availability，HA）"></a>HDFS 高可用 （High Availability，HA）</h2><p>NameNode 节点中存储有以下两个文件，存储重要的元数据信息。</p>
+<ul>
+<li><strong>fsimage</strong>: NameNode 的快照，元数据的镜像，包含了文件系统中的所有目录和文件inode的序列化信息</li>
+<li><strong>edits</strong>: 记录文件系统的改动</li>
+</ul>
+<p>NameNode 把对文件系统的修改存储到 edits 中，启动时从 fsimage 读取文件状态，从 edits 应用编辑操作，随着 edits 越来越大，NameNode 的启动时间会变长。</p>
+<p>在 Hadoop 2.X 之前有 Secondary NameNode，按一定规则将 edits 文件和 fsimage 文件合并，合并后 NameNode 会启用新的 edits 文件，这样会减小 edits 文件的文件大小，控制 edits 文件的大小会减少 NameNode 在启动阶段解析加载 edits 文件的时长。</p>
+<p>但是，在 hadoop2.0 之前，NameNode 只有一个，存在单点问题（虽然 Hadoop1.0 有secondary NameNode，checkpointnode，buckcupnode 这些，但是单点问题依然存在），在 hadoop2.0 引入了 HA 机制。</p>
+<p><strong>Hadoop 2.X 引入 Active NameNode 和 Standby NameNode</strong> ，提供主备切换避免单点故障。HA 其本质上就是要保证主备 NN 元数据一致，即保证 fsimage 和 edits 在备 NN 上也是完整的。元数据的同步很大程度取决于 edits 的同步，而这步骤的关键就是共享文件系统。提供两种方式。</p>
+<p><strong>NFS 网络共享文件系统的方式</strong></p>
+<p>提供共享文件的 NAS 设备。NFS 作为 Active NameNode 和 Standby NameNode 之间数据共享的存储。Active NameNode 会把最近的 edits 文件写到 NFS，而 Standby NameNode 从 NFS 中把数据读过来。这个方式的缺点是，如果 Active NameNode 或者 Standby NameNode 有一个和 NFS 之间网络有问题，则会造成他们之前数据的同步出问题。</p>
+<p><strong>QJM（Quorum Journal Manager ）方式</strong></p>
+<p>QJM 由JournalNode（JN）组成，一般是奇数点结点组成。每个 JournalNode 对外有一个简易的 RPC 接口，以供 NameNode 读写 edits 到 JN 本地磁盘。当写 edits 时，NameNode 会同时向所有 JournalNode 并行写文件，只要有 N/2+1 结点写成功则认为此次写操作成功，遵循 Paxos 协议。</p>
+<p><strong>JN日志节点是一个轻量级的，所以可以和Hadoop的其他守护线程放在一起，不需要额外设备。</strong></p>
+<p>完成 HA 除了元数据的同步，还需要一个完善的主备选举切换机制，依赖于 Zookeeper。</p>
+<p>关于 HA 详细内容可参考</p>
+<ul>
+<li><a href="https://www.cnblogs.com/qcloud1001/p/7693476.html" target="_blank" rel="external">https://www.cnblogs.com/qcloud1001/p/7693476.html</a></li>
+<li><a href="http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html" target="_blank" rel="external">http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html</a></li>
+</ul>
+<h2 id="HDFS-联邦（Federation）"><a href="#HDFS-联邦（Federation）" class="headerlink" title="HDFS 联邦（Federation）"></a>HDFS 联邦（Federation）</h2><p>如下图 HDFS 有两个重要层级，命名空间（Namespace）和 块存储服务（Block Storage）。但是之前介绍的 HDFS 结构都是单 NameNode 的（注意上文说得 HA 并不提供 Namespace 的扩展），单 NameNode 命名空间受限，整个 HDFS 文件系统的吞吐量受限于单个 NameNode 的吞吐量，比如存储大量小文件时，NameNode 会越来越大，并且单个 NameNode 无法隔离应用程序。</p>
+<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn63iu99g206x05m3yl.gif" alt="HDFS 层级"></p>
+<p>联邦 HDFS 提供了扩展命名空间的策略，如下图所示。</p>
+<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn4lfwyig20ct07pwep.gif" alt="HDFS 联邦"></p>
+<p><strong>块池（Block Pool）</strong></p>
+<p>一个块池是一系列属于单个命名空间的块集合，DataNodes 为集群中的所有块池存储块。每个块池都是独立管理。这就允许命名空间为新块生成 Block IDs 时不需要与其他命名空间协调。一个 NameNode 故障不会阻止 DataNode 为集群中的其他 NameNodes 提供服务。</p>
+<p>一个命名空间和它的块池一起被称为命名空间卷（Namespace Volume）。命名空间卷是一个独立的自我管理单位。当一个 NameNode/namespace 被删除时，对应的在 DataNodes 上的块池也会被删除。在集群升级期间，每个命名空间卷作为一个单元来进行升级。</p>
+<p><strong>ClusterID</strong></p>
+<p>ClusterID 用于标识集群中所有的节点。当一个 NameNode 被格式化时，ClusterID 就会人工提供或者自动生成，同时这个 ID 用于将剩余其他 NameNode 格式化到集群中。</p>
+<p><strong>HDFS 联邦的主要好处：</strong></p>
+<ol>
+<li>命名空间可扩展 - 联邦增加了命名空间的水平扩展性。大型部署或使用大量小文件的部署使用命名空间扩展可以允许将更多 NameNodes 添加到集群中，这对于大型部署或使用大量小文件部署是非常有益的（这样就能避免单 个NameNode 内存有限的问题）。</li>
+<li>性能 - 文件系统吞吐量将不受单个名称节点的限制。向集群添加更多NameNode可扩展文件系统读/写的吞吐量。</li>
+<li>隔离 - 单个 NameNode 在多用户环境中不提供隔离。例如，一个实验应用程序可能会使 NameNode 过载，并降低主要应用程序的速度。通过使用多个 NameNode，可以将不同类别的应用程序和用户隔离到不同的命名空间。</li>
+</ol>
+<p>以上便是本文的全部内容，关于 HDFS 的文件读写，容错等内容会在下一篇文章通过漫画的形式介绍。</p>
+<p><strong>参考文献</strong></p>
+<ul>
+<li>HDFS 官方文档：<a href="https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html" target="_blank" rel="external">https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html</a></li>
+<li>极客时间大数据专栏</li>
+<li>维基百科：<a href="https://zh.wikipedia.org/wiki/RAID" target="_blank" rel="external">https://zh.wikipedia.org/wiki/RAID</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>文|Skye</p>
+<ul>
+<li>简书：<a href="https://www.jianshu.com/u/70b4fd000153" target="_blank" rel="external">https://www.jianshu.com/u/70b4fd000153</a></li>
+<li>知乎专栏：<a href="https://zhuanlan.zhihu.com/skyedata" target="_blank" rel="external">https://zhuanlan.zhihu.com/skyedata</a></li>
+<li>个人博客：<a href="http://skye.fun/" target="_blank" rel="external">http://skye.fun/</a></li>
+<li>GitHub：<a href="https://github.com/Skyexu" target="_blank" rel="external">https://github.com/Skyexu</a></li>
+</ul>
+</blockquote>
+<center>欢迎关注微信公众号</center>
+
+<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg" alt="微信公众号"></p>
+
+      
+    </div>
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- The end<i class="fa fa-paw"></i>Thanks for reading-------------</div>
+    
+</div>
+      
+    </div>
+    <div>
+      
+        
+      
+    </div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/18/大数据系列 1：大数据技术发展历程/" rel="next" title="大数据系列 1：大数据技术发展历程">
+                <i class="fa fa-chevron-left"></i> 大数据系列 1：大数据技术发展历程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/29/大数据系列 3：漫画解读 HDFS 原理/" rel="prev" title="大数据系列 3：漫画解读 HDFS 原理">
+                大数据系列 3：漫画解读 HDFS 原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Skye" />
+          <p class="site-author-name" itemprop="name">Skye</p>
+           
+              <p class="site-description motion-element" itemprop="description">学习总结 思想感悟</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1811544100" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skyexu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/70b4fd000153" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:xkhreal@gmail.com" target="_blank" title="Email">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Email
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://huanqiang.wang/" title="Huanqiang" target="_blank">Huanqiang</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统从垂直伸缩到水平伸缩"><span class="nav-number">1.</span> <span class="nav-text">文件系统从垂直伸缩到水平伸缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS-架构"><span class="nav-number">2.</span> <span class="nav-text">HDFS 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据副本存放"><span class="nav-number">3.</span> <span class="nav-text">数据副本存放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS-高可用-（High-Availability，HA）"><span class="nav-number">4.</span> <span class="nav-text">HDFS 高可用 （High Availability，HA）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS-联邦（Federation）"><span class="nav-number">5.</span> <span class="nav-text">HDFS 联邦（Federation）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Skye</span>
+</div>
+
+
+
+<!-- <div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+-->
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skye-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/12/24/大数据系列 2：分布式文件系统 HDFS/';
+          this.page.identifier = '2018/12/24/大数据系列 2：分布式文件系统 HDFS/';
+          this.page.title = '大数据系列 2：分布式文件系统 HDFS';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skye-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
