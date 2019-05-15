@@ -114,16 +114,16 @@
 <meta property="og:url" content="http://skye.fun/2018/01/09/teach you answer the question/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="这两天冲顶大会之类的直播答题 APP 突然火了起来，不得不佩服互联网公司的想象力，那么程序员怎么用不同的方式玩转答题游戏呢。之前微信的跳一跳小游戏刷爆朋友圈，已经有很多朋友写出了自动化的脚本辅助，一看到答题游戏就马上想到可以用类似的方式来写一个简单的脚本。代码思路简单，可以用在各类答题游戏中。因为时间、搜索结果等原因，使用文字识别搜索，能提供的辅助作用有限。  具体代码和环境及使用请戳：https">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2264593-2a1259486e2f1c4d.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2264593-38ac099f001eed6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2264593-caa411fb4b68c7ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2264593-0bd41c7c84dd0b83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2264593-7320386945a0b8d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-05-13T13:56:04.000Z">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/app.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/cut.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/baidu.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/cmd1.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/cmd2.png">
+<meta property="og:updated_time" content="2019-05-15T06:08:48.263Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="教你巧玩 [冲顶大会] 答题类游戏">
 <meta name="twitter:description" content="这两天冲顶大会之类的直播答题 APP 突然火了起来，不得不佩服互联网公司的想象力，那么程序员怎么用不同的方式玩转答题游戏呢。之前微信的跳一跳小游戏刷爆朋友圈，已经有很多朋友写出了自动化的脚本辅助，一看到答题游戏就马上想到可以用类似的方式来写一个简单的脚本。代码思路简单，可以用在各类答题游戏中。因为时间、搜索结果等原因，使用文字识别搜索，能提供的辅助作用有限。  具体代码和环境及使用请戳：https">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2264593-2a1259486e2f1c4d.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://gitee.com/skyexu/images/raw/master/教你答题/app.png">
 
 
 
@@ -423,7 +423,7 @@
 
       
         <p>这两天冲顶大会之类的直播答题 APP 突然火了起来，不得不佩服互联网公司的想象力，那么程序员怎么用不同的方式玩转答题游戏呢。之前微信的跳一跳小游戏刷爆朋友圈，已经有很多朋友写出了自动化的脚本辅助，一看到答题游戏就马上想到可以用类似的方式来写一个简单的脚本。代码思路简单，可以用在各类答题游戏中。因为时间、搜索结果等原因，使用文字识别搜索，能提供的辅助作用有限。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2264593-2a1259486e2f1c4d.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="screenshot.PNG"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/教你答题/app.png" alt="screenshot.PNG"></p>
 <p><strong>具体代码和环境及使用请戳</strong>：<a href="https://github.com/Skyexu/TopSup" target="_blank" rel="external">https://github.com/Skyexu/TopSup</a><br>随手 Star ^ ^</p>
 <a id="more"></a>
 <p>灵感来自：</p>
@@ -435,7 +435,7 @@
 <li><p>使用 ADB 获取手机截屏</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb shell screencap -<span class="selector-tag">p</span> /sdcard/screenshot<span class="selector-class">.png</span></div><div class="line">adb pull /sdcard/screenshot<span class="selector-class">.png</span> .</div></pre></td></tr></table></figure>
 </li>
-<li><p>OCR 识别题目与选项文字<br>分别通过代码截取题目区域与选项区域，再进行文字识别<br><img src="http://upload-images.jianshu.io/upload_images/2264593-38ac099f001eed6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="cut.png"></p>
+<li><p>OCR 识别题目与选项文字<br>分别通过代码截取题目区域与选项区域，再进行文字识别<br><img src="https://gitee.com/skyexu/images/raw/master/教你答题/cut.png" alt="cut.png"></p>
 </li>
 </ol>
 <p>文字识别两个方法：</p>
@@ -449,7 +449,7 @@
 <li>搜索判断</li>
 </ol>
 <h2 id="结果判断方式"><a href="#结果判断方式" class="headerlink" title="结果判断方式"></a>结果判断方式</h2><ol>
-<li><p>直接打开浏览器搜索问题<br><img src="http://upload-images.jianshu.io/upload_images/2264593-caa411fb4b68c7ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="result.png"></p>
+<li><p>直接打开浏览器搜索问题<br><img src="https://gitee.com/skyexu/images/raw/master/教你答题/baidu.png" alt="result.png"></p>
 </li>
 <li><p>题目+每个选项都通过搜索引擎进行搜索，从网页代码中提取搜索结果的数目</p>
 </li>
@@ -457,8 +457,8 @@
 </li>
 </ol>
 <p>以下为两个示例结果，可以看出下面两道题，两个方法有不同的结果，可以根据问题类型进行不同的决策。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2264593-0bd41c7c84dd0b83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="result2.png"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2264593-7320386945a0b8d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="result3.png"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/教你答题/cmd1.png" alt="cmd1"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/教你答题/cmd2.png" alt="cmd2"></p>
 <p>参考了 <a href="https://hackernoon.com/i-hacked-hq-trivia-but-heres-how-they-can-stop-me-68750ed16365" target="_blank" rel="external">I Hacked HQ Trivia But Here’s How They Can Stop Me</a></p>
 <h2 id="主要代码"><a href="#主要代码" class="headerlink" title="主要代码"></a>主要代码</h2><p>验证思路的主要代码是实现截图，识别，调用浏览器搜索。其实很简单,具体可以参考我的 github 库中<a href="https://github.com/Skyexu/TopSup/tree/master/simpleVersion" target="_blank" rel="external">简单版本代码</a></p>
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">def pull_screenshot():</div><div class="line">    os.<span class="keyword">system</span>(<span class="string">'adb shell screencap -p /sdcard/screenshot.png'</span>)</div><div class="line">    os.<span class="keyword">system</span>(<span class="string">'adb pull /sdcard/screenshot.png .'</span>)</div><div class="line"></div><div class="line">pull_screenshot()</div><div class="line">img = Image.<span class="built_in">open</span>(<span class="string">"./screenshot.png"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 切割题目位置，左上角坐标和右下角坐标,自行测试分辨率</span></div><div class="line">question = img.crop((<span class="number">50</span>, <span class="number">350</span>, <span class="number">1000</span>, <span class="number">560</span>)) <span class="comment"># 坚果 pro1</span></div><div class="line">choices = img.crop((<span class="number">75</span>, <span class="number">535</span>, <span class="number">990</span>, <span class="number">1150</span>))</div><div class="line"><span class="comment">#region = img.crop((75, 315, 1167, 789)) # iPhone 7P</span></div><div class="line"></div><div class="line"><span class="comment"># tesseract 路径</span></div><div class="line">pytesseract.pytesseract.tesseract_cmd = <span class="string">'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'</span></div><div class="line"><span class="comment"># 语言包目录</span></div><div class="line">tessdata_dir_config = <span class="string">'--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'</span></div><div class="line"></div><div class="line"><span class="comment"># lang 指定中文简体</span></div><div class="line"><span class="keyword">text</span> = pytesseract.image_to_string(question, lang=<span class="string">'chi_sim'</span>, config=tessdata_dir_config)</div><div class="line"><span class="keyword">text</span> = <span class="keyword">text</span>.<span class="built_in">replace</span>(<span class="string">"\n"</span>, <span class="string">""</span>)[<span class="number">2</span>:]</div><div class="line"></div><div class="line">print(<span class="keyword">text</span>)</div><div class="line">webbrowser.<span class="built_in">open</span>(<span class="string">'https://baidu.com/s?wd='</span>+<span class="keyword">text</span>)</div></pre></td></tr></table></figure>

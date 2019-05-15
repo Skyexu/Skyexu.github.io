@@ -114,17 +114,17 @@
 <meta property="og:url" content="http://skye.fun/2018/12/24/大数据系列 2：分布式文件系统 HDFS/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyflkr5vmnj20oa0gsjs7.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhkin1lm1j20oa0ewaal.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn63iu99g206x05m3yl.gif">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn4lfwyig20ct07pwep.gif">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg">
-<meta property="og:updated_time" content="2019-02-27T13:10:08.014Z">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/大数据 2 分布式文件系统 HDFS.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/hdfsarchitecture.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/hdfsdatanodes.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/federation-background.gif">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/federation.gif">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/wechat.jpg">
+<meta property="og:updated_time" content="2019-05-15T05:44:14.431Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据系列 2：分布式文件系统 HDFS">
 <meta name="twitter:description" content="Google 三架马车中，第一架即是 GFS（Googel File system ）  文件系统从垂直伸缩到水平伸缩早期，为了提升计算机的运算以及存储能力，主要靠的是垂直伸缩的方式。摩尔定律提出集成电路上晶体管的数目每两年会增加一倍。当时，半导体行业大致按照摩尔定律发展了半个多世纪。 独立硬盘冗余阵列（RAID, Redundant Array of Independent Disks）可以">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg">
+<meta name="twitter:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/大数据 2 分布式文件系统 HDFS.jpg">
 
 
 
@@ -423,7 +423,7 @@
       
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/6bf9f824ly1fyj3tt1t4ej20zk0k0t9q.jpg" alt=""></p>
+        <p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/大数据 2 分布式文件系统 HDFS.jpg" alt=""></p>
 <blockquote>
 <p>Google 三架马车中，第一架即是 GFS（Googel File system ）</p>
 </blockquote>
@@ -441,12 +441,12 @@
 <li><strong>移动计算比移动数据更划算</strong> 程序比数据小得多，那么将程序分发到数据所在得地方进行计算。比如 Mapreduce 任务在多个节点上分别运行后再分别聚合的思路。</li>
 <li><strong>跨平台</strong> HDFS 作为大数据存储，被广泛应用于多种大数据平台。</li>
 </ul>
-<h2 id="HDFS-架构"><a href="#HDFS-架构" class="headerlink" title="HDFS 架构"></a>HDFS 架构</h2><p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyflkr5vmnj20oa0gsjs7.jpg" alt="HDFS 架构图"></p>
+<h2 id="HDFS-架构"><a href="#HDFS-架构" class="headerlink" title="HDFS 架构"></a>HDFS 架构</h2><p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/hdfsarchitecture.png" alt="HDFS 架构图"></p>
 <p>HDFS 的架构如上图所示。可以看到其中的关键组件包括一个 NameNode(NN) 和多个 DataNode(DN)，事实上大部分的分布式技术都是类似这样的主从(Master-Slave) 结构。</p>
 <p>HDFS 中文件被切分文多个数据块（Block）存储在多个 DataNode 中，块大小默认为 128M，数据块副本默认为3。</p>
 <p><strong>NameNode</strong> 管理 HDFS 文件系统的元数据（Metadata）和控制客户端（Client）对文件的访问请求。文件操作比如打开、关闭、重命名等都由 NameNode 执行，响应操作记录也存储在其中。文件的数据块副本数和对应的 DataNode 地址也由 NameNode 维护存储。</p>
 <p><strong>DataNode</strong> 管理相应节点的存储，响应 NameNode 命令，读写用户的文件对应的数据块，定期向 NameNode 发送心跳信息，汇报本身及其所有 block 信息、健康状况。</p>
-<h2 id="数据副本存放"><a href="#数据副本存放" class="headerlink" title="数据副本存放"></a>数据副本存放</h2><p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhkin1lm1j20oa0ewaal.jpg" alt="块副本"></p>
+<h2 id="数据副本存放"><a href="#数据副本存放" class="headerlink" title="数据副本存放"></a>数据副本存放</h2><p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/hdfsdatanodes.png" alt="块副本"></p>
 <p>上图展示了 HDFS 数据副本存放的示意。从 NameNode 的元数据信息中可以看到，对于文件 part-0 ，其副本份数是 2，block ID 分别为 1 和 3。其中 block1 存放在 DataNode1 和 DataNode3 中，这样即使某个 DataNode 宕机，也不会影响文件的访问。</p>
 <p>HDFS 数据块分布在不同的 DataNode 上，所以文件系统可以并行地进行读写操作，实现告诉访问。</p>
 <p>大型的 HDFS 集群往往有多个机架。当副本个数为 3 时，往数据块副本存放策略是一个当前运行客户端的节点上，另外两个副本放在其它机架的不同节点上，从而保证数据的可靠性和读写性能。</p>
@@ -472,9 +472,9 @@
 <li><a href="http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html" target="_blank" rel="external">http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html</a></li>
 </ul>
 <h2 id="HDFS-联邦（Federation）"><a href="#HDFS-联邦（Federation）" class="headerlink" title="HDFS 联邦（Federation）"></a>HDFS 联邦（Federation）</h2><p>如下图 HDFS 有两个重要层级，命名空间（Namespace）和 块存储服务（Block Storage）。但是之前介绍的 HDFS 结构都是单 NameNode 的（注意上文说得 HA 并不提供 Namespace 的扩展），单 NameNode 命名空间受限，整个 HDFS 文件系统的吞吐量受限于单个 NameNode 的吞吐量，比如存储大量小文件时，NameNode 会越来越大，并且单个 NameNode 无法隔离应用程序。</p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn63iu99g206x05m3yl.gif" alt="HDFS 层级"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/federation-background.gif" alt="HDFS 层级"></p>
 <p>联邦 HDFS 提供了扩展命名空间的策略，如下图所示。</p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhn4lfwyig20ct07pwep.gif" alt="HDFS 联邦"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 02 HDFS/federation.gif" alt="HDFS 联邦"></p>
 <p><strong>块池（Block Pool）</strong></p>
 <p>一个块池是一系列属于单个命名空间的块集合，DataNodes 为集群中的所有块池存储块。每个块池都是独立管理。这就允许命名空间为新块生成 Block IDs 时不需要与其他命名空间协调。一个 NameNode 故障不会阻止 DataNode 为集群中的其他 NameNodes 提供服务。</p>
 <p>一个命名空间和它的块池一起被称为命名空间卷（Namespace Volume）。命名空间卷是一个独立的自我管理单位。当一个 NameNode/namespace 被删除时，对应的在 DataNodes 上的块池也会被删除。在集群升级期间，每个命名空间卷作为一个单元来进行升级。</p>
@@ -499,13 +499,13 @@
 <ul>
 <li>简书：<a href="https://www.jianshu.com/u/70b4fd000153" target="_blank" rel="external">https://www.jianshu.com/u/70b4fd000153</a></li>
 <li>知乎专栏：<a href="https://zhuanlan.zhihu.com/skyedata" target="_blank" rel="external">https://zhuanlan.zhihu.com/skyedata</a></li>
-<li>个人博客：<a href="http://skye.fun/" target="_blank" rel="external">http://skye.fun/</a></li>
+<li>个人博客：<a href="http://skye.fun/">http://skye.fun/</a></li>
 <li>GitHub：<a href="https://github.com/Skyexu" target="_blank" rel="external">https://github.com/Skyexu</a></li>
 </ul>
 </blockquote>
 <center>欢迎关注微信公众号</center>
 
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg" alt="微信公众号"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/wechat.jpg" alt="微信公众号"></p>
 
       
     </div>
