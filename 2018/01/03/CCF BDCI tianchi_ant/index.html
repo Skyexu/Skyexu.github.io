@@ -114,15 +114,15 @@
 <meta property="og:url" content="http://skye.fun/2018/01/03/CCF BDCI tianchi_ant/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="赛题背景随着互联网移动支付的迅速普及，我们享受到越来越多的生活便利。如当您走入商场的某家餐厅时，手机会自动弹出该餐厅的优惠券；当您走入商场服装店时，手机可以自动推荐这家店里您喜欢的衣服；在您路过商场一家珠宝店时，手机可以自动提示您想了很久的一款钻戒已经有货了；离开商场停车场时，手机在您的许可下可以自动交停车费。这些您所享受的贴心服务都离不开背后大数据挖掘和机器学习的支持。在正确的时间、正确的地点给">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxizf8j20m80jrwnc.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxgj07j20qd0d90wz.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxhd1wj20qc0e3jvh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mx5z98j20sj0dmgoa.jpg">
-<meta property="og:updated_time" content="2019-05-13T13:56:04.000Z">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/data analysis.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/split1.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/split2.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/fuse.jpg">
+<meta property="og:updated_time" content="2019-05-15T06:28:59.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CCF BDCI 阿里天池商场中精确定位用户所在店铺参赛总结">
 <meta name="twitter:description" content="赛题背景随着互联网移动支付的迅速普及，我们享受到越来越多的生活便利。如当您走入商场的某家餐厅时，手机会自动弹出该餐厅的优惠券；当您走入商场服装店时，手机可以自动推荐这家店里您喜欢的衣服；在您路过商场一家珠宝店时，手机可以自动提示您想了很久的一款钻戒已经有货了；离开商场停车场时，手机在您的许可下可以自动交停车费。这些您所享受的贴心服务都离不开背后大数据挖掘和机器学习的支持。在正确的时间、正确的地点给">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxizf8j20m80jrwnc.jpg">
+<meta name="twitter:image" content="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/data analysis.jpg">
 
 
 
@@ -617,15 +617,15 @@
 <h2 id="解题分析"><a href="#解题分析" class="headerlink" title="解题分析"></a>解题分析</h2><h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3><ol>
 <li>某个同学对于某个 mall 坐标的可视化结果，黑色的是 shop 实际坐标，同色的是同一个shop的，可见其坐标偏离很大。</li>
 </ol>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxizf8j20m80jrwnc.jpg" alt="img"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/data analysis.jpg" alt="img"></p>
 <ol>
 <li>公共WIFI，存在类似 cmcc  等公共 wifi 的强度干扰，需要剔除</li>
 <li>wifi 出现次数过少，或者 null 的填充平均</li>
 <li>WiFi 信号强度转换 信号强度 = (strength + 113)/2</li>
 </ol>
 <h3 id="解题方案"><a href="#解题方案" class="headerlink" title="解题方案"></a>解题方案</h3><h4 id="二分类方案"><a href="#二分类方案" class="headerlink" title="二分类方案"></a>二分类方案</h4><p>即针对测试集中的每一条记录，构造候选shop集合，用模型输出每个候选的概率值，然后选取概率值最大的作为该条记录的预测shop。训练集和测试集的构造方法图示如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxgj07j20qd0d90wz.jpg" alt="img"></p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mxhd1wj20qc0e3jvh.jpg" alt="img"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/split1.jpg" alt="img"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/split2.jpg" alt="img"></p>
 <table>
 <thead>
 <tr>
@@ -844,7 +844,7 @@
 </ul>
 <h4 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h4><p>不同模型加权融合的结果作为最终结果。</p>
 <p>复赛中，考虑一个 wifi 的情况单独训练</p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1ftm0mx5z98j20sj0dmgoa.jpg" alt="img"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/ccf bdci tianchi/fuse.jpg" alt="img"></p>
 <p>第一名的队伍将多个算法的输出结果放入二分类模型中一起训练，提升准确率，值得学习。</p>
 <h3 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h3><p>多分类是比赛初期比较容易想到的方案，需要对每个 mall 进行多分类训练，类别数即为 mall 中 shop 的数目。将经纬度和每一个出现过的 wifi 强度都作为特征。比赛中有位同学已经开源了多分类的方案，代码也很简洁。多分类在线上平台赛的时候，需要分别计算四五百个 mall 很不方便，很可惜我们队伍没有使用多分类的方案融合进模型里，第一名使用多分类的输出概率作为二分类的输出特征，这一部分加分很多。</p>
 <p>缺点：单个模型样本不多，特征稀疏，模型精度不高，没法去挖掘店铺相关特征，或者用户与店铺交互特征（测试集中没有，没有候选）</p>
