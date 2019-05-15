@@ -114,15 +114,15 @@
 <meta property="og:url" content="http://yoursite.com/2017/03/16/KNN/index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="K-近邻算法（KNN）概述最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。 KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一">
-<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg">
-<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/14903128-file_1489668010375_10ae2.jpg">
-<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/20809293-file_1489669205458_1d8b.png">
-<meta property="og:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/18850860-file_1489669208051_3a0f.png">
-<meta property="og:updated_time" content="2017-03-16T13:04:49.576Z">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/qiniu_backup/78557648-file_1489668012349_14fab.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/qiniu_backup/14903128-file_1489668010375_10ae2.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/qiniu_backup/20809293-file_1489669205458_1d8b.png">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/qiniu_backup/18850860-file_1489669208051_3a0f.png">
+<meta property="og:updated_time" content="2019-05-13T13:56:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KNN (k-nearest neighbor classification)">
 <meta name="twitter:description" content="K-近邻算法（KNN）概述最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。 KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一">
-<meta name="twitter:image" content="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg">
+<meta name="twitter:image" content="https://gitee.com/skyexu/images/raw/master/qiniu_backup/78557648-file_1489668012349_14fab.jpg">
 
 
 
@@ -424,11 +424,11 @@
         <h2 id="K-近邻算法（KNN）概述"><a href="#K-近邻算法（KNN）概述" class="headerlink" title="K-近邻算法（KNN）概述"></a>K-近邻算法（KNN）概述</h2><p>最简单最初级的分类器是将全部的训练数据所对应的类别都记录下来，当测试对象的属性和某个训练对象的属性完全匹配时，便可以对其进行分类。但是怎么可能所有测试对象都会找到与之完全匹配的训练对象呢，其次就是存在一个测试对象同时与多个训练对象匹配，导致一个训练对象被分到了多个类的问题，基于这些问题呢，就产生了KNN。</p>
 <p>KNN是通过测量不同特征值之间的距离进行分类。它的的思路是：如果一个样本在特征空间中的k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别，则该样本也属于这个类别。K通常是不大于20的整数。KNN算法中，所选择的邻居都是已经正确分类的对象。该方法在定类决策上只依据最邻近的一个或者几个样本的类别来决定待分样本所属的类别。</p>
 <p>下面通过一个简单的例子说明一下：如下图，绿色圆要被决定赋予哪个类，是红色三角形还是蓝色四方形？如果K=3，由于红色三角形所占比例为2/3，绿色圆将被赋予红色三角形那个类，如果K=5，由于蓝色四方形比例为3/5，因此绿色圆被赋予蓝色四方形类。</p>
-<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/78557648-file_1489668012349_14fab.jpg" alt=""></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/qiniu_backup/78557648-file_1489668012349_14fab.jpg" alt=""></p>
 <a id="more"></a>
 <p>由此也说明了KNN算法的结果很大程度取决于K的选择。</p>
 <p>在KNN中，通过计算对象间距离来作为各个对象之间的非相似性指标，避免了对象之间的匹配问题，在这里距离一般使用欧氏距离或曼哈顿距离：</p>
-<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/14903128-file_1489668010375_10ae2.jpg" alt="">                      </p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/qiniu_backup/14903128-file_1489668010375_10ae2.jpg" alt="">                      </p>
 <p>同时，KNN通过依据k个对象中占优的类别进行决策，而不是单一的对象类别决策。这两点就是KNN算法的优势。</p>
 <p>接下来对KNN算法的思想总结一下：就是在训练集中数据和标签已知的情况下，输入测试数据，将测试数据的特征与训练集中对应的特征进行相互比较，找到训练集中与之最为相似的前K个数据，则该测试数据对应的类别就是K个数据中出现次数最多的那个分类，其算法的描述为：</p>
 <p>1）计算测试数据与各个训练数据之间的距离；</p>
@@ -468,9 +468,9 @@
 <p><strong>prep_terrain_data.py</strong></p>
 <figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line"><span class="keyword">import</span> random</div><div class="line"></div><div class="line"></div><div class="line">def makeTerrainData(n_points=<span class="number">1000</span>):</div><div class="line">###############################################################################</div><div class="line">### make the toy dataset</div><div class="line">    random.seed(<span class="number">42</span>)</div><div class="line">    grade = [random.random() for ii <span class="keyword">in</span> range(<span class="number">0</span>,n_points)]</div><div class="line">    bumpy = [random.random() for ii <span class="keyword">in</span> range(<span class="number">0</span>,n_points)]</div><div class="line">    error = [random.random() for ii <span class="keyword">in</span> range(<span class="number">0</span>,n_points)]</div><div class="line">    y = [round(grade[ii]*bumpy[ii]+<span class="number">0.3</span>+<span class="number">0.1</span>*error[ii]) for ii <span class="keyword">in</span> range(<span class="number">0</span>,n_points)]</div><div class="line">    for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(y)):</div><div class="line">        <span class="keyword">if</span> grade[ii]&gt;<span class="number">0.8</span> or bumpy[ii]&gt;<span class="number">0.8</span>:</div><div class="line">            y[ii] = <span class="number">1.0</span></div><div class="line"></div><div class="line">### split into train/test sets</div><div class="line">    X = [[gg, ss] for gg, ss <span class="keyword">in</span> zip(grade, bumpy)]</div><div class="line">    split = int(<span class="number">0.75</span>*n_points)</div><div class="line">    X_train = X[<span class="number">0</span>:split]</div><div class="line">    X_test  = X[split:]</div><div class="line">    y_train = y[<span class="number">0</span>:split]</div><div class="line">    y_test  = y[split:]</div><div class="line"></div><div class="line">    grade_sig = [X_train[ii][<span class="number">0</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_train)) <span class="keyword">if</span> y_train[ii]==<span class="number">0</span>]</div><div class="line">    bumpy_sig = [X_train[ii][<span class="number">1</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_train)) <span class="keyword">if</span> y_train[ii]==<span class="number">0</span>]</div><div class="line">    grade_bkg = [X_train[ii][<span class="number">0</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_train)) <span class="keyword">if</span> y_train[ii]==<span class="number">1</span>]</div><div class="line">    bumpy_bkg = [X_train[ii][<span class="number">1</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_train)) <span class="keyword">if</span> y_train[ii]==<span class="number">1</span>]</div><div class="line"></div><div class="line">    training_data = &#123;<span class="string">"fast"</span>:&#123;<span class="string">"grade"</span>:grade_sig, <span class="string">"bumpiness"</span>:bumpy_sig&#125;</div><div class="line">            , <span class="string">"slow"</span>:&#123;<span class="string">"grade"</span>:grade_bkg, <span class="string">"bumpiness"</span>:bumpy_bkg&#125;&#125;</div><div class="line"></div><div class="line"></div><div class="line">    grade_sig = [X_test[ii][<span class="number">0</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_test)) <span class="keyword">if</span> y_test[ii]==<span class="number">0</span>]</div><div class="line">    bumpy_sig = [X_test[ii][<span class="number">1</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_test)) <span class="keyword">if</span> y_test[ii]==<span class="number">0</span>]</div><div class="line">    grade_bkg = [X_test[ii][<span class="number">0</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_test)) <span class="keyword">if</span> y_test[ii]==<span class="number">1</span>]</div><div class="line">    bumpy_bkg = [X_test[ii][<span class="number">1</span>] for ii <span class="keyword">in</span> range(<span class="number">0</span>, len(X_test)) <span class="keyword">if</span> y_test[ii]==<span class="number">1</span>]</div><div class="line"></div><div class="line">    test_data = &#123;<span class="string">"fast"</span>:&#123;<span class="string">"grade"</span>:grade_sig, <span class="string">"bumpiness"</span>:bumpy_sig&#125;</div><div class="line">            , <span class="string">"slow"</span>:&#123;<span class="string">"grade"</span>:grade_bkg, <span class="string">"bumpiness"</span>:bumpy_bkg&#125;&#125;</div><div class="line"></div><div class="line">    return X_train, y_train, X_test, y_test</div></pre></td></tr></table></figure>
 <p>训练数据分布图</p>
-<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/20809293-file_1489669205458_1d8b.png" alt=""></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/qiniu_backup/20809293-file_1489669205458_1d8b.png" alt=""></p>
 <p>测试数据分类结果及决策面</p>
-<p><img src="http://ojpgmz933.bkt.clouddn.com/17-3-16/18850860-file_1489669208051_3a0f.png" alt=""></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master/qiniu_backup/18850860-file_1489669208051_3a0f.png" alt=""></p>
 <p>计算结果</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">training <span class="selector-tag">time</span> :  <span class="number">0.002</span> s</div><div class="line">predicting <span class="selector-tag">time</span> :  <span class="number">0.005</span> s</div><div class="line">accuracy_score : <span class="number">0.94</span></div></pre></td></tr></table></figure>
 <p><strong>参考转载</strong></p>
@@ -634,7 +634,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -114,14 +114,13 @@
 <meta property="og:url" content="http://yoursite.com/2019/02/27/bigdata-4 mapreduce model /index.html">
 <meta property="og:site_name" content="Skye&#39;s Blog">
 <meta property="og:description" content="本文将介绍Google 三架马车中的第二架——MapReduce 计算框架  MapReduce 是什么MapReduce 是一种编程模型，用于大规模数据集（大于1TB）的并行运算。它极大地方便了编程人员将自己的程序运行在分布式系统上。这种编程模型在很长时间以前就出现了，但在以前这个编程模型不是非常火热。当 Google 关于 MapReduce 计算框架的论文发布，紧接着 Hadoop 的开">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fn2bfh40j20zk0k0ta0.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fp7oqlk3j20o90ag0vk.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg">
-<meta property="og:updated_time" content="2019-02-27T13:09:05.027Z">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 04 MapReduce 编程模型原理/MapReduce 题图.jpg">
+<meta property="og:image" content="https://gitee.com/skyexu/images/raw/master">
+<meta property="og:updated_time" content="2019-05-15T03:23:31.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据系列4：MapReduce 编程模型原理">
 <meta name="twitter:description" content="本文将介绍Google 三架马车中的第二架——MapReduce 计算框架  MapReduce 是什么MapReduce 是一种编程模型，用于大规模数据集（大于1TB）的并行运算。它极大地方便了编程人员将自己的程序运行在分布式系统上。这种编程模型在很长时间以前就出现了，但在以前这个编程模型不是非常火热。当 Google 关于 MapReduce 计算框架的论文发布，紧接着 Hadoop 的开">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fn2bfh40j20zk0k0ta0.jpg">
+<meta name="twitter:image" content="https://gitee.com/skyexu/images/raw/master/大数据系列 04 MapReduce 编程模型原理/MapReduce 题图.jpg">
 
 
 
@@ -420,7 +419,7 @@
       
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fn2bfh40j20zk0k0ta0.jpg" alt="MapReduce"></p>
+        <p><img src="https://gitee.com/skyexu/images/raw/master/大数据系列 04 MapReduce 编程模型原理/MapReduce 题图.jpg" alt="MapReduce"></p>
 <blockquote>
 <p>本文将介绍Google 三架马车中的第二架——MapReduce 计算框架</p>
 </blockquote>
@@ -456,7 +455,7 @@
 <p>通过上面的代码我们可以看到 MapReduce 程序的核心是 map 函数与 reduce 函数。map 函数读入 <key,value> 对，在这里相当于对每一行用 <code>StringTokenizer</code> 进行切分并输出成 <word,1> 的形式。Mapreduce 的 shuffle 过程会将所以相同的 <word,1> 收集起来，生成 <word,[1,1,1....]> 这样的形式，然后输出给 reduce。reduce 函数读取同一个 key 的数据，并输出 <word,sum> ，这里的 sum 就是所有 1 的和。</word,sum></word,[1,1,1....]></word,1></word,1></key,value></p>
 <p>map 和 reduce 函数都可以分布到多个节点中运算，map 函数从 HDFS 中读取数据块，reduce 从不同的 map 节点输出中获取数据，从而大大提高计算效率。</p>
 <p>下图为 MapReduce 进行词频统计的过程示意图。</p>
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824ly1g0fp7oqlk3j20o90ag0vk.jpg" alt="MapReduce 词频统计"></p>
+<p>![MapReduce 词频统计](<a href="https://gitee.com/skyexu/images/raw/master" target="_blank" rel="external">https://gitee.com/skyexu/images/raw/master</a></p>
 <p>MapReduce 的步骤可以总结如下：</p>
 <p>Map 任务处理</p>
 <ol>
@@ -493,7 +492,7 @@
 </blockquote>
 <center>欢迎关注微信公众号</center>
 
-<p><img src="http://ww1.sinaimg.cn/large/6bf9f824gy1fyhriw0bl1j2076076aai.jpg" alt="微信公众号"></p>
+<p><img src="https://gitee.com/skyexu/images/raw/master" alt="微信公众号"></p>
 
       
     </div>
@@ -647,7 +646,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
