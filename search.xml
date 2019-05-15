@@ -525,9 +525,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Hadoop Job��������]]></title>
+    <title><![CDATA[Hadoop Job ��������]]></title>
     <url>%2F2016%2F11%2F05%2Fhadoop%20Job%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[hadoop������ ��job���صģ�]]></content>
+    <content type="text"><![CDATA[hadoop������ ��job���صģ������й���1.�鿴 Job ��Ϣ��hadoop job -list2.ɱ�� Job��hadoop job -kill job_id3.ָ��·���²鿴��ʷ��־���ܣ�hadoop job -history output-dir4.��ҵ�ĸ���ϸ�ڣ�hadoop job -history all output-dir5.��ӡmap��reduce���ɰٷֱȺ����м�������hadoop job -status job_id6.ɱ�����񡣱�ɱ�������񲻻᲻����ʧ�ܳ��ԣ�hadoop jab -kill-task &lt;task-id&gt;7.ʹ����ʧ�ܡ���ʧ�ܵ���������ʧ�ܳ��Բ�����hadoop job -fail-task &lt;task-id&gt;]]></content>
       <categories>
         <category>������</category>
       </categories>
